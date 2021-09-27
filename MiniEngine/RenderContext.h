@@ -357,5 +357,37 @@ private:
 	ID3D12DescriptorHeap* m_descriptorHeaps[MAX_DESCRIPTOR_HEAP];			//ディスクリプタヒープの配列。
 	ConstantBuffer* m_constantBuffers[MAX_CONSTANT_BUFFER] = { nullptr };	//定数バッファの配列。
 	Texture* m_shaderResources[MAX_SHADER_RESOURCE] = { nullptr };			//シェーダーリソースの配列。
+
+
+
+
+	//追加
+public:
+	/// <summary>
+	/// ビューポートとシザリング矩形をセットで設定
+	/// </summary>
+	/// <param name="viewport">ビューポート</param>
+	void SetViewportAndScissor(D3D12_VIEWPORT& viewport);
+	/// <summary>
+	/// レンダリングターゲットをスロット0に設定する。
+	/// </summary>
+	/// <remarks>
+	/// 本関数はビューポートの設定を行いません。
+	/// ユーザー側で適切なビューポートを指定する必要があります。
+	/// </remarks>
+	/// <param name="renderTarget">レンダリングターゲット</param>
+	void SetRenderTarget(RenderTarget& renderTarget);
+	void SetRenderTargetAndViewport(RenderTarget& renderTarget);
+	/// <summary>
+	/// レンダリングターゲットのクリア。
+	/// </summary>
+	/// <param name="renderTarget"></param>
+	void ClearRenderTargetView(RenderTarget& renderTarget);
+
+
+private:
+	D3D12_VIEWPORT m_currentViewport;				//現在のビューポート。
+
+
 };
 

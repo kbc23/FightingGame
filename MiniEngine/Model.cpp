@@ -47,7 +47,7 @@ void Model::Init(const ModelInitData& initData)
 void Model::UpdateWorldMatrix(Vector3 pos, Quaternion rot, Vector3 scale)
 {
 	Matrix mBias;
-	if (m_modelUpAxis == enModelUpAxisZ) {
+	if (m_modelUpAxis == modelUpAxis::enModelUpAxisZ) {
 		//Z-up
 		mBias.MakeRotationX(Math::PI * -0.5f);
 	}
@@ -78,5 +78,20 @@ void Model::Draw(RenderContext& rc)
 		m_world, 
 		g_camera3D->GetViewMatrix(), 
 		g_camera3D->GetProjectionMatrix()
+	);
+}
+
+void Model::Draw(RenderContext& rc, Camera& camera)
+{
+	Draw(rc, camera.GetViewMatrix(), camera.GetProjectionMatrix());
+}
+
+void Model::Draw(RenderContext& rc, const Matrix& viewMatrix, const Matrix& projMatrix)
+{
+	m_meshParts.Draw(
+		rc,
+		m_world,
+		viewMatrix,
+		projMatrix
 	);
 }

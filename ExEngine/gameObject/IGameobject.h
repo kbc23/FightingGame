@@ -43,6 +43,11 @@ public:
 	{
 		(void)renderContext;
 	}
+
+	virtual void ShadowRender(RenderContext& renderContext)
+	{
+		(void)renderContext;
+	}
 	
 public:
 	/*!
@@ -117,6 +122,12 @@ public:
 	{
 		if (m_isActive && m_isStart && !m_isDead ) {
 			Render(renderContext);
+		}
+	}
+	void ShadowRenderWrapper(RenderContext& renderContext)
+	{
+		if (m_isActive && m_isStart && !m_isDead) {
+			ShadowRender(renderContext);
 		}
 	}
 	

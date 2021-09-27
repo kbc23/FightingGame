@@ -38,6 +38,12 @@ void NullTextureMaps::Init()
 		m_normalMap,
 		m_normalMapSize);
 
+	//トゥーンマップをロード
+	TexLoad(
+		"Assets/shader/toonMap.DDS",
+		m_toonMap,
+		m_toonMapSize);
+
 	//０の値を格納しているマップをロード。
 	TexLoad(
 		"Assets/modelData/preset/ZeroValueMap.DDS",

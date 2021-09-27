@@ -310,6 +310,19 @@ private:
 	FontEngine m_fontEngine;					//フォントエンジン。
 	public:
 	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemroy;	//DirectXTKのグラフィックメモリシステム。
+
+
+	//追加
+public:
+	/// <summary>
+	/// フレームバッファに描画するときのビューポートを取得。
+	/// </summary>
+	/// <returns></returns>
+	D3D12_VIEWPORT& GetFrameBufferViewport()
+	{
+		return m_viewport;
+	}
+
 };
 extern GraphicsEngine* g_graphicsEngine;	//グラフィックスエンジン
 extern Camera* g_camera2D;					//2Dカメラ。

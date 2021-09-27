@@ -56,3 +56,13 @@ void GameObjectManager::ExecuteRender(RenderContext& rc)
 		}
 	}
 }
+
+void GameObjectManager::ExecuteShadowRender(RenderContext& rc)
+{
+	//レンダラーを変更するならここを改造していくと良い。
+	for (auto& goList : m_gameObjectListArray) {
+		for (auto& go : goList) {
+			go->ShadowRenderWrapper(rc);
+		}
+	}
+}

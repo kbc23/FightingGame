@@ -40,6 +40,14 @@ public:
 		return m_normalMap;
 	}
 	/// <summary>
+	/// トゥーンマップを取得。
+	/// </summary>
+	/// <returns></returns>
+	Texture& GetToonMap()
+	{
+		return m_toonMap;
+	}
+	/// <summary>
 	/// スペキュラマップを取得。
 	/// </summary>
 	/// <returns></returns>
@@ -100,9 +108,11 @@ private:
 	struct SMaterialParam {
 		int hasNormalMap;	//法線マップを保持しているかどうかのフラグ。
 		int hasSpecMap;		//スペキュラマップを保持しているかどうかのフラグ。
+		int hasToonMap;		//トゥーンマップを保持しているか
 	};
 	Texture	m_albedoMap;							//アルベドマップ。
 	Texture	m_normalMap;							//法線マップ。
+	Texture m_toonMap;								//トゥーンマップ
 	Texture	m_specularMap;							//スペキュラマップ。
 	Texture m_reflectionMap;						//リフレクションマップ。
 	Texture m_refractionMap;						//屈折マップ。

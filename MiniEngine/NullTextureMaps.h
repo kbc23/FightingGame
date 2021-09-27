@@ -38,6 +38,22 @@ public:
 		return m_normalMapSize;
 	}
 	/// <summary>
+	/// トゥーンマップを取得。
+	/// </summary>
+	/// <returns></returns>
+	const std::unique_ptr<char[]>& GetToonMap() const
+	{
+		return m_toonMap;
+	}
+	/// <summary>
+	/// トゥーンマップのサイズを取得。
+	/// </summary>
+	/// <returns></returns>
+	unsigned int GetToonMapSize() const
+	{
+		return m_toonMapSize;
+	}
+	/// <summary>
 	/// スペキュラマップを取得。
 	/// </summary>
 	/// <returns></returns>
@@ -106,6 +122,8 @@ private:
 	unsigned int m_albedoMapSize = 0;		//アルベドマップのサイズ。
 	std::unique_ptr<char[]>	m_normalMap;	//法線マップ。
 	unsigned int m_normalMapSize = 0;		//法線マップのサイズ。
+	std::unique_ptr<char[]>	m_toonMap;		//トゥーンマップ。
+	unsigned int m_toonMapSize = 0;			//トゥーンマップのサイズ。
 	std::unique_ptr<char[]> m_zeroValueMap;	//0の値を格納しているマップ。
 	unsigned int m_zeroValueMapSize = 0;	//0の値を格納しているマップのサイズ。
 };

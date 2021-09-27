@@ -60,7 +60,9 @@ public:
 	/// </summary>
 	/// <param name="rc"></param>
 	void ExecuteRender(RenderContext& rc);
-	
+
+	void ExecuteShadowRender(RenderContext& rc);
+
 	
 	/*!
 	*@brief	ゲームオブジェクトのnew

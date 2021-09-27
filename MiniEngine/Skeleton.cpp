@@ -47,10 +47,10 @@ void Skeleton::UpdateBoneWorldMatrix(Bone& bone, const Matrix& parentMatrix)
 bool Skeleton::Init(const char* tksFilePath)
 {
 	//tksファイルをロードする。
-	m_tksFile.Load(tksFilePath);
+	bool loaded = m_tksFile.Load(tksFilePath);
 	//ボーン行列を構築する。
 	BuildBoneMatrices();
-	return true;
+	return loaded;
 }
 void Skeleton::BuildBoneMatrices()
 {

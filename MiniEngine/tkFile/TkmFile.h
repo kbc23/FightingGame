@@ -27,6 +27,8 @@ public:
 		unsigned int albedoMapSize;				//アルベドマップのサイズ。(ddsファイル)
 		std::unique_ptr<char[]>	normalMap;		//ロードされた法線マップ。(ddsファイル)
 		unsigned int normalMapSize;				//法線マップのサイズ。
+		std::unique_ptr<char[]>	toonMap;		//ロードされたトゥーンマップ。(ddsファイル)
+		unsigned int toonMapSize;				//トゥーンマップのサイズ。
 		std::unique_ptr<char[]>	specularMap;	//ロードされたスペキュラマップ。(ddsファイル)
 		unsigned int specularMapSize;			//スペキュラマップのサイズ。(ddsファイル)
 		std::unique_ptr<char[]>	reflectionMap;	//ロードされたリフレクションマップ。(ddsファイル)
