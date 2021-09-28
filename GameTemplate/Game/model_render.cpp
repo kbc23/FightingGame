@@ -39,7 +39,7 @@ bool ModelRender::Start()
 //}
 
 void ModelRender::Init(const char* filePath,
-	bool flagShadow,
+	bool flagShadowReceiver,
 	modelUpAxis::EnModelUpAxis modelUpAxis,
 	AnimationClip* animationClip,
 	int maxAnimationClipNum
@@ -50,7 +50,7 @@ void ModelRender::Init(const char* filePath,
 	//スケルトンのデータの読み込み
 	InitSkeleton(filePath);
 	//モデルの初期化
-	InitModel(filePath, flagShadow, modelUpAxis);
+	InitModel(filePath, flagShadowReceiver, modelUpAxis);
 	//アニメーションを初期化
 	InitAnimation(animationClip, maxAnimationClipNum);
 
@@ -102,7 +102,7 @@ void ModelRender::InitAnimation(AnimationClip* animationClip, int maxAnimationCl
 }
 
 void ModelRender::InitModel(const char* filePath,
-	bool flagShadow,
+	bool flagShadowReceiver,
 	modelUpAxis::EnModelUpAxis modelUpAxis
 )
 {
@@ -122,13 +122,15 @@ void ModelRender::InitModel(const char* filePath,
 	//半球ライトを初期化する
 	//InitHemiLight();
 
+	m_light.shadowCamera = ShadowLightCamera::GetInstance()->GetShadowLightCamera().GetViewProjectionMatrix();
+
 	//3Dモデルをロードするための情報を設定する
 	//モデルの初期化するための情報を設定
 	ModelInitData modelInitData;
 	//tkmファイルのファイルパスを設定
 	modelInitData.m_tkmFilePath = filePath;
 	//使用するシェーダーファイルパスを設定
-	if (false == flagShadow) {
+	if (false == flagShadowReceiver) {
 		modelInitData.m_fxFilePath = "Assets/shader/model.fx";
 
 		//ライトの情報を定数バッファとしてディスクリプタヒープに
@@ -143,10 +145,12 @@ void ModelRender::InitModel(const char* filePath,
 			&ShadowMap::GetInstance()->GetShadowMap().GetRenderTargetTexture();
 
 		//ライトビュープロジェクション行列を拡張定数バッファに設定する。
-		modelInitData.m_expandConstantBuffer =
-			(void*)&ShadowLightCamera::GetInstance()->GetShadowLightCamera().GetViewProjectionMatrix();
-		modelInitData.m_expandConstantBufferSize =
-			sizeof(ShadowLightCamera::GetInstance()->GetShadowLightCamera().GetViewProjectionMatrix());
+		//modelInitData.m_expandConstantBuffer =
+		//	(void*)&ShadowLightCamera::GetInstance()->GetShadowLightCamera().GetViewProjectionMatrix();
+		//modelInitData.m_expandConstantBufferSize =
+		//	sizeof(ShadowLightCamera::GetInstance()->GetShadowLightCamera().GetViewProjectionMatrix());
+		modelInitData.m_expandConstantBuffer = &m_light;
+		modelInitData.m_expandConstantBufferSize = sizeof(m_light);
 	}
 	//スケルトンを指定する。
 	if (m_skeletonPointer) {	//スケルトンが初期化されていたら
@@ -278,5 +282,9 @@ void ModelRender::Update()
 	}
 	//モデルの座標更新
 	m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+
+	if (true == m_flagShadow) {
+		m_shadowModel->Update(); //仮
+	}
 
 }

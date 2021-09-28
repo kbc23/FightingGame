@@ -1,6 +1,8 @@
 #pragma once
 #include <Model.h>
 
+class Shadow;
+
 //#include "constant.h"
 
 ////////////////////////////////////////////////////////////
@@ -51,6 +53,9 @@ struct Light {
 	Vector3 skyColor;		//天球色
 	float pad7;
 	Vector3 groundNormal;	//地面の法線
+
+	float pad8;
+	Matrix shadowCamera;
 };
 
 
@@ -74,7 +79,7 @@ public:
 	 * @param animationClip アニメーションクリップ
 	 * @param maxAnimationClipNum アニメーションクリップの最大数
 	*/
-	void Init(const char* filePath, bool flagShadow = false,
+	void Init(const char* filePath, bool flagShadowReceiver = false,
 		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
 		AnimationClip* animationClip = nullptr,
 		int maxAnimationClipNum = 0
@@ -88,7 +93,7 @@ private:
 	 * @param filePath tkmファイルのファイルパス
 	 * @param  モデルの上方向
 	*/
-	void InitModel(const char* filePath, bool flagShadow = false,
+	void InitModel(const char* filePath, bool flagShadowReceiver = false,
 		modelUpAxis::EnModelUpAxis = modelUpAxis::enModelUpAxisZ
 	);
 
@@ -261,6 +266,7 @@ public: //Set関数
 
 private: //data menber
     Model m_model;
+	Shadow* m_shadowModel = nullptr; //影の描画処理
 	std::unique_ptr<Skeleton> m_skeletonPointer; //スケルトンのポインター
 	std::unique_ptr<Animation> m_animationPointer; //アニメーションのポインター
 
@@ -273,4 +279,5 @@ private: //data menber
 	Vector3 m_scale = g_vec3One;				//拡大
 
 	bool m_finishInit = false; //初期化が終わったか
+	bool m_flagShadow = false; //影が発生するか
 };

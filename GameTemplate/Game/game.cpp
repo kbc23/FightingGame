@@ -45,6 +45,13 @@ void Game::Update()
         m_position.z -= 5.0f;
     }
 
+    if (g_pad[0]->GetLStickXF() != 0.0f) {
+        m_position.x -= g_pad[0]->GetLStickXF() * 5.0f;
+    }
+    if (g_pad[0]->GetLStickYF() != 0.0f) {
+        m_position.z -= g_pad[0]->GetLStickYF() * 5.0f;
+    }
+
     m_modelCharacter->SetPosition(m_position);
     m_shadowModelCharacter->SetPosition(m_position);
 }
