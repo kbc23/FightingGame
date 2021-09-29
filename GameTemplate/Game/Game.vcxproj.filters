@@ -63,6 +63,12 @@
     <Filter Include="MyCode\Assets\Shader">
       <UniqueIdentifier>{5a92d57a-efd5-4e7a-9f78-456b6acf3a51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCode\Engine\Model">
+      <UniqueIdentifier>{c27841d4-1927-4ba2-bc6a-a32f70a5de9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCode\Engine\NetWork">
+      <UniqueIdentifier>{e6a664f2-2a73-4d63-8b0b-7faed1a774a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -227,23 +233,26 @@
     <ClCompile Include="game.cpp">
       <Filter>MyCode\MainProcessing</Filter>
     </ClCompile>
-    <ClCompile Include="model_render.cpp">
-      <Filter>MyCode\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="shadow.cpp">
-      <Filter>MyCode\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderContext.cpp">
-      <Filter>MyCode\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="shadow_map.cpp">
-      <Filter>MyCode\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\MiniEngine\RenderTarget.cpp">
       <Filter>MiniEngine</Filter>
     </ClCompile>
+    <ClCompile Include="model_render.cpp">
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderContext.cpp">
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="shadow.cpp">
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClCompile>
     <ClCompile Include="shadow_light_camera.cpp">
-      <Filter>MyCode\Engine</Filter>
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="shadow_map.cpp">
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="net_work.cpp">
+      <Filter>MyCode\Engine\NetWork</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,20 +442,23 @@
     <ClInclude Include="game.h">
       <Filter>MyCode\MainProcessing</Filter>
     </ClInclude>
-    <ClInclude Include="model_render.h">
-      <Filter>MyCode\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="shadow.h">
-      <Filter>MyCode\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="shadow_map.h">
-      <Filter>MyCode\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\MiniEngine\RenderTarget.h">
       <Filter>MiniEngine</Filter>
     </ClInclude>
+    <ClInclude Include="model_render.h">
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="shadow.h">
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClInclude>
     <ClInclude Include="shadow_light_camera.h">
-      <Filter>MyCode\Engine</Filter>
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="shadow_map.h">
+      <Filter>MyCode\Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="net_work.h">
+      <Filter>MyCode\Engine\NetWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

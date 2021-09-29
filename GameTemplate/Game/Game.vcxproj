@@ -106,7 +106,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/../MiniEngine;$(SolutionDir)/Sample_00;$(SolutionDir)/../ExEngine;$(SolutionDir)/../ExEngine/bulletPhysics/src;$(SolutionDir)/../ExEngine/effekseer/src/Effekseer;$(SolutionDir)/../ExEngine/effekseer/src/EffekseerRendererDX12</IncludePath>
-    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Debug;$(SolutionDir)/exlib/x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Debug;$(SolutionDir)/exlib/x64;$(LibraryPath);D:\School\program\FightingGame\photon-windows-sdk_v5-0-0-0</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -121,12 +121,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/../MiniEngine;$(SolutionDir)/Sample_00;$(SolutionDir)/../ExEngine;$(SolutionDir)/../ExEngine/bulletPhysics/src;$(SolutionDir)/../ExEngine/effekseer/src/Effekseer;$(SolutionDir)/../ExEngine/effekseer/src/EffekseerRendererDX12</IncludePath>
-    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Release;$(SolutionDir)/exlib/x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Release;$(SolutionDir)/exlib/x64;$(LibraryPath);D:\School\program\FightingGame\photon-windows-sdk_v5-0-0-0</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/../MiniEngine;$(SolutionDir)/Sample_00;$(SolutionDir)/../ExEngine;$(SolutionDir)/../ExEngine/bulletPhysics/src;$(SolutionDir)/../ExEngine/effekseer/src/EffekseerRendererDX12;$(SolutionDir)/../ExEngine/effekseer/src/Effekseer</IncludePath>
-    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Release;$(SolutionDir)/exlib/x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Release;$(SolutionDir)/exlib/x64;$(LibraryPath);D:\School\program\FightingGame\photon-windows-sdk_v5-0-0-0</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -152,6 +152,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>D:\School\program\FightingGame\photon-windows-sdk_v5-0-0-0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -208,6 +209,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>D:\School\program\FightingGame\photon-windows-sdk_v5-0-0-0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -228,6 +230,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>D:\School\program\FightingGame\photon-windows-sdk_v5-0-0-0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -292,6 +295,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model_render.cpp" />
+    <ClCompile Include="net_work.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="shadow_light_camera.cpp" />
@@ -369,6 +373,7 @@
     <ClInclude Include="..\..\MiniEngine\VertexBuffer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="model_render.h" />
+    <ClInclude Include="net_work.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="shadow_light_camera.h" />
     <ClInclude Include="shadow_map.h" />

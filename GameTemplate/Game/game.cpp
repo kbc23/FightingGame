@@ -32,19 +32,6 @@ bool Game::Start()
 
 void Game::Update()
 {
-    if (g_pad[0]->IsPress(enButtonA)) {
-        m_position.x += 5.0f;
-    }
-    if (g_pad[0]->IsPress(enButtonB)) {
-        m_position.x -= 5.0f;
-    }
-    if (g_pad[0]->IsPress(enButtonX)) {
-        m_position.z += 5.0f;
-    }
-    if (g_pad[0]->IsPress(enButtonY)) {
-        m_position.z -= 5.0f;
-    }
-
     if (g_pad[0]->GetLStickXF() != 0.0f) {
         m_position.x -= g_pad[0]->GetLStickXF() * 5.0f;
     }
