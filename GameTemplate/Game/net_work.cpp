@@ -7,5 +7,5 @@ NetWork* NetWork::m_instance = nullptr;
 
 void NetWork::Init()
 {
-
+    int i = 10;
 }
