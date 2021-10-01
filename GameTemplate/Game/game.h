@@ -18,4 +18,5 @@ private: //data menber
 
 
     Vector3 m_position = { 0.0f,0.0f,0.0f };
+    Quaternion m_rotation = g_quatIdentity;		//‰ñ“]
 };

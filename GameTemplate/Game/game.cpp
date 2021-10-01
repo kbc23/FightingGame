@@ -39,6 +39,16 @@ void Game::Update()
         m_position.z -= g_pad[0]->GetLStickYF() * 5.0f;
     }
 
+    if (g_pad[0]->IsPress(enButtonA) == true) {
+        m_rotation.y += 0.01f;
+    }
+    if (g_pad[0]->IsPress(enButtonB) == true) {
+        m_rotation.y -= 0.01f;
+    }
+
     m_modelCharacter->SetPosition(m_position);
     m_shadowModelCharacter->SetPosition(m_position);
+
+    m_modelCharacter->SetRotation(m_rotation);
+    m_shadowModelCharacter->SetRotation(m_rotation);
 }

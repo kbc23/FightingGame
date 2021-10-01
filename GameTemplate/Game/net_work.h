@@ -1,6 +1,8 @@
 #pragma once
+#include "Common-cpp/inc/Common.h"
+#include "LoadBalancing-cpp/inc/Client.h"
 
-class NetWork
+class NetWork : ExitGames::LoadBalancing::Listener
 {
 public:
 	void Init();
@@ -14,7 +16,7 @@ public:
 	/// </summary>
 	static void CreateInstance()
 	{
-		m_instance = new NetWork;
+		//m_instance = new NetWork;
 	}
 	/// <summary>
 	/// インスタンスの破棄。

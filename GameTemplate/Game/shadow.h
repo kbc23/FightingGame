@@ -34,6 +34,15 @@ public: //GetŠÖ”
         m_position = position;
     }
 
+    /**
+     * @brief ‰ñ“]—Ê‚ğİ’è
+     * @param rotation ‰ñ“]—Ê
+    */
+    void SetRotation(const Quaternion& rotation)
+    {
+        m_rotation = rotation;
+    }
+
 
 private: //data menber
     Model m_shadowModel;
