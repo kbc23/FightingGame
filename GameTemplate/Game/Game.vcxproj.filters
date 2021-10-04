@@ -254,6 +254,9 @@
     <ClCompile Include="net_work.cpp">
       <Filter>MyCode\Engine\NetWork</Filter>
     </ClCompile>
+    <ClCompile Include="my_debug.cpp">
+      <Filter>MyCode\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -459,6 +462,9 @@
     </ClInclude>
     <ClInclude Include="net_work.h">
       <Filter>MyCode\Engine\NetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="my_debug.h">
+      <Filter>MyCode\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

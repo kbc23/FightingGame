@@ -61,6 +61,13 @@ public:
 	*@brief	更新。
 	*/
 	void Update();
+
+	/// <summary>
+	/// 更新(外部からキー入力を渡すバージョン)
+	/// </summary>
+	/// <param name="xInputState">キー入力</param>
+	void Update(const XINPUT_STATE& xInputState);
+
 	/*!
 	*@brief	ボタンのトリガー判定。
 	*@return	trueが返ってきたらトリガー入力。
@@ -134,6 +141,16 @@ public:
 	}
 	//フレームの開始時に呼ばれる関数。
 	static void BeginFrame();
+	/// <summary> 追加
+	/// XInputから引っ張ってきた生データを取得。
+	/// </summary>
+	/// <returns></returns>
+	const XINPUT_STATE& GetXInputState()
+	{
+		return m_state.state;
+	}
+private: //追加
+	void UpdateCore(XINPUT_STATE xInputState);
 public:
 	enum { MAX_PAD = 4 };
 	enum class EnXInputPadState {

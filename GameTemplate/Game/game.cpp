@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "game.h"
 
+#include "my_debug.h"
+
 Game::Game()
 {
     m_modelCharacter = NewGO<ModelRender>(0);
