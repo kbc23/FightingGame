@@ -72,6 +72,9 @@
     <Filter Include="MyCode\Engine\Debug">
       <UniqueIdentifier>{a98110f0-0e12-41d9-be01-c1e90309d101}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCode\MainProcessing\Character">
+      <UniqueIdentifier>{27eb1e4a-fcac-4398-8d63-4ff6e55c32ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="my_debug.cpp">
       <Filter>MyCode\Engine\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="actor.cpp">
+      <Filter>MyCode\MainProcessing\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -468,6 +474,9 @@
     </ClInclude>
     <ClInclude Include="my_debug.h">
       <Filter>MyCode\Engine\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="actor.h">
+      <Filter>MyCode\MainProcessing\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
