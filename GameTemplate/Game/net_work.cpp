@@ -5,16 +5,33 @@
 
 #include "my_debug.h"
 
-
-
 // 358558fc-3cee-42c2-8bc1-65c7a4bfd315
 
 NetWork* NetWork::m_instance = nullptr;
+
+
 
 namespace
 {
 	const ExitGames::Common::JString PLAYER_NAME = L"user";
     const float MAX_FPS = 30.0f;	// オンライン対戦時の最大FPS
+}
+
+
+
+NetWork::~NetWork()
+{
+	//g_engine->SetFrameRateMode(
+	//	m_frameRateInfoBackup.frameRateMode,
+	//	m_frameRateInfoBackup.maxFPS
+	//);
+
+	m_loadBalancingClient->opLeaveRoom();
+	m_loadBalancingClient->opLeaveLobby();
+	m_loadBalancingClient->disconnect();
+#ifdef ENABLE_ONLINE_PAD_LOG
+	fclose(m_fpLog);
+#endif
 }
 
 void NetWork::Init(
@@ -243,6 +260,21 @@ void NetWork::Update_InGame()
 // その他
 ////////////////////////////////////////////////////////////
 
+void NetWork::SendPossibleGameStart()
+{
+	// ゲーム開始ベントを送信。
+	ExitGames::LoadBalancing::RaiseEventOptions eventOpt;
+
+	ExitGames::Common::Hashtable event;
+
+	m_loadBalancingClient->opRaiseEvent(
+		true,
+		event,
+		enEvent_PossibleGameStartOtherPlayer,
+		eventOpt
+	);
+}
+
 void NetWork::SendInitDataOtherPlayer()
 {
 	// ルームにジョインしたことを通知。
@@ -329,4 +361,132 @@ void NetWork::joinRoomEventAction(int playerNr, const ExitGames::Common::JVector
 		// クライアントがジョインしてきたので、他プレイヤーをジョイン済みにする。
 		m_otherPlayerState = enOtherPlayerNetWorkState_joinedRoom;
 	}
+}
+
+////////////////////////////////////////////////////////////
+// その他
+////////////////////////////////////////////////////////////
+
+void NetWork::OnDirectMessageType_PadData(std::uint8_t* pData, int size)
+{
+	// パッド情報
+	SPadData padData;
+	memcpy(&padData, pData, size);
+	// チェックサムを利用した誤り検出を行う。
+	// 送られてきたデータのチェックサム用のデータを計算。
+	unsigned int checksum = CalcCheckSum(&padData, sizeof(padData) - 4);
+
+	int otherPlNo = GetOtherPlayerNo();
+	// 計算した値と送られてきた値が同じか調べる。
+	if (checksum == padData.checksum) {
+		// チェックサム通過。
+		// 誤りは起きていない可能性が高い。
+		auto it = m_padData[otherPlNo].find(padData.frameNo);
+		if (it == m_padData[otherPlNo].end()) {
+			// 
+			m_padData[otherPlNo].insert({ padData.frameNo , padData });
+		}
+	}
+}
+
+void NetWork::OnDirectMessageType_RequestResendPadData(std::uint8_t* pData, int size)
+{
+	// パッドデータの再送リクエストを受けたので、過去のパッドデータを再送する。
+	SRequestResendPadData reqResendPadData;
+	memcpy(&reqResendPadData, pData, size);
+
+	int plNo = GetPlayerNo();
+	auto it = m_padData[plNo].find(reqResendPadData.frameNo);
+	if (it != m_padData[plNo].end()) {
+		// パッドデータができている。
+		m_loadBalancingClient->sendDirect(
+			(std::uint8_t*)&m_padData[plNo][reqResendPadData.frameNo],
+			sizeof(m_padData[plNo][reqResendPadData.frameNo])
+		);
+	}
+}
+
+void NetWork::leaveRoomEventAction(int playerNr, bool isInactive)
+{
+	// 部屋からプレイヤーが抜けたので、ゲーム終了。
+	m_otherPlayerState = enOtherPlayerNetWorkState_leftRoom;
+}
+
+void NetWork::connectReturn(int errorCode, const ExitGames::Common::JString& errorString, const ExitGames::Common::JString& region, const ExitGames::Common::JString& cluster)
+{
+	if (errorCode)
+	{
+		// サーバーへの接続エラーが発生したので、切断済みにする。
+		myDebug::LogW(errorString.toString());
+		m_state = State::enDisconnected;
+		return;
+	}
+	// 部屋に入れた。
+	m_state = State::enConnected;
+}
+
+void NetWork::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContentObj)
+{
+	auto eventContent = ExitGames::Common::ValueObject<ExitGames::Common::Hashtable>(eventContentObj).getDataCopy();
+	switch (eventCode) {
+	case enEvent_SendInitDataForOtherPlayer:
+		if (m_state == State::enWaitRecvInitDataOtherPlayer) {
+			K2_ASSERT(!m_isHoge, "二回呼ばれている");
+			m_isHoge = true;
+			myDebug::Log("enEvent_SendInitDataForOtherPlayer\n");
+			auto valuObj = (ExitGames::Common::ValueObject<std::uint8_t*>*)(eventContent.getValue(0));
+			m_recieveDataSize = valuObj->getSizes()[0];
+			m_recieveDataOnGameStart = std::make_unique<std::uint8_t[]>(m_recieveDataSize);
+			auto pSrcData = valuObj->getDataCopy();
+			memcpy(m_recieveDataOnGameStart.get(), pSrcData, m_recieveDataSize);
+			m_allPlayerJoinedRoomFunc(m_recieveDataOnGameStart.get(), m_recieveDataSize);
+			m_state = State::enWaitStartGame;
+		}
+		break;
+	case enEvent_PossibleGameStartOtherPlayer:
+		m_otherPlayerState = enOtherPlayerNetWorkState_possibleGameStart;
+		break;
+	}
+}
+
+void NetWork::onDirectMessage(const ExitGames::Common::Object& msg, int remoteID, bool relay)
+{
+	// 送られてきたデータをコピー。
+	auto valueObj = (ExitGames::Common::ValueObject<std::uint8_t*>*) & msg;
+	const int* sizes = valueObj->getSizes();
+	std::uint8_t* pData = (std::uint8_t*)valueObj->getDataCopy();
+	// データの先頭にデータタイプがつけられている。
+	int dataType = (int)(*pData);
+
+	// データタイプに応じて処理を分岐。
+	switch (dataType) {
+	case enDirectMessageType_PadData:
+		OnDirectMessageType_PadData(pData, sizes[0]);
+		break;
+	case enDirectMessageType_RequestResendPadData:
+		OnDirectMessageType_RequestResendPadData(pData, sizes[0]);
+		break;
+	}
+}
+
+void NetWork::joinRandomOrCreateRoomReturn(int localPlayerNr, const ExitGames::Common::Hashtable& gameProperties, const ExitGames::Common::Hashtable& playerProperties, int errorCode, const ExitGames::Common::JString& errorString)
+{
+	if (errorCode) {
+		// 部屋を作れなかった。
+		// ステータスを接続済みに戻して、再度部屋を作る。
+		m_state = State::enConnected;
+		return;
+	}
+	if (localPlayerNr == 1) {
+		// 部屋を作ったホスト。
+		m_playerType = enPlayerNetWorkType_host;
+	}
+	else {
+		// クライアントなので、すでにホストはいるはずなので、
+		// 他プレイヤーは部屋にジョイン済みにする。
+		m_otherPlayerState = enOtherPlayerNetWorkState_joinedRoom;
+		m_playerType = enPlayerNetWorkType_client;
+	}
+	// ルームに入った。
+	m_state = State::enJoined;
 }

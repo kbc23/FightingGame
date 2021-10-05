@@ -69,6 +69,9 @@
     <Filter Include="MyCode\Engine\NetWork">
       <UniqueIdentifier>{e6a664f2-2a73-4d63-8b0b-7faed1a774a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCode\Engine\Debug">
+      <UniqueIdentifier>{a98110f0-0e12-41d9-be01-c1e90309d101}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -255,7 +258,7 @@
       <Filter>MyCode\Engine\NetWork</Filter>
     </ClCompile>
     <ClCompile Include="my_debug.cpp">
-      <Filter>MyCode\Engine</Filter>
+      <Filter>MyCode\Engine\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -464,7 +467,7 @@
       <Filter>MyCode\Engine\NetWork</Filter>
     </ClInclude>
     <ClInclude Include="my_debug.h">
-      <Filter>MyCode\Engine</Filter>
+      <Filter>MyCode\Engine\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

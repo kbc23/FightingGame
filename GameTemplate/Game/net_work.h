@@ -20,6 +20,7 @@
 class NetWork : ExitGames::LoadBalancing::Listener
 {
 public:
+	~NetWork();
 	void Init(
 		void* pSendData,
 		int sendDataSize,
@@ -82,6 +83,71 @@ private:
 
 private:
 	/// <summary>
+	/// P2P通信でenDirectMessageType_PadDataのメッセージが送られてきたときの処理。
+	/// </summary>
+	void OnDirectMessageType_PadData(std::uint8_t* pData, int size);
+	/// <summary>
+	/// P2P通信でenDirectMessageType_RequestResendPadDataのメッセージが送られてきたときの処理。
+	/// </summary>
+	/// <param name="pData"></param>
+	/// <param name="size"></param>
+	void OnDirectMessageType_RequestResendPadData(std::uint8_t* pData, int size);
+	/// <summary>
+	/// ユーザーが部屋から抜けたときに呼ばれる処理。
+	/// </summary>
+	/// <param name="playerNr"></param>
+	/// <param name="isInactive"></param>
+	void leaveRoomEventAction(int playerNr, bool isInactive) override;
+	/// <summary>
+	/// photonサーバーへの接続リクエストを実行した場合に呼び出されるコールバック関数。
+	/// </summary>
+	/// <param name="errorCode">エラーコード</param>
+	/// <param name="errorString">エラー文字列</param>
+	/// <param name="region">リージョン</param>
+	/// <param name="cluster">クラスター</param>
+	void connectReturn(int errorCode, const ExitGames::Common::JString& errorString, const ExitGames::Common::JString& region, const ExitGames::Common::JString& cluster) override;
+	/// <summary>
+	/// opRaiseEvent()関数で送られたメッセージを受信した場合に、呼び出されるコールバック関数。
+	/// onRaiseEvent()関数はゲームサーバー経由でメッセージが送られます。
+	/// メッセージの通信プロトコルはTCPです。
+	/// </summary>
+	/// <param name="playerNr"></param>
+	/// <param name="eventCode"></param>
+	/// <param name="eventContentObj"></param>
+	void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContentObj) override;
+	/// <summary>
+	/// sendDirect()関数(P2P通信)で送られたメッセージを受信した場合に、呼び出されるコールバック関数。
+	/// メッセージの通信プロトコルはUDPです。
+	/// インゲーム中の高いレスポンスが必要な通信はsendDirect()関数を利用して、そのメッセージの受信の処理を
+	/// この関数の中に記述してください。
+	/// </summary>
+	/// <param name="msg"></param>
+	/// <param name="remoteID"></param>
+	/// <param name="relay"></param>
+	void onDirectMessage(const ExitGames::Common::Object& msg, int remoteID, bool relay) override;
+	/// <summary>
+	/// ルームを作成 or 入室したときに呼ばれる処理。
+	/// </summary>
+	/// <param name="localPlayerNr"></param>
+	/// <param name="gameProperties"></param>
+	/// <param name="playerProperties"></param>
+	/// <param name="errorCode"></param>
+	/// <param name="errorString"></param>
+	void joinRandomOrCreateRoomReturn(int localPlayerNr, const ExitGames::Common::Hashtable& gameProperties, const ExitGames::Common::Hashtable& playerProperties, int errorCode, const ExitGames::Common::JString& errorString) override;
+
+
+
+
+
+
+
+
+
+	/// <summary>
+	/// ゲーム開始可能になったことを他プレイヤーに通知。
+	/// </summary>
+	void SendPossibleGameStart();
+	/// <summary>
 	/// 他プレイヤーを初期化するための情報を送る。
 	/// </summary>
 	void SendInitDataOtherPlayer();
@@ -94,7 +160,6 @@ private:
 	/// </summary>
 	/// <param name="frameNo">再送リクエストを行うフレーム番号</param>
 	void SendRequestResendPadDataDirect(int frameNo);
-
 
 	/// <summary>
 	/// チェックサムを計算
@@ -143,6 +208,26 @@ public: //Get関数
 		// 対戦相手のプレイヤー番号は、自分の番号の反対。
 		return !GetPlayerNo();
 	}
+
+	/// <summary>
+	/// ゲームパッドの取得。
+	/// </summary>
+	/// <param name="no"></param>
+	/// <returns></returns>
+	GamePad& GetGamePad(int no)
+	{
+		return m_pad[no];
+	}
+
+	/// <summary>
+	/// ゲーム開始可能になったことを通知。
+	/// </summary>
+	void NotifyPossibleStartPlayGame()
+	{
+		m_isPossibleGameStart = true;
+		SendPossibleGameStart();
+	}
+
 
 
 
@@ -310,6 +395,9 @@ private: //data menber
 	bool m_isPossibleGameStart = false; // ゲーム開始可能フラグ
 
 
+	bool m_isHoge = false;
+
+
 
 	////////////////////////////////////////////////////////////
 	// その他
@@ -320,5 +408,7 @@ private: //data menber
 	int m_playFrameNo = 0; // 現在のゲーム進行フレーム番号
 	GamePad m_pad[2]; // ゲームパッド
 
+	int m_recieveDataSize = 0; // ゲーム開始のために受け取ったデータのサイズ
 
+	std::unique_ptr<std::uint8_t[]> m_recieveDataOnGameStart; // ゲーム開始のために受け取ったデータ
 };
