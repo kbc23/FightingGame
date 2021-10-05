@@ -71,4 +71,40 @@ private:
 	Stopwatch m_sw;
 	std::list<float> m_frameDeltaTimeQue;
 	float		m_frameDeltaTime = 1.0f / 60.0f;		//1フレームの経過時間。
+
+
+
+public:
+	/// <summary>
+	/// 1フレームの経過時間を固定化させます。
+	/// </summary>
+	/// <remark>
+	/// どんな時にこれを使うのか？
+	/// 例えば、完全同期型のオンラインマルチプレイなど。
+	/// 完全同期型のオンラインゲームでは、各クライアント間でゲームの進行速度を一致させる必要があります。
+	/// ですので、可変フレームレートでなく、固定フレームレートでゲームを作ります。
+	/// そのような場合にゲーム時間を固定化させてください。
+	/// </remark>
+	/// <param name="fixedFrameDeltaTime"></param>
+	void EnableFixedFrameDeltaTime(float fixedFrameDeltaTime)
+	{
+		m_fixedFrameDeltaTime = fixedFrameDeltaTime;
+		m_isFixedFrameDeltaTime = true;
+	}
+	/// <summary>
+	/// 1フレームの経過時間の固定化を解除します。
+	/// </summary>
+	void DisableFixedFrameDeltaTime()
+	{
+		m_isFixedFrameDeltaTime = false;
+	}
+
+
+private:
+	float		m_fixedFrameDeltaTime = 1.0f / 60.0f;	// 固定経過時間。
+	bool		m_isFixedFrameDeltaTime = false;		// 1フレームの経過時間を固定化する。
+
+
+
+
 };

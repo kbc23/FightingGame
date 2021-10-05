@@ -478,6 +478,9 @@
     <ClInclude Include="actor.h">
       <Filter>MyCode\MainProcessing\Character</Filter>
     </ClInclude>
+    <ClInclude Include="FPSLimitter.h">
+      <Filter>MyCode\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\shader\sampleDrawShadowMap.fx">

@@ -67,6 +67,11 @@ void NetWork::Init(
 
 
 	m_finishInit = true;
+
+	// 固定フレームの最大FPS30に設定する。
+	m_frameRateInfoBackup = g_engine->GetFrameRateInfo();
+	g_engine->SetFrameRateMode(TkEngine::EnFrameRateMode::enFrameRateMode_Fix, MAX_FPS);
+
 }
 
 void NetWork::Update()
@@ -239,6 +244,7 @@ void NetWork::Update_InGame()
 		else {
 			// データが来ていない or パケットロスト
 			// 再送リクエストを送る。
+			break;
 			SendRequestResendPadDataDirect(m_playFrameNo);
 			loopCount++;
 			Sleep(100);

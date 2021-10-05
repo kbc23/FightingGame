@@ -411,4 +411,8 @@ private: //data menber
 	int m_recieveDataSize = 0; // ゲーム開始のために受け取ったデータのサイズ
 
 	std::unique_ptr<std::uint8_t[]> m_recieveDataOnGameStart; // ゲーム開始のために受け取ったデータ
+
+
+	TkEngine::FrameRateInfo m_frameRateInfoBackup;								// フレームレートに関する情報のバックアップ。
+
 };

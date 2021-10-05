@@ -374,6 +374,7 @@
     <ClInclude Include="..\..\MiniEngine\tkFile\TksFile.h" />
     <ClInclude Include="..\..\MiniEngine\VertexBuffer.h" />
     <ClInclude Include="actor.h" />
+    <ClInclude Include="FPSLimitter.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="my_debug.h" />
     <ClInclude Include="model_render.h" />
