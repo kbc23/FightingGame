@@ -14,13 +14,13 @@ public:
     void Update() override final;
 
 
-private:
-	void NetWorkStart();
 
 
 
 
-
+	////////////////////////////////////////////////////////////
+	// ネットワーク関連の関数
+	////////////////////////////////////////////////////////////
 private:
 	/// <summary>
     /// すべてのプレイヤーがルームにジョインしたときに呼ばれる処理。
@@ -54,7 +54,7 @@ private: //enum
 
 
 private: //data menber
-	ModelRender* m_modelCharacter[2] = { nullptr };	//プレイヤーキャラクターのモデル
+	ModelRender* m_modelCharacter = { nullptr };	//プレイヤーキャラクターのモデル
     ModelRender* m_modelStage = nullptr;
     Shadow* m_shadowModelCharacter = nullptr;
 	Actor* m_actor[2];

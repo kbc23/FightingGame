@@ -53,6 +53,5 @@ void Shadow::Init(const char* filePath)
         g_vec3One
     );
 
-
     m_finishInit = true;
 }

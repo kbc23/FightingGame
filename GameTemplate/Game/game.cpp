@@ -6,14 +6,8 @@
 
 Game::Game()
 {
-    m_modelCharacter[0] = NewGO<ModelRender>(0);
-    m_modelCharacter[0]->Init("Assets/modelData/unityChan.tkm");
-    m_shadowModelCharacter = NewGO<Shadow>(0);
-    m_shadowModelCharacter->Init("Assets/modelData/unityChan.tkm");
-
-    //m_modelCharacter->SetPosition({ 0.0f,50.0f,0.0f });
-    //m_shadowModelCharacter->SetPosition({ 0.0f,50.0f,0.0f });
-
+    m_modelCharacter = NewGO<ModelRender>(0);
+	m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
 
     m_modelStage = NewGO<ModelRender>(0);
     m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
@@ -24,7 +18,7 @@ Game::Game()
 
 Game::~Game()
 {
-    DeleteGO(m_modelCharacter[0]);
+    DeleteGO(m_modelCharacter);
     DeleteGO(m_modelStage);
 }
 
@@ -103,7 +97,7 @@ void Game::Update()
 
 
 
-	//ここで上と下は別
+	// ここで上と下は別
 
     if (g_pad[0]->GetLStickXF() != 0.0f) {
         m_position.x -= g_pad[0]->GetLStickXF() * 5.0f;
@@ -121,43 +115,32 @@ void Game::Update()
 		m_rotation.SetRotationY(m_rotY);
     }
 
-    m_modelCharacter[0]->SetPosition(m_position);
-    m_shadowModelCharacter->SetPosition(m_position);
-
-    m_modelCharacter[0]->SetRotation(m_rotation);
-    m_shadowModelCharacter->SetRotation(m_rotation);
-}
-
-void Game::NetWorkStart()
-{
-
+    m_modelCharacter->SetPosition(m_position);
+    m_modelCharacter->SetRotation(m_rotation);
 }
 
 
 
-
-
-
-
-
-
+////////////////////////////////////////////////////////////
+// ネットワーク関連の関数
+////////////////////////////////////////////////////////////
 
 void Game::OnAllPlayerJoined(void* pData, int size)
 {
 	// すべてのプレイヤーが揃った。
-	//モデル関連のNewGO
+	// モデル関連のNewGO
 	m_actor[0] = NewGO<Actor>(0, "Actor");
 	m_actor[1] = NewGO<Actor>(0, "Actor");
 	const Vector3 pos[] = {
 		{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
-		{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標。
+		{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
 	};
 	float rotAngle[] = {
 		-90.0f,
 		90.0f
 	};
 
-	// 自分のプレイヤー番号を取得。
+	// 自分のプレイヤー番号を取得
 	int playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
 	int otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
 	// 自分
@@ -193,6 +176,7 @@ void Game::OnAllPlayerStartGame()
 	m_step = enStep_InGame;
 
 }
+
 void Game::OnError()
 {
 	MessageBoxA(nullptr, "通信エラーが起きました。", "エラー", MB_OK);

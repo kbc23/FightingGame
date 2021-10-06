@@ -9,22 +9,11 @@ public:
     void Update() override final;
     void ShadowRender(RenderContext& renderContext) override final;
 
-
     void Init(const char* filePath);
     
 
 
-
-
-    //static void CreateShadowMap();
-
-
 public: //GetŠÖ”
- /*   static RenderTarget& GetShadowMap()
-    {
-        return m_shadowMap;
-    }*/
-
     /**
      * @brief ˆÊ’u‚ğİ’è
      * @param vec ˆÊ’u
@@ -43,11 +32,18 @@ public: //GetŠÖ”
         m_rotation = rotation;
     }
 
+    /**
+     * @brief Šg‘å—¦‚ğİ’è
+     * @param scale Šg‘å—¦
+    */
+    void SetScale(const Vector3& scale)
+    {
+        m_scale = scale;
+    }
+
 
 private: //data menber
     Model m_shadowModel;
-
-    //static RenderTarget m_shadowMap;
 
     bool m_finishInit = false; //‰Šú‰»‚ªI‚í‚Á‚½‚©
 

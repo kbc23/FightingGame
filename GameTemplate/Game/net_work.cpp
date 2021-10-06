@@ -244,7 +244,6 @@ void NetWork::Update_InGame()
 		else {
 			// データが来ていない or パケットロスト
 			// 再送リクエストを送る。
-			break;
 			SendRequestResendPadDataDirect(m_playFrameNo);
 			loopCount++;
 			Sleep(100);

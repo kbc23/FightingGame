@@ -1,7 +1,7 @@
 #pragma once
 #include <Model.h>
 
-class Shadow;
+#include "shadow.h"
 
 //#include "constant.h"
 
@@ -79,7 +79,7 @@ public:
 	 * @param animationClip アニメーションクリップ
 	 * @param maxAnimationClipNum アニメーションクリップの最大数
 	*/
-	void Init(const char* filePath, bool flagShadowReceiver = false,
+	void Init(const char* filePath, bool flagShadowReceiver = false, bool flagShadow = false,
 		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
 		AnimationClip* animationClip = nullptr,
 		int maxAnimationClipNum = 0
@@ -93,8 +93,8 @@ private:
 	 * @param filePath tkmファイルのファイルパス
 	 * @param  モデルの上方向
 	*/
-	void InitModel(const char* filePath, bool flagShadowReceiver = false,
-		modelUpAxis::EnModelUpAxis = modelUpAxis::enModelUpAxisZ
+	void InitModel(const char* filePath, bool flagShadowReceiver, bool flagShadow,
+		modelUpAxis::EnModelUpAxis
 	);
 
 	/**
@@ -206,6 +206,10 @@ public: //Set関数
 	void SetPosition(const Vector3& position)
 	{
 		m_position = position;
+
+		if (true == m_flagShadow) {
+			m_shadowModel->SetPosition(m_position);
+		}
 	}
 
 	/**
@@ -241,6 +245,10 @@ public: //Set関数
 	void SetRotation(const Quaternion& rotation)
 	{
 		m_rotation = rotation;
+
+		if (true == m_flagShadow) {
+			m_shadowModel->SetRotation(m_rotation);
+		}
 	}
 
 	/**
@@ -258,6 +266,10 @@ public: //Set関数
 	void SetScale(const Vector3& scale)
 	{
 		m_scale = scale;
+
+		if (true == m_flagShadow) {
+			m_shadowModel->SetScale(m_scale);
+		}
 	}
 
 
