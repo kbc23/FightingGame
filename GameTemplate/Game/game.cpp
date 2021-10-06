@@ -6,8 +6,8 @@
 
 Game::Game()
 {
-    m_modelCharacter = NewGO<ModelRender>(0);
-	m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
+	//m_modelCharacter = NewGO<ModelRender>(0);
+	//m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
 
     m_modelStage = NewGO<ModelRender>(0);
     m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
@@ -99,24 +99,24 @@ void Game::Update()
 
 	// ‚±‚±‚Åã‚Æ‰º‚Í•Ê
 
-    if (g_pad[0]->GetLStickXF() != 0.0f) {
-        m_position.x -= g_pad[0]->GetLStickXF() * 5.0f;
-    }
-    if (g_pad[0]->GetLStickYF() != 0.0f) {
-        m_position.z -= g_pad[0]->GetLStickYF() * 5.0f;
-    }
+  //  if (g_pad[0]->GetLStickXF() != 0.0f) {
+  //      m_position.x -= g_pad[0]->GetLStickXF() * 5.0f;
+  //  }
+  //  if (g_pad[0]->GetLStickYF() != 0.0f) {
+  //      m_position.z -= g_pad[0]->GetLStickYF() * 5.0f;
+  //  }
 
-    if (g_pad[0]->IsPress(enButtonA) == true) {
-		m_rotY += 0.01f;
-		m_rotation.SetRotationY(m_rotY);
-    }
-    if (g_pad[0]->IsPress(enButtonB) == true) {
-		m_rotY -= 0.01f;
-		m_rotation.SetRotationY(m_rotY);
-    }
+  //  if (g_pad[0]->IsPress(enButtonA) == true) {
+		//m_rotY += 0.01f;
+		//m_rotation.SetRotationY(m_rotY);
+  //  }
+  //  if (g_pad[0]->IsPress(enButtonB) == true) {
+		//m_rotY -= 0.01f;
+		//m_rotation.SetRotationY(m_rotY);
+  //  }
 
-    m_modelCharacter->SetPosition(m_position);
-    m_modelCharacter->SetRotation(m_rotation);
+  //  m_modelCharacter->SetPosition(m_position);
+  //  m_modelCharacter->SetRotation(m_rotation);
 }
 
 
