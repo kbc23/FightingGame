@@ -16,8 +16,7 @@ namespace
 
 Actor::Actor()
 {
-    m_modelCharacter = NewGO<ModelRender>(0);
-    m_modelCharacter->Init("Assets/modelData/unityChan.tkm");
+
 }
 
 Actor::~Actor()
