@@ -30,7 +30,7 @@ public:
     void CreateShadowMap();
 
 
-public: //Get関数
+public: // Get関数
 	RenderTarget& GetShadowMap()
 	{
 		return m_shadowMap;
@@ -46,8 +46,8 @@ public: //Get関数
 	}
 
 
-private: //data menber
-    static ShadowMap* m_instance;		//唯一のインスタンスのアドレスを記録する変数。
+private: // data menber
+    static ShadowMap* m_instance;		//唯一のインスタンスのアドレスを記録する変数
 
 	RenderTarget m_shadowMap;
 };

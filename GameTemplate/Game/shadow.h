@@ -42,13 +42,13 @@ public: //GetŠÖ”
     }
 
 
-private: //data menber
+private: // data menber
     Model m_shadowModel;
 
-    bool m_finishInit = false; //‰Šú‰»‚ªI‚í‚Á‚½‚©
+    bool m_finishInit = false; // ‰Šú‰»‚ªI‚í‚Á‚½‚©
 
-    Vector3 m_position = g_vec3Zero;			//ˆÊ’u
-    Quaternion m_rotation = g_quatIdentity;		//‰ñ“]
-    Vector3 m_scale = g_vec3One;				//Šg‘å
+    Vector3 m_position = g_vec3Zero;			// ˆÊ’u
+    Quaternion m_rotation = g_quatIdentity;		// ‰ñ“]
+    Vector3 m_scale = g_vec3One;				// Šg‘å
 
 };

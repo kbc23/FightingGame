@@ -39,7 +39,7 @@ public:
 
 
 private: //data menber
-	static ShadowLightCamera* m_instance;		//唯一のインスタンスのアドレスを記録する変数。
+	static ShadowLightCamera* m_instance;		// 唯一のインスタンスのアドレスを記録する変数
 
 	Camera m_shadowLightCamera;
 };

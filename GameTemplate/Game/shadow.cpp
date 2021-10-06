@@ -19,29 +19,29 @@ bool Shadow::Start()
 
 void Shadow::Update()
 {
-    //未初期化時
+    // 未初期化時
     if (m_finishInit == false) {
         return;
     }
 
-    //モデルの座標更新
+    // モデルの座標更新
     m_shadowModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 }
 
 void Shadow::ShadowRender(RenderContext& renderContext)
 {
-    //未初期化時
+    // 未初期化時
     if (m_finishInit == false) {
         return;
     }
 
-    //モデルの描画
+    // モデルの描画
     m_shadowModel.Draw(renderContext, ShadowLightCamera::GetInstance()->GetShadowLightCamera());
 }
 
 void Shadow::Init(const char* filePath)
 {
-    // step-3 シャドウマップ描画用のモデルを用意する
+    // シャドウマップ描画用のモデルを用意する
     ModelInitData ShadowModelInitData;
     ShadowModelInitData.m_fxFilePath = "Assets/shader/sampleDrawShadowMap.fx";
     ShadowModelInitData.m_tkmFilePath = filePath;

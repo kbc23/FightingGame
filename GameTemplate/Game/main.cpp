@@ -42,7 +42,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		//レンダリング開始。
 		g_engine->BeginFrame();
 
-		GameObjectManager::GetInstance()->ExecuteUpdate(); //毎フレームのUpdate	
+		GameObjectManager::GetInstance()->ExecuteUpdate(); // 毎フレームのUpdate
+
+		//////////////////////////////////////
+		//ここから絵を描くコードを記述する。
+		//////////////////////////////////////
 
 		// シャドウマップにレンダリング
 		// レンダリングターゲットをシャドウマップに変更する
@@ -50,6 +54,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		renderContext.SetRenderTargetAndViewport(ShadowMap::GetInstance()->GetShadowMap());
 		renderContext.ClearRenderTargetView(ShadowMap::GetInstance()->GetShadowMap());
 
+		// 影のレンダリング
 		GameObjectManager::GetInstance()->ExecuteShadowRender(renderContext);
 
 		// 書き込み完了待ち
@@ -63,10 +68,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		);
 		renderContext.SetViewportAndScissor(g_graphicsEngine->GetFrameBufferViewport());
 
-		//////////////////////////////////////
-		//ここから絵を描くコードを記述する。
-		//////////////////////////////////////
-
+		// モデルのレンダリング
 		GameObjectManager::GetInstance()->ExecuteRender(renderContext);
 		
 		//////////////////////////////////////
