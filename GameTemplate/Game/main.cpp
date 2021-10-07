@@ -29,7 +29,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	ShadowLightCamera::GetInstance()->CreateShadowLightCamera();
 
-	Game* game = NewGO<Game>(0);
+	Game* game = NewGO<Game>(igo::enPriority::normal, igo::className::GAME);
 	
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
@@ -76,6 +76,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		//////////////////////////////////////
 		g_engine->EndFrame();
 	}
+
+	DeleteGO(game);
+
 	//ゲームオブジェクトマネージャーを削除。
 	GameObjectManager::DeleteInstance();
 

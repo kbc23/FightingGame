@@ -49,6 +49,8 @@ namespace myDebug
 			std::abort();
 		}
 	}
+
+	bool DEBUG_soloMode = false;
 }
 
 #ifdef K2_DEBUG

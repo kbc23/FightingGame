@@ -9,7 +9,7 @@ Game::Game()
 	//m_modelCharacter = NewGO<ModelRender>(0);
 	//m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
 
-    m_modelStage = NewGO<ModelRender>(0);
+    m_modelStage = NewGO<ModelRender>(igo::enPriority::model);
     m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
 
     //g_camera3D->SetTarget({ 0.0f,0.0f,0.0f });
@@ -29,11 +29,19 @@ bool Game::Start()
 
 void Game::Update()
 {
+	//１人でデバッグする
+	SoloMode();
+
+	return;
+
+
+
+
 	if (m_onlineTwoPlayerMatchEngine) {
 		m_onlineTwoPlayerMatchEngine->Update();
 	}
 	switch (m_step) {
-	case enStep_InitNetWork: {
+	case EnStep::enStep_InitNetWork: {
 
 		//if (g_pad[0]->IsPress(enButtonA)) {
 		//	m_charaNo = 0;
@@ -53,17 +61,17 @@ void Game::Update()
 		);
 		// すべてのプレイヤーが揃うのを待つ。
 		//m_fontRender.SetText(L"WaitAllPlayerJoined!!");
-		m_step = enStep_WaitAllPlayerJoined;
+		m_step = EnStep::enStep_WaitAllPlayerJoined;
 		//}
 	}break;
 		break;
-	case enStep_WaitAllPlayerJoined:
+	case EnStep::enStep_WaitAllPlayerJoined:
 		// 全てのプレイヤーがルームにジョインするのを待っている。
 		break;
-	case enStep_WaitAllPlayerStartGame:
+	case EnStep::enStep_WaitAllPlayerStartGame:
 		// 全てのプレイヤーがゲーム開始可能になるのを待っている。
 		break;
-	case enStep_InGame: {
+	case EnStep::enStep_InGame: {
 		// インゲーム
 		//for (int i = 0; i < 2; i++) {
 		//	const Vector3& actorPos = m_actor[i]->GetPosition();
@@ -82,41 +90,11 @@ void Game::Update()
 		//	ReturnCharacterSelect();
 		//}
 	}break;
-	case enStep_Error:
+	case EnStep::enStep_Error:
 		//ReturnCharacterSelect();
-		m_step = enStep_InitNetWork;
+		m_step = EnStep::enStep_InitNetWork;
 		break;
 	}
-
-
-
-
-
-
-
-
-
-
-	// ここで上と下は別
-
-  //  if (g_pad[0]->GetLStickXF() != 0.0f) {
-  //      m_position.x -= g_pad[0]->GetLStickXF() * 5.0f;
-  //  }
-  //  if (g_pad[0]->GetLStickYF() != 0.0f) {
-  //      m_position.z -= g_pad[0]->GetLStickYF() * 5.0f;
-  //  }
-
-  //  if (g_pad[0]->IsPress(enButtonA) == true) {
-		//m_rotY += 0.01f;
-		//m_rotation.SetRotationY(m_rotY);
-  //  }
-  //  if (g_pad[0]->IsPress(enButtonB) == true) {
-		//m_rotY -= 0.01f;
-		//m_rotation.SetRotationY(m_rotY);
-  //  }
-
-  //  m_modelCharacter->SetPosition(m_position);
-  //  m_modelCharacter->SetRotation(m_rotation);
 }
 
 
@@ -129,8 +107,8 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 {
 	// すべてのプレイヤーが揃った。
 	// モデル関連のNewGO
-	m_actor[0] = NewGO<Actor>(0, "Actor");
-	m_actor[1] = NewGO<Actor>(0, "Actor");
+	m_actor[0] = NewGO<Actor>(igo::enPriority::normal, igo::className::ACTOR);
+	m_actor[1] = NewGO<Actor>(igo::enPriority::normal, igo::className::ACTOR);
 	const Vector3 pos[] = {
 		{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
 		{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
@@ -164,7 +142,7 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 	// ロードが終わってゲーム開始可能になったことを通知する。
 	m_onlineTwoPlayerMatchEngine->NotifyPossibleStartPlayGame();
 	// ほかのプレイヤーがゲーム開始可能になるまで待つ。
-	m_step = enStep_WaitAllPlayerStartGame;
+	m_step = EnStep::enStep_WaitAllPlayerStartGame;
 
 	//m_fontRender.SetText(L"WaitAllPlayerStartGame!!");
 }
@@ -173,12 +151,38 @@ void Game::OnAllPlayerStartGame()
 {
 	// すべてのプレイヤーがゲーム開始可能になったので、ゲームスタート！
 	//m_fontRender.SetText(L"InGame!!");
-	m_step = enStep_InGame;
+	m_step = EnStep::enStep_InGame;
 
 }
 
 void Game::OnError()
 {
 	MessageBoxA(nullptr, "通信エラーが起きました。", "エラー", MB_OK);
-	m_step = enStep_Error;
+	m_step = EnStep::enStep_Error;
+}
+
+////////////////////////////////////////////////////////////
+// １人でデバッグする用
+////////////////////////////////////////////////////////////
+
+void Game::SoloMode()
+{
+  if (g_pad[0]->GetLStickXF() != 0.0f) {
+      m_position.x -= g_pad[0]->GetLStickXF() * 5.0f;
+  }
+  if (g_pad[0]->GetLStickYF() != 0.0f) {
+      m_position.z -= g_pad[0]->GetLStickYF() * 5.0f;
+  }
+
+  if (g_pad[0]->IsPress(enButtonA) == true) {
+	  m_rotY += 0.01f;
+	  m_rotation.SetRotationY(m_rotY);
+  }
+  if (g_pad[0]->IsPress(enButtonB) == true) {
+	  m_rotY -= 0.01f;
+	  m_rotation.SetRotationY(m_rotY);
+  }
+
+  m_modelCharacter->SetPosition(m_position);
+  m_modelCharacter->SetRotation(m_rotation);
 }

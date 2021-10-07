@@ -142,7 +142,7 @@ void ModelRender::InitModel(const char* filePath,
 		m_shadowModel = NewGO<Shadow>(0);
 		m_shadowModel->Init(filePath);
 
-		m_flagShadow = flagShadow;
+		m_flagShadow = true;
 	}
 
 	// スケルトンを指定する。

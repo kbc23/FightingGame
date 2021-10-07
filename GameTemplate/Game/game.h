@@ -14,10 +14,6 @@ public:
     void Update() override final;
 
 
-
-
-
-
 	////////////////////////////////////////////////////////////
 	// ネットワーク関連の関数
 	////////////////////////////////////////////////////////////
@@ -38,9 +34,18 @@ private:
 	void OnError();
 
 
+	////////////////////////////////////////////////////////////
+	// １人でデバッグする用
+	////////////////////////////////////////////////////////////
+private:
+	/**
+	 * @brief ネットに繋がず、１人でプレイする（デバッグ用）
+	*/
+	void SoloMode();
+
 
 private: //enum
-	enum EnStep {
+	enum class EnStep {
 		enStep_InitNetWork,				// ネットワークの初期化をおこなう。
 		enStep_WaitAllPlayerJoined,		// すべてのプレイヤーが揃うまで待つ。
 		enStep_WaitAllPlayerStartGame,	// すべてのプレイヤーがゲーム開始するのを待つ。
@@ -48,29 +53,34 @@ private: //enum
 		enStep_Error,					// エラー。
 	};
 
-	EnStep m_step = enStep_InitNetWork;
+	EnStep m_step = EnStep::enStep_InitNetWork;
+
+	
 
 
 
 
 private: //data menber
-	ModelRender* m_modelCharacter = { nullptr };	//プレイヤーキャラクターのモデル
-    ModelRender* m_modelStage = nullptr;
-    Shadow* m_shadowModelCharacter = nullptr;
-	Actor* m_actor[2];
+	////////////////////////////////////////////////////////////
+	// クラスのオブジェクト
+	////////////////////////////////////////////////////////////
+	
+	ModelRender* m_modelCharacter = { nullptr }; // キャラクターのモデル
+    ModelRender* m_modelStage = nullptr; // ステージのモデル
+    Shadow* m_shadowModelCharacter = nullptr; // キャラクターの影
+	Actor* m_actor[2]; // キャラクター
+	NetWork* m_onlineTwoPlayerMatchEngine = nullptr; // 完全同期二人対戦用エンジン
 
-	float m_rotY = 0.0f;
-
+	////////////////////////////////////////////////////////////
+	// その他
+	////////////////////////////////////////////////////////////
 
     Vector3 m_position = { 0.0f,0.0f,0.0f };
-    Quaternion m_rotation = g_quatIdentity;		//回転
-
-
-
+    Quaternion m_rotation = g_quatIdentity; // 回転
+	float m_rotY = 0.0f;
 
 	int m_charaNo = 0;
 
 
-    NetWork* m_onlineTwoPlayerMatchEngine = nullptr; // 完全同期二人対戦用エンジン
 
 };

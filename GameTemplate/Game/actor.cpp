@@ -39,9 +39,7 @@ void Actor::Init(
 {
     m_gamePad = &gamePad;
 
-
-
-    m_modelCharacter = NewGO<ModelRender>(0);
+    m_modelCharacter = NewGO<ModelRender>(igo::enPriority::model);
     m_modelCharacter->Init(filePath);
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
@@ -66,14 +64,53 @@ void Actor::Update()
         m_rotation.SetRotationY(m_rotY);
     }
 
-    m_modelCharacter->SetPosition(m_position);
-    //m_shadowModelCharacter->SetPosition(m_position);
-
-    m_modelCharacter->SetRotation(m_rotation);
-    //m_shadowModelCharacter->SetRotation(m_rotation);
+    SetModelStatus();
 }
 
 void Actor::Controller()
 {
+    if (false == m_flagOperation) {
+        return;
+    }
 
+    // ƒvƒŒƒCƒ„[‚ÌˆÚ“®
+    if (m_gamePad->GetLStickXF() != 0.0f) {
+        m_position.x -= m_gamePad->GetLStickXF() * 5.0f;
+    }
+    if (m_gamePad->GetLStickYF() != 0.0f) {
+        m_position.z -= m_gamePad->GetLStickYF() * 5.0f;
+    }
+
+
+
+    // Aƒ{ƒ^ƒ“: ’ÊíUŒ‚
+    if (m_gamePad->IsPress(enButtonA) == true) {
+        // Aƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚Æ‚«‚Ìˆ—
+
+    }
+    // Bƒ{ƒ^ƒ“: “ÁŽêUŒ‚
+    if (m_gamePad->IsPress(enButtonB) == true) {
+        // Bƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚Æ‚«‚Ìˆ—
+
+    }
+    //?: •KŽE‹Z
+    if (true) {
+
+    }
+    // ?: ‰ñ”ð
+    if (true) {
+
+    }
+    // ?: ƒK[ƒh
+    if (true) {
+
+    }
+}
+
+void Actor::SetModelStatus()
+{
+    // ˆÊ’uE‰ñ“]EŠg‘åî•ñ‚ð“n‚·
+    m_modelCharacter->SetPosition(m_position);
+    m_modelCharacter->SetRotation(m_rotation);
+    m_modelCharacter->SetScale(m_scale);
 }

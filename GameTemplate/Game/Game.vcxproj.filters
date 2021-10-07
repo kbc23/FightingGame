@@ -266,6 +266,9 @@
     <ClCompile Include="actor.cpp">
       <Filter>MyCode\MainProcessing\Character</Filter>
     </ClCompile>
+    <ClCompile Include="Debug_game.cpp">
+      <Filter>MyCode\Engine\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -480,6 +483,12 @@
     </ClInclude>
     <ClInclude Include="FPSLimitter.h">
       <Filter>MyCode\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="constant.h">
+      <Filter>MyCode\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug_game.h">
+      <Filter>MyCode\Engine\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

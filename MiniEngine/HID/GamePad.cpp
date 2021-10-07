@@ -81,85 +81,179 @@ void GamePad::BeginFrame()
 }
 void GamePad::UpdateCore(XINPUT_STATE xInputState)
 {
-	for (const VirtualPadToXPad& vPadToXPad : vPadToXPadTable) {
-		if (xInputState.Gamepad.wButtons & vPadToXPad.xButton) {
-			m_trigger[vPadToXPad.vButton] = 1 ^ m_press[vPadToXPad.vButton];
-			m_press[vPadToXPad.vButton] = 1;
-		}
-		else {
-			m_trigger[vPadToXPad.vButton] = 0;
-			m_press[vPadToXPad.vButton] = 0;
-		}
-	}
-	//左トリガー。
-	if (xInputState.Gamepad.bLeftTrigger != 0) {
-		m_trigger[enButtonLB2] = 1 ^ m_press[enButtonLB2];
-		m_press[enButtonLB2] = 1;
-	}
-	else {
-		m_trigger[enButtonLB2] = 0;
-		m_press[enButtonLB2] = 0;
-	}
-	//右トリガー
-	if (xInputState.Gamepad.bRightTrigger != 0) {
-		m_trigger[enButtonRB2] = 1 ^ m_press[enButtonRB2];
-		m_press[enButtonRB2] = 1;
-	}
-	else {
-		m_trigger[enButtonRB2] = 0;
-		m_press[enButtonRB2] = 0;
-	}
-	if ((xInputState.Gamepad.sThumbLX < INPUT_DEADZONE &&
-		xInputState.Gamepad.sThumbLX > -INPUT_DEADZONE) &&
-		(xInputState.Gamepad.sThumbLY < INPUT_DEADZONE &&
-			xInputState.Gamepad.sThumbLY > -INPUT_DEADZONE))
-	{
-		xInputState.Gamepad.sThumbLX = 0;
-		xInputState.Gamepad.sThumbLY = 0;
-		m_lStickX = 0.0f;
-		m_lStickY = 0.0f;
-	}
-	else {
-		//左スティックの入力量。
-		if (xInputState.Gamepad.sThumbLX > 0) {
-			m_lStickX = static_cast<float>(xInputState.Gamepad.sThumbLX) / SHRT_MAX;
-		}
-		else {
-			m_lStickX = static_cast<float>(xInputState.Gamepad.sThumbLX) / -SHRT_MIN;
-		}
-		if (xInputState.Gamepad.sThumbLY > 0) {
-			m_lStickY = static_cast<float>(xInputState.Gamepad.sThumbLY) / SHRT_MAX;
-		}
-		else {
-			m_lStickY = static_cast<float>(xInputState.Gamepad.sThumbLY) / -SHRT_MIN;
-		}
-	}
+	// code add start
+	//アクティブパッドを探す。
+	//DWORD result = ERROR_DEVICE_NOT_CONNECTED;
+	//for (int i = m_padNo; i < MAX_PAD; i++) {
+	//	if (m_padStates[i] == EnXInputPadState::Undef) {
+	//		//このパッドは未調査。
+	//		result = XInputGetState(i, &m_state.state);
+	//		if (result == ERROR_SUCCESS) {
+	//			//接続できた。
+	//			m_padStates[i] = EnXInputPadState::Connect;
+	//			break;
+	//		}
+	//		else {
+	//			//繋がっていない。
+	//			//次のパッドを調べる。
+	//			m_padStates[i] = EnXInputPadState::Disconnect;
+	//		}
+	//	}
+	//}
 
-	if ((xInputState.Gamepad.sThumbRX < INPUT_DEADZONE &&
-		xInputState.Gamepad.sThumbRX > -INPUT_DEADZONE) &&
-		(xInputState.Gamepad.sThumbRY < INPUT_DEADZONE &&
-			xInputState.Gamepad.sThumbRY > -INPUT_DEADZONE))
-	{
-		xInputState.Gamepad.sThumbRX = 0;
-		xInputState.Gamepad.sThumbRY = 0;
-		m_rStickX = 0.0f;
-		m_rStickY = 0.0f;
-	}
-	else {
-		//右スティックの入力量。
-		if (xInputState.Gamepad.sThumbRX > 0) {
-			m_rStickX = static_cast<float>(xInputState.Gamepad.sThumbRX) / SHRT_MAX;
+	//if (result == ERROR_SUCCESS) {
+		// code add end
+		for (const VirtualPadToXPad& vPadToXPad : vPadToXPadTable) {
+			if (xInputState.Gamepad.wButtons & vPadToXPad.xButton) {
+				m_trigger[vPadToXPad.vButton] = 1 ^ m_press[vPadToXPad.vButton];
+				m_press[vPadToXPad.vButton] = 1;
+			}
+			else {
+				m_trigger[vPadToXPad.vButton] = 0;
+				m_press[vPadToXPad.vButton] = 0;
+			}
+		}
+		//左トリガー。
+		if (xInputState.Gamepad.bLeftTrigger != 0) {
+			m_trigger[enButtonLB2] = 1 ^ m_press[enButtonLB2];
+			m_press[enButtonLB2] = 1;
 		}
 		else {
-			m_rStickX = static_cast<float>(xInputState.Gamepad.sThumbRX) / -SHRT_MIN;
+			m_trigger[enButtonLB2] = 0;
+			m_press[enButtonLB2] = 0;
 		}
-		if (xInputState.Gamepad.sThumbRY > 0) {
-			m_rStickY = static_cast<float>(xInputState.Gamepad.sThumbRY) / SHRT_MAX;
+		//右トリガー
+		if (xInputState.Gamepad.bRightTrigger != 0) {
+			m_trigger[enButtonRB2] = 1 ^ m_press[enButtonRB2];
+			m_press[enButtonRB2] = 1;
 		}
 		else {
-			m_rStickY = static_cast<float>(xInputState.Gamepad.sThumbRY) / -SHRT_MIN;
+			m_trigger[enButtonRB2] = 0;
+			m_press[enButtonRB2] = 0;
 		}
-	}
+		if ((xInputState.Gamepad.sThumbLX < INPUT_DEADZONE &&
+			xInputState.Gamepad.sThumbLX > -INPUT_DEADZONE) &&
+			(xInputState.Gamepad.sThumbLY < INPUT_DEADZONE &&
+				xInputState.Gamepad.sThumbLY > -INPUT_DEADZONE))
+		{
+			xInputState.Gamepad.sThumbLX = 0;
+			xInputState.Gamepad.sThumbLY = 0;
+			m_lStickX = 0.0f;
+			m_lStickY = 0.0f;
+		}
+		else {
+			//左スティックの入力量。
+			if (xInputState.Gamepad.sThumbLX > 0) {
+				m_lStickX = static_cast<float>(xInputState.Gamepad.sThumbLX) / SHRT_MAX;
+			}
+			else {
+				m_lStickX = static_cast<float>(xInputState.Gamepad.sThumbLX) / -SHRT_MIN;
+			}
+			if (xInputState.Gamepad.sThumbLY > 0) {
+				m_lStickY = static_cast<float>(xInputState.Gamepad.sThumbLY) / SHRT_MAX;
+			}
+			else {
+				m_lStickY = static_cast<float>(xInputState.Gamepad.sThumbLY) / -SHRT_MIN;
+			}
+		}
+
+		if ((xInputState.Gamepad.sThumbRX < INPUT_DEADZONE &&
+			xInputState.Gamepad.sThumbRX > -INPUT_DEADZONE) &&
+			(xInputState.Gamepad.sThumbRY < INPUT_DEADZONE &&
+				xInputState.Gamepad.sThumbRY > -INPUT_DEADZONE))
+		{
+			xInputState.Gamepad.sThumbRX = 0;
+			xInputState.Gamepad.sThumbRY = 0;
+			m_rStickX = 0.0f;
+			m_rStickY = 0.0f;
+		}
+		else {
+			//右スティックの入力量。
+			if (xInputState.Gamepad.sThumbRX > 0) {
+				m_rStickX = static_cast<float>(xInputState.Gamepad.sThumbRX) / SHRT_MAX;
+			}
+			else {
+				m_rStickX = static_cast<float>(xInputState.Gamepad.sThumbRX) / -SHRT_MIN;
+			}
+			if (xInputState.Gamepad.sThumbRY > 0) {
+				m_rStickY = static_cast<float>(xInputState.Gamepad.sThumbRY) / SHRT_MAX;
+			}
+			else {
+				m_rStickY = static_cast<float>(xInputState.Gamepad.sThumbRY) / -SHRT_MIN;
+			}
+		}
+		// code add start
+	//}
+	//else {
+	//	//接続されていない場合はキーボードの入力でエミュレートする。
+	//	if (m_state.bConnected) {
+	//		//未接続になった。
+	//		memset(&m_state, 0, sizeof(m_state));
+	//		memset(m_trigger, 0, sizeof(m_trigger));
+	//		memset(m_press, 0, sizeof(m_press));
+	//	}
+	//	m_lStickX = 0.0f;
+	//	m_lStickY = 0.0f;
+	//	m_rStickX = 0.0f;
+	//	m_rStickY = 0.0f;
+
+	//	if (GetAsyncKeyState(VK_LEFT)) {
+	//		m_rStickX = -1.0f;
+	//	}
+	//	else if (GetAsyncKeyState(VK_RIGHT)) {
+	//		m_rStickX = 1.0f;
+	//	}
+	//	if (GetAsyncKeyState(VK_UP)) {
+	//		m_rStickY = 1.0f;
+	//	}
+	//	else if (GetAsyncKeyState(VK_DOWN)) {
+	//		m_rStickY = -1.0f;
+	//	}
+	//	//スティックの入力量を正規化。
+	//	float t = fabsf(m_rStickX) + fabsf(m_rStickY);
+	//	if (t > 0.0f) {
+	//		m_rStickX /= t;
+	//		m_rStickY /= t;
+	//	}
+
+	//	if (GetAsyncKeyState('A')) {
+	//		m_lStickX = -1.0f;
+	//	}
+	//	else if (GetAsyncKeyState('D')) {
+	//		m_lStickX = 1.0f;
+	//	}
+	//	if (GetAsyncKeyState('W')) {
+	//		m_lStickY = 1.0f;
+	//	}
+	//	else if (GetAsyncKeyState('S')) {
+	//		m_lStickY = -1.0f;
+	//	}
+	//	//スティックの入力量を正規化。
+	//	t = fabsf(m_lStickX) + fabsf(m_lStickY);
+	//	if (t > 0.0f) {
+	//		m_lStickX /= t;
+	//		m_lStickY /= t;
+	//	}
+
+	//	for (const VirtualPadToKeyboard& vPadToKeyboard : vPadToKeyboardTable) {
+	//		if (GetAsyncKeyState(vPadToKeyboard.keyCoord1)) {
+	//			//優先順位１番目のキー。
+	//			m_trigger[vPadToKeyboard.vButton] = 1 ^ m_press[vPadToKeyboard.vButton];
+	//			m_press[vPadToKeyboard.vButton] = 1;
+	//		}
+	//		else if (vPadToKeyboard.keyCoord2 != 0xFFFFFFFF
+	//			&& GetAsyncKeyState(vPadToKeyboard.keyCoord2)) {
+	//			//優先順位２番目のキー。
+	//			m_trigger[vPadToKeyboard.vButton] = 1 ^ m_press[vPadToKeyboard.vButton];
+	//			m_press[vPadToKeyboard.vButton] = 1;
+	//		}
+	//		else {
+	//			m_trigger[vPadToKeyboard.vButton] = 0;
+	//			m_press[vPadToKeyboard.vButton] = 0;
+	//		}
+	//	}
+	//}
+	// code add end
 }
 void GamePad::Update(const XINPUT_STATE& xInputState)
 {
