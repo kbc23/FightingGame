@@ -167,7 +167,7 @@ namespace igo
 	// —Dæ“x
 	////////////////////////////////////////////////////////////
 
-	enum enPriority
+	const enum EnPriority
 	{
 		normal,
 		background,

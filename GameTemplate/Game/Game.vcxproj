@@ -293,7 +293,6 @@
     <ClCompile Include="..\..\MiniEngine\tkFile\TksFile.cpp" />
     <ClCompile Include="..\..\MiniEngine\VertexBuffer.cpp" />
     <ClCompile Include="actor.cpp" />
-    <ClCompile Include="Debug_game.cpp" />
     <ClCompile Include="my_debug.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -376,7 +375,6 @@
     <ClInclude Include="..\..\MiniEngine\VertexBuffer.h" />
     <ClInclude Include="actor.h" />
     <ClInclude Include="constant.h" />
-    <ClInclude Include="Debug_game.h" />
     <ClInclude Include="FPSLimitter.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="my_debug.h" />

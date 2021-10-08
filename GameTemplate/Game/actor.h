@@ -21,6 +21,8 @@ public:
         Actor* pOtherActor
     );
 
+    void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos);
+
 
 
 private:
@@ -43,7 +45,7 @@ private: // constant
 
 private: // data menber
     ////////////////////////////////////////////////////////////
-    // クラスのオブジェクト
+    // クラスのインスタンス
     ////////////////////////////////////////////////////////////
 
     ModelRender* m_modelCharacter = { nullptr }; // プレイヤーキャラクターのモデル

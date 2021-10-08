@@ -115,7 +115,7 @@ void NetWork::Update()
 
 void NetWork::Update_Initialized()
 {
-	myDebug::Log("Update_Initialized()\n");
+	nsDebug::Log("Update_Initialized()\n");
 
 	ExitGames::LoadBalancing::ConnectOptions connectOption;
 	connectOption.setAuthenticationValues(ExitGames::LoadBalancing::AuthenticationValues().setUserID(ExitGames::Common::JString() + GETTIMEMS())).setUsername(PLAYER_NAME + GETTIMEMS());
@@ -126,7 +126,7 @@ void NetWork::Update_Initialized()
 
 void NetWork::Update_Connected()
 {
-	myDebug::Log("Update_Connected()\n");
+	nsDebug::Log("Update_Connected()\n");
 
 	// サーバーに接続できたので、部屋を作る。
 	ExitGames::LoadBalancing::RoomOptions roomOption;
@@ -150,7 +150,7 @@ void NetWork::Update_Connected()
 
 void NetWork::Update_Joined()
 {
-	myDebug::Log("Update_Joined()\n");
+	nsDebug::Log("Update_Joined()\n");
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
@@ -173,7 +173,7 @@ void NetWork::Update_Joined()
 
 void NetWork::Update_WaitStartGame()
 {
-	myDebug::Log("Update_WaitStartGame()\n");
+	nsDebug::Log("Update_WaitStartGame()\n");
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
@@ -198,7 +198,7 @@ void NetWork::Update_WaitStartGame()
 
 void NetWork::Update_InGameBufferingPadData()
 {
-	myDebug::Log("Update_InGameBufferingPadData()\n");
+	nsDebug::Log("Update_InGameBufferingPadData()\n");
 
 	// パッドデータを送信。
 	if (m_frameNo < 3) {
@@ -214,7 +214,7 @@ void NetWork::Update_InGameBufferingPadData()
 
 void NetWork::Update_InGame()
 {
-	myDebug::Log("Update_InGame()\n");
+	nsDebug::Log("Update_InGame()\n");
 
 	int loopCount = 0;
 	int plNo = GetPlayerNo();
@@ -298,7 +298,7 @@ void NetWork::SendInitDataOtherPlayer()
 
 void NetWork::SendPadDataDirect()
 {
-	myDebug::Log("SendPadData:frameNo = %d\n", m_frameNo);
+	nsDebug::Log("SendPadData:frameNo = %d\n", m_frameNo);
 
 	// 送るパッドデータを構築する。
 	SPadData padData;
@@ -319,7 +319,7 @@ void NetWork::SendPadDataDirect()
 
 void NetWork::SendRequestResendPadDataDirect(int frameNo)
 {
-	myDebug::Log("RequestResendPadData : frameNo = %d\n", frameNo);
+	nsDebug::Log("RequestResendPadData : frameNo = %d\n", frameNo);
 
 	SRequestResendPadData reqResendPadData;
 	reqResendPadData.dataType = enDirectMessageType_RequestResendPadData;
@@ -422,7 +422,7 @@ void NetWork::connectReturn(int errorCode, const ExitGames::Common::JString& err
 	if (errorCode)
 	{
 		// サーバーへの接続エラーが発生したので、切断済みにする。
-		myDebug::LogW(errorString.toString());
+		nsDebug::LogW(errorString.toString());
 		m_state = State::enDisconnected;
 		return;
 	}
@@ -438,7 +438,7 @@ void NetWork::customEventAction(int playerNr, nByte eventCode, const ExitGames::
 		if (m_state == State::enWaitRecvInitDataOtherPlayer) {
 			K2_ASSERT(!m_isHoge, "二回呼ばれている");
 			m_isHoge = true;
-			myDebug::Log("enEvent_SendInitDataForOtherPlayer\n");
+			nsDebug::Log("enEvent_SendInitDataForOtherPlayer\n");
 			auto valuObj = (ExitGames::Common::ValueObject<std::uint8_t*>*)(eventContent.getValue(0));
 			m_recieveDataSize = valuObj->getSizes()[0];
 			m_recieveDataOnGameStart = std::make_unique<std::uint8_t[]>(m_recieveDataSize);

@@ -6,11 +6,13 @@
 
 Game::Game()
 {
-	//m_modelCharacter = NewGO<ModelRender>(0);
-	//m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
+	m_modelCharacter = NewGO<ModelRender>(0);
+	m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
 
-    m_modelStage = NewGO<ModelRender>(igo::enPriority::model);
+    m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
+
+	m_modelStage->SetPosition(m_position);
 
     //g_camera3D->SetTarget({ 0.0f,0.0f,0.0f });
     //g_camera3D->SetPosition({ 0.0f,800.0f,300.0f });
@@ -29,12 +31,14 @@ bool Game::Start()
 
 void Game::Update()
 {
-	//１人でデバッグする
-	SoloMode();
+	//if (true == MyDebug::GetInstance()->GetDebugSoloMode()) {
+	//	//１人でデバッグする
+	//	SoloMode();
+
+	//	return;
+	//}
 
 	return;
-
-
 
 
 	if (m_onlineTwoPlayerMatchEngine) {
@@ -107,8 +111,8 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 {
 	// すべてのプレイヤーが揃った。
 	// モデル関連のNewGO
-	m_actor[0] = NewGO<Actor>(igo::enPriority::normal, igo::className::ACTOR);
-	m_actor[1] = NewGO<Actor>(igo::enPriority::normal, igo::className::ACTOR);
+	m_actor[0] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
+	m_actor[1] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
 	const Vector3 pos[] = {
 		{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
 		{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標

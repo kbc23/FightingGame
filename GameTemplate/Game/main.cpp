@@ -4,6 +4,55 @@
 #include "shadow_map.h"
 #include "shadow_light_camera.h"
 #include "game.h"
+#include "my_debug.h"
+
+
+
+namespace debugModeStetus
+{
+	bool flagDebugMode = true; // デバッグモードか
+	bool flagSoloMode = true; // ソロモードのデバッグモードか
+
+	MyDebug* myDebug = nullptr;
+
+	/**
+	 * @brief デバッグモードの設定
+	*/
+	void StartDebugMode()
+	{
+		if (false == flagDebugMode) {
+			return;
+		}
+
+		// デバッグモードのインスタンスを作成
+		myDebug = NewGO<MyDebug>(igo::EnPriority::normal);
+
+		// デバッグモードにする
+		myDebug->OnDebugMode();
+
+		if (true == flagSoloMode) {
+			// ソロモードにする（デバッグモード）
+			myDebug->OnDebugSoloMode();
+		}
+
+		myDebug->Init();
+	}
+
+	/**
+	 * @brief デバッグモードの終了処理
+	*/
+	void FinishDebugMode()
+	{
+		if (false == flagDebugMode) {
+			return;
+		}
+
+		// デバッグモードのインスタンスを削除
+		DeleteGO(myDebug);
+	}
+}
+
+
 
 ///////////////////////////////////////////////////////////////////
 // ウィンドウプログラムのメイン関数。
@@ -29,7 +78,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	ShadowLightCamera::GetInstance()->CreateShadowLightCamera();
 
-	Game* game = NewGO<Game>(igo::enPriority::normal, igo::className::GAME);
+	// デバッグモードにする
+	debugModeStetus::StartDebugMode();
+
+	Game* game = NewGO<Game>(igo::EnPriority::normal, igo::className::GAME);
 	
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
@@ -78,6 +130,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	}
 
 	DeleteGO(game);
+
+	// デバッグモードを終了する
+	debugModeStetus::FinishDebugMode();
 
 	//ゲームオブジェクトマネージャーを削除。
 	GameObjectManager::DeleteInstance();

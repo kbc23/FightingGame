@@ -1,9 +1,132 @@
 #pragma once
 
+class Actor;
+
+class MyDebug : public IGameObject
+{
+public:
+	void Init();
+	void Finish();
+	bool Start() override;
+	void Update() override;
+
+
+
+private:
+	void SoloMode();
+
+public:
+	///// <summary>
+	///// インスタンスの作成。
+	///// </summary>
+	//static void CreateInstance()
+	//{
+	//	m_instance = new MyDebug;
+	//}
+	///// <summary>
+	///// インスタンスの破棄。
+	///// </summary>
+	//static void DeleteInstance()
+	//{
+	//	delete m_instance;
+	//}
+	///// <summary>
+	///// インスタンスを取得。
+	///// </summary>
+	///// <returns></returns>
+	//static MyDebug* GetInstance()
+	//{
+	//	return m_instance;
+	//}
+
+
+public:
+	/**
+	 * @brief デバッグモードか
+	 * @return デバッグモードかどうか
+	*/
+	const bool GetDebugMode()
+	{
+		return m_debugMode;
+	}
+	/**
+	 * @brief デバッグのソロモードか
+	 * @return デバッグのソロモードかどうか
+	*/
+	const bool GetDebugSoloMode()
+	{
+		if (false == m_debugMode) {
+			return false;
+		}
+
+		return m_debugSoloMode;
+	}
+
+
+
+public:
+	/**
+	 * @brief デバッグに設定
+	*/
+	void OnDebugMode()
+	{
+		m_debugMode = true;
+	}
+	/**
+	 * @brief デバッグでなくする
+	*/
+	void OffDebugMode()
+	{
+		m_debugMode = false;
+	}
+	/**
+	 * @brief デバッグのソロモードに設定
+	*/
+	void OnDebugSoloMode()
+	{
+		if (false == m_debugMode) {
+			return;
+		}
+
+		m_debugSoloMode = true;
+	}
+	/**
+	 * @brief デバッグのソロモードでなくする
+	*/
+	void OffDebugSoloMode()
+	{
+		if (false == m_debugMode) {
+			return;
+		}
+
+		m_debugSoloMode = false;
+	}
+
+
+
+private: // data menber
+	//static MyDebug* m_instance;		//唯一のインスタンスのアドレスを記録する変数
+
+	////////////////////////////////////////////////////////////
+	// クラスのインスタンス
+	////////////////////////////////////////////////////////////
+
+	Actor* m_actor[2] = { nullptr };
+
+	////////////////////////////////////////////////////////////
+	// フラグ
+	////////////////////////////////////////////////////////////
+
+	bool m_debugMode = false; // デバッグモードか
+	bool m_debugSoloMode = false; // デバッグのソロモードか
+};
+
+
+
 /**
  * @brief デバッグのときに使用する処理
 */
-namespace myDebug
+namespace nsDebug
 {
 	/*!
 	 *@brief ログ出力
@@ -49,8 +172,6 @@ namespace myDebug
 			std::abort();
 		}
 	}
-
-	bool DEBUG_soloMode = false;
 }
 
 #ifdef K2_DEBUG

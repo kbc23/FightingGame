@@ -39,11 +39,22 @@ void Actor::Init(
 {
     m_gamePad = &gamePad;
 
-    m_modelCharacter = NewGO<ModelRender>(igo::enPriority::model);
-    m_modelCharacter->Init(filePath);
+    m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
+    m_modelCharacter->Init(filePath, false, true);
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
     m_otherActor = pOtherActor;
+}
+
+void Actor::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos)
+{
+    m_gamePad = g_pad[playerNum];
+
+    m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
+    m_modelCharacter->Init(filePath, false, true);
+
+    m_position = initPos;
+    m_modelCharacter->SetPosition(m_position);
 }
 
 void Actor::Update()
