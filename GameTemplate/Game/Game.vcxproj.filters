@@ -72,7 +72,7 @@
     <Filter Include="MyCode\Engine\Debug">
       <UniqueIdentifier>{a98110f0-0e12-41d9-be01-c1e90309d101}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyCode\MainProcessing\Character">
+    <Filter Include="MyCode\MainProcessing\Player">
       <UniqueIdentifier>{27eb1e4a-fcac-4398-8d63-4ff6e55c32ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -264,7 +264,13 @@
       <Filter>MyCode\Engine\Debug</Filter>
     </ClCompile>
     <ClCompile Include="actor.cpp">
-      <Filter>MyCode\MainProcessing\Character</Filter>
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_camera.cpp">
+      <Filter>MyCode\MainProcessing\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,13 +482,19 @@
       <Filter>MyCode\Engine\Debug</Filter>
     </ClInclude>
     <ClInclude Include="actor.h">
-      <Filter>MyCode\MainProcessing\Character</Filter>
+      <Filter>MyCode\MainProcessing\Player</Filter>
     </ClInclude>
     <ClInclude Include="FPSLimitter.h">
       <Filter>MyCode\Engine</Filter>
     </ClInclude>
     <ClInclude Include="constant.h">
       <Filter>MyCode\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_camera.h">
+      <Filter>MyCode\MainProcessing\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

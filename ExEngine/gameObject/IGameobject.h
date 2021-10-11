@@ -182,6 +182,7 @@ namespace igo
 	{
 		constexpr const char* GAME = "game";
 		constexpr const char* ACTOR = "actor";
+		constexpr const char* PLAYER = "player";
 	}
 
 }

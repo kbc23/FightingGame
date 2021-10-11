@@ -4,6 +4,7 @@
 #include "net_work.h"
 
 class Actor;
+class Player;
 
 class Game : public IGameObject
 {
@@ -68,6 +69,7 @@ private: //data menber
 	ModelRender* m_modelCharacter = { nullptr }; // キャラクターのモデル
     ModelRender* m_modelStage = nullptr; // ステージのモデル
     Shadow* m_shadowModelCharacter = nullptr; // キャラクターの影
+	Player* m_player[2];
 	Actor* m_actor[2]; // キャラクター
 	NetWork* m_onlineTwoPlayerMatchEngine = nullptr; // 完全同期二人対戦用エンジン
 

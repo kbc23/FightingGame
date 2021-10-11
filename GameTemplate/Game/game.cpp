@@ -3,6 +3,7 @@
 
 #include "my_debug.h"
 #include "actor.h"
+#include "player.h"
 
 Game::Game()
 {
@@ -109,7 +110,13 @@ void Game::Update()
 
 void Game::OnAllPlayerJoined(void* pData, int size)
 {
-	// すべてのプレイヤーが揃った。
+	// すべてのプレイヤーが揃った
+	
+
+
+
+	// 下と上は別
+	// すべてのプレイヤーが揃った
 	// モデル関連のNewGO
 	m_actor[0] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
 	m_actor[1] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);

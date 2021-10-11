@@ -10,6 +10,7 @@
 
 namespace debugModeStetus
 {
+	// ここの変数の初期値でデバッグモードの設定をする
 	bool flagDebugMode = true; // デバッグモードか
 	bool flagSoloMode = true; // ソロモードのデバッグモードか
 
@@ -17,11 +18,12 @@ namespace debugModeStetus
 
 	/**
 	 * @brief デバッグモードの設定
+	 * @return デバッグモードか
 	*/
-	void StartDebugMode()
+	const bool StartDebugMode()
 	{
 		if (false == flagDebugMode) {
-			return;
+			return false;
 		}
 
 		// デバッグモードのインスタンスを作成
@@ -36,6 +38,8 @@ namespace debugModeStetus
 		}
 
 		myDebug->Init();
+
+		return true;
 	}
 
 	/**
@@ -54,6 +58,13 @@ namespace debugModeStetus
 
 
 
+namespace //constant
+{
+	const int NUMBER_OF_CONTROLLER = 4; //コントローラーの最大の数
+}
+
+
+
 ///////////////////////////////////////////////////////////////////
 // ウィンドウプログラムのメイン関数。
 ///////////////////////////////////////////////////////////////////
@@ -65,6 +76,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//////////////////////////////////////
 	// ここから初期化を行うコードを記述する。
 	//////////////////////////////////////
+
+	//コントローラーの初期化
+	for (int controllerNum = 0; controllerNum < NUMBER_OF_CONTROLLER; controllerNum++) {
+		g_pad[controllerNum]->Init(controllerNum);
+	}
 
 	//ゲームオブジェクトマネージャーのインスタンスを作成する。
 	GameObjectManager::CreateInstance();
@@ -78,10 +94,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	ShadowLightCamera::GetInstance()->CreateShadowLightCamera();
 
-	// デバッグモードにする
-	debugModeStetus::StartDebugMode();
+	Game* game = nullptr;
 
-	Game* game = NewGO<Game>(igo::EnPriority::normal, igo::className::GAME);
+	// デバッグモードでないとき
+	if (false == debugModeStetus::StartDebugMode()) {
+		game = NewGO<Game>(igo::EnPriority::normal, igo::className::GAME);
+	}
 	
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
