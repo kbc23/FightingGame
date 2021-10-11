@@ -2,6 +2,7 @@
 
 class Actor;
 class Player;
+class PlayerCamera;
 
 class MyDebug : public IGameObject
 {
@@ -114,6 +115,7 @@ private: // data menber
 
 	Actor* m_actor[2] = { nullptr };
 	Player* m_player[2] = { nullptr };
+	PlayerCamera* m_playerCamera = nullptr;
 
 	////////////////////////////////////////////////////////////
 	// ƒtƒ‰ƒO

@@ -78,9 +78,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//////////////////////////////////////
 
 	//コントローラーの初期化
-	for (int controllerNum = 0; controllerNum < NUMBER_OF_CONTROLLER; controllerNum++) {
-		g_pad[controllerNum]->Init(controllerNum);
-	}
+	//for (int controllerNum = 0; controllerNum < NUMBER_OF_CONTROLLER; controllerNum++) {
+	//	g_pad[controllerNum]->Init(controllerNum);
+	//}
 
 	//ゲームオブジェクトマネージャーのインスタンスを作成する。
 	GameObjectManager::CreateInstance();

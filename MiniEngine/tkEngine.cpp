@@ -28,6 +28,12 @@ void TkEngine::BeginFrame()
 	m_fpsLimitter.BeginFrame();
 	m_gameTime.BeginMeasurement();
 	m_graphicsEngine->BeginRender();
+
+	//デバッグで追加（後で消すこと）
+	m_pad[0].Update();
+	return;
+	//ここまで
+
 	for (auto& pad : m_pad) {
 		pad.BeginFrame();
 		pad.Update();

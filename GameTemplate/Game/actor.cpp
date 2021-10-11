@@ -42,7 +42,7 @@ void Actor::Init(
     m_otherActor = pOtherActor;
 }
 
-void Actor::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos)
+void Actor::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot)
 {
     //m_gamePad = g_pad[playerNum];
 
@@ -51,6 +51,9 @@ void Actor::DebugInit(const char* filePath, const int playerNum, const Vector3& 
 
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
+    m_rotY = initRot;
+    m_rotation.SetRotationY(m_rotY);
+    m_modelCharacter->SetRotation(m_rotation);
 }
 
 void Actor::Update()

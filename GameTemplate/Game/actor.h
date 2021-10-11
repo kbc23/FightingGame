@@ -32,7 +32,7 @@ public:
         Actor* pOtherActor
     );
 
-    void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos);
+    void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot);
 
     void AddStatus(const Vector3& addPos, const float addRotAngle);
 
@@ -43,6 +43,14 @@ private:
      * @brief キャラクターモデルに必要なステータス情報を渡す
     */
     void SetModelStatus();
+
+
+
+public: // Get function
+    const Vector3& GetPosition()
+    {
+        return m_position;
+    }
 
 
 

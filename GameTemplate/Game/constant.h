@@ -4,7 +4,7 @@ namespace con
 {
     const enum EnPlayer
     {
-        enPlayer_1,
-        enPlayer_2
+        enPlayer,
+        enOtherPlayer
     };
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "player.h"
 
-#include "actor.h"
+#include "constant.h"
 #include "player_camera.h"
 
 Player::Player()
@@ -23,10 +23,11 @@ void Player::Init(
     GamePad& gamePad,
     const Vector3& initPos,
     float initRotAngle,
-    Actor* pOtherActor
+    Player* pOtherPlayer
 )
 {
     m_gamePad = &gamePad;
+    m_otherPlayer = pOtherPlayer;
 
     //// すべてのプレイヤーが揃った。
     //// モデル関連のNewGO
@@ -62,12 +63,12 @@ void Player::Init(
     //);
 }
 
-void Player::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos)
+void Player::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot)
 {
     m_gamePad = g_pad[playerNum];
-
+    
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-    m_actor->DebugInit(filePath, playerNum, initPos);
+    m_actor->DebugInit(filePath, playerNum, initPos, initRot);
 
     //m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     //m_modelCharacter->Init(filePath, false, true);

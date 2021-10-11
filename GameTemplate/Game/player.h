@@ -1,6 +1,6 @@
 #pragma once
+#include "actor.h"
 
-class Actor;
 class PlayerCamera;
 
 class Player : public IGameObject
@@ -22,10 +22,10 @@ public:
         GamePad& gamePad,
         const Vector3& initPos,
         float initRotAngle,
-        Actor* pOtherActor
+        Player* pOtherPlayer
     );
 
-    void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos);
+    void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot);
 
 
 private:
@@ -34,6 +34,12 @@ private:
     */
     void Controller();
 
+
+public: // Get function
+    const Vector3& GetPosition()
+    {
+        return m_actor->GetPosition();
+    }
 
 
 private: // constant
@@ -48,6 +54,8 @@ private: // data menber
     Actor* m_actor = nullptr; // キャラクター
     GamePad* m_gamePad = nullptr;
     PlayerCamera* m_playerCamera = nullptr;
+    Player* m_otherPlayer = nullptr; // 対戦相手
+
 
     ////////////////////////////////////////////////////////////
     // プレイヤーのステータス
