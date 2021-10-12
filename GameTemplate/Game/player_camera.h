@@ -20,7 +20,7 @@ public: // Get function
             return m_cameraPosition;
         }
         else if (playerNum == m_otherPlayerNum) {
-            return m_cameraPosition;
+            return m_otherCameraPosition;
         }
 
         return { 0.0f,0.0f,0.0f };
