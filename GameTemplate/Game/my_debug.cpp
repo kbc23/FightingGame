@@ -2,11 +2,8 @@
 #include "my_debug.h"
 
 #include "constant.h"
-#include "actor.h"
 #include "player.h"
 #include "player_camera.h"
-
-//MyDebug* MyDebug::m_instance = nullptr;
 
 void MyDebug::Init()
 {
@@ -27,11 +24,6 @@ void MyDebug::Init()
         pos[con::enOtherPlayer], rotAngle[con::enOtherPlayer]);
 
     m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal, igo::className::PLAYER_CAMERA);
-
-    //m_actor[con::enPlayer] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-    //m_actor[con::enPlayer]->DebugInit("Assets/modelData/unityChan.tkm", con::enPlayer, pos[0]);
-    //m_actor[con::enOtherPlayer] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-    //m_actor[con::enOtherPlayer]->DebugInit("Assets/modelData/unityChan.tkm", con::enOtherPlayer, pos[1]);
 }
 
 void MyDebug::Finish()

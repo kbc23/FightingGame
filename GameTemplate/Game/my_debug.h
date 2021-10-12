@@ -1,6 +1,5 @@
 #pragma once
 
-class Actor;
 class Player;
 class PlayerCamera;
 
@@ -13,33 +12,8 @@ public:
 	void Update() override;
 
 
-
 private:
 	void SoloMode();
-
-public:
-	///// <summary>
-	///// インスタンスの作成。
-	///// </summary>
-	//static void CreateInstance()
-	//{
-	//	m_instance = new MyDebug;
-	//}
-	///// <summary>
-	///// インスタンスの破棄。
-	///// </summary>
-	//static void DeleteInstance()
-	//{
-	//	delete m_instance;
-	//}
-	///// <summary>
-	///// インスタンスを取得。
-	///// </summary>
-	///// <returns></returns>
-	//static MyDebug* GetInstance()
-	//{
-	//	return m_instance;
-	//}
 
 
 public:
@@ -107,13 +81,10 @@ public:
 
 
 private: // data menber
-	//static MyDebug* m_instance;		//唯一のインスタンスのアドレスを記録する変数
-
 	////////////////////////////////////////////////////////////
 	// クラスのインスタンス
 	////////////////////////////////////////////////////////////
 
-	Actor* m_actor[2] = { nullptr };
 	Player* m_player[2] = { nullptr };
 	PlayerCamera* m_playerCamera = nullptr;
 

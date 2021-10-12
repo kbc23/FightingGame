@@ -1,8 +1,6 @@
 #pragma once
 #include "actor.h"
 
-class PlayerCamera;
-
 class Player : public IGameObject
 {
 public:
@@ -14,9 +12,9 @@ public:
     /**
      * @brief 初期化
      * @param gamePad キャラクターの移動に使用するゲームパッド
-     * @param initPos
-     * @param initRotAngle
-     * @param pOtherActor
+     * @param initPos 初期位置
+     * @param initRotAngle 初期向き
+     * @param pOtherPlayer 相手プレイヤー
     */
     void Init(
         GamePad& gamePad,
@@ -25,6 +23,13 @@ public:
         Player* pOtherPlayer
     );
 
+    /**
+     * @brief Debugモード時の初期化
+     * @param filePath モデルのファイルパス
+     * @param playerNum プレイヤー番号
+     * @param initPos 初期位置
+     * @param initRot 初期向き
+    */
     void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot);
 
 
@@ -34,7 +39,10 @@ private:
     */
     void Controller();
 
-
+    /**
+     * @brief プレイヤーの移動量を計算する
+     * @return 移動量
+    */
     const Vector3& Move();
 
 
@@ -55,8 +63,7 @@ private: // data menber
     ////////////////////////////////////////////////////////////
 
     Actor* m_actor = nullptr; // キャラクター
-    GamePad* m_gamePad = nullptr;
-    PlayerCamera* m_findPlayerCamera = nullptr;
+    GamePad* m_gamePad = nullptr; // ゲームパッド
     Player* m_otherPlayer = nullptr; // 対戦相手
 
 
