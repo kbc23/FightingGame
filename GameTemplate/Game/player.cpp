@@ -35,39 +35,6 @@ void Player::Init(
         initRotAngle,
         &pOtherPlayer->GetActor()
     );
-
-    //// すべてのプレイヤーが揃った。
-    //// モデル関連のNewGO
-    //m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-    ////m_actor[1] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-    //const Vector3 pos[] = {
-    //    {100.0f, 0.0f, 0.0f},		// 1Pの初期座標
-    //    {-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
-    //};
-    //float rotAngle[] = {
-    //    -90.0f,
-    //    90.0f
-    //};
-
-    //// 自分のプレイヤー番号を取得
-    //int playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
-    //int otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
-    //// 自分
-    //m_actor->Init(
-    //    m_onlineTwoPlayerMatchEngine->GetGamePad(playerNo),
-    //    "Assets/modelData/unityChan.tkm",
-    //    pos[playerNo],
-    //    rotAngle[playerNo],
-    //    m_actor[otherPlayerNo]
-    //);
-    //// 対戦相手
-    //m_actor[otherPlayerNo]->Init(
-    //    m_onlineTwoPlayerMatchEngine->GetGamePad(otherPlayerNo),
-    //    "Assets/modelData/unityChan.tkm",
-    //    pos[otherPlayerNo],
-    //    rotAngle[otherPlayerNo],
-    //    m_actor[playerNo]
-    //);
 }
 
 void Player::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot)
@@ -93,12 +60,13 @@ void Player::Controller()
     float rotY = 0.0f; // プレイヤーの回転量
 
     // プレイヤーの移動
-    if (m_gamePad->GetLStickXF() != 0.0f) {
-        moveAmount = Move();
-    }
-    if (m_gamePad->GetLStickYF() != 0.0f) {
-        moveAmount = Move();
-    }
+    //if (m_gamePad->GetLStickXF() != 0.0f) {
+    //    moveAmount = Move();
+    //}
+    //if (m_gamePad->GetLStickYF() != 0.0f) {
+    //    moveAmount = Move();
+    //}
+    moveAmount = Move();
     // Aボタン: 通常攻撃
     if (m_gamePad->IsPress(enButtonA) == true) {
         // Aボタンを押したときの処理
