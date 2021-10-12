@@ -123,5 +123,8 @@ const Vector3& Player::Move()
     //キャラクターの移動量を計算
     Vector3 moveAmount = cameraFront * pospos.z + cameraRight * pospos.x;
 
+    // 相手プレイヤーの移動処理に自分目線のカメラ情報を使っているため、
+    // 相手の移動処理を上下反転するか、相手目線のカメラを別で作る必要がある
+
     return moveAmount;
 }
