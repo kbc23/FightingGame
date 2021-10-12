@@ -108,16 +108,20 @@ const Vector3& Player::Move()
     // カメラの右方向
     Vector3 cameraRight = Cross(g_vec3AxisY, cameraFront);
 
-    float dot = cameraFront.Dot(Vector3::AxisZ); // 内積
-    float angle = acosf(dot); // アークコサイン
-    if (cameraFront.x < 0) {
-        angle *= -1;
+    // キャラクターの移動速度
+    float characterSpeed = 6.0f;
+
+    Vector3 pospos = { 0.0f,0.0f,0.0f };
+
+    if (m_gamePad->GetLStickXF() != 0.0f) {
+        pospos.x -= m_gamePad->GetLStickXF() * characterSpeed;
+    }
+    if (m_gamePad->GetLStickYF() != 0.0f) {
+        pospos.z -= m_gamePad->GetLStickYF() * characterSpeed;
     }
 
-    float characterSpeed = 6.0f; // キャラクターの移動速度
-
     //キャラクターの移動量を計算
-    Vector3 moveAmount = cameraFront * m_gamePad->GetLStickYF() * characterSpeed + cameraRight * m_gamePad->GetLStickXF() * characterSpeed;
+    Vector3 moveAmount = cameraFront * pospos.z + cameraRight * pospos.x;
 
     return moveAmount;
 }
