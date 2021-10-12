@@ -3,6 +3,7 @@
 #include "shadow.h"
 #include "net_work.h"
 
+class PlayerCamera;
 class Actor;
 class Player;
 
@@ -72,6 +73,7 @@ private: //data menber
 	Player* m_player[2];
 	Actor* m_actor[2]; // キャラクター
 	NetWork* m_onlineTwoPlayerMatchEngine = nullptr; // 完全同期二人対戦用エンジン
+	PlayerCamera* m_playerCamera = nullptr;
 
 	////////////////////////////////////////////////////////////
 	// その他

@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "game.h"
 
+#include "constant.h"
 #include "my_debug.h"
 #include "actor.h"
 #include "player.h"
+#include "player_camera.h"
 
 Game::Game()
 {
@@ -84,6 +86,9 @@ void Game::Update()
 		//	MessageBoxA(nullptr, "あなたの勝ち", "結果", MB_OK);
 		//	ReturnCharacterSelect();
 		//}
+
+		m_playerCamera->SetPlayerPosition(m_player[con::enPlayer]->GetPosition());
+		m_playerCamera->SetEnemyPosition(m_player[con::enOtherPlayer]->GetPosition());
 	}break;
 	case EnStep::enStep_Error:
 		//ReturnCharacterSelect();
@@ -103,6 +108,9 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 	// すべてのプレイヤーが揃った
 	m_player[0] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
 	m_player[1] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
+
+	m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal);
+
 	const Vector3 pos[] = {
 	{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
 	{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
