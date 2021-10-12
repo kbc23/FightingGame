@@ -114,10 +114,10 @@ const Vector3& Player::Move()
     Vector3 pospos = { 0.0f,0.0f,0.0f };
 
     if (m_gamePad->GetLStickXF() != 0.0f) {
-        pospos.x -= m_gamePad->GetLStickXF() * characterSpeed;
+        pospos.x += m_gamePad->GetLStickXF() * characterSpeed;
     }
     if (m_gamePad->GetLStickYF() != 0.0f) {
-        pospos.z -= m_gamePad->GetLStickYF() * characterSpeed;
+        pospos.z += m_gamePad->GetLStickYF() * characterSpeed;
     }
 
     //キャラクターの移動量を計算
