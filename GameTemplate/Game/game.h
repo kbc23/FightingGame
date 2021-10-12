@@ -83,8 +83,9 @@ private: //data menber
     Quaternion m_rotation = g_quatIdentity; // 回転
 	float m_rotY = 0.0f;
 
-	int m_charaNo = 0;
+	int m_charaNo = 0; // なんかある（多分選択したキャラクターのこと）
 
-
+	int m_playerNo = -1;
+	int m_otherPlayerNo = -1;
 
 };

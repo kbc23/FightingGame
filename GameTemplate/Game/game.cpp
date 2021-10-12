@@ -87,8 +87,8 @@ void Game::Update()
 		//	ReturnCharacterSelect();
 		//}
 
-		m_playerCamera->SetPlayerPosition(m_player[con::enPlayer]->GetPosition());
-		m_playerCamera->SetEnemyPosition(m_player[con::enOtherPlayer]->GetPosition());
+		m_playerCamera->SetPlayerPosition(m_player[m_playerNo]->GetPosition());
+		m_playerCamera->SetEnemyPosition(m_player[m_otherPlayerNo]->GetPosition());
 	}break;
 	case EnStep::enStep_Error:
 		//ReturnCharacterSelect();
@@ -120,21 +120,21 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 		90.0f
 	};
 	// 自分と相手のプレイヤー番号を取得
-	int playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
-	int otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
+	m_playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
+	m_otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
 	// 自分のプレイヤー情報を初期化
-	m_player[playerNo]->Init(
-		m_onlineTwoPlayerMatchEngine->GetGamePad(playerNo),
-		pos[playerNo],
-		rotAngle[playerNo],
-		m_player[otherPlayerNo]
+	m_player[m_playerNo]->Init(
+		m_onlineTwoPlayerMatchEngine->GetGamePad(m_playerNo),
+		pos[m_playerNo],
+		rotAngle[m_playerNo],
+		m_player[m_otherPlayerNo]
 	);
 	// 相手のプレイヤー情報を初期化
-	m_player[otherPlayerNo]->Init(
-		m_onlineTwoPlayerMatchEngine->GetGamePad(otherPlayerNo),
-		pos[otherPlayerNo],
-		rotAngle[otherPlayerNo],
-		m_player[playerNo]
+	m_player[m_otherPlayerNo]->Init(
+		m_onlineTwoPlayerMatchEngine->GetGamePad(m_otherPlayerNo),
+		pos[m_otherPlayerNo],
+		rotAngle[m_otherPlayerNo],
+		m_player[m_playerNo]
 	);
 
 	// ロードが終わってゲーム開始可能になったことを通知する。
