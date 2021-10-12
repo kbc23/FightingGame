@@ -109,7 +109,7 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 	m_player[0] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
 	m_player[1] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
 
-	m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal);
+	m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal, igo::className::PLAYER_CAMERA);
 
 	const Vector3 pos[] = {
 	{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
@@ -122,11 +122,15 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 	// 自分と相手のプレイヤー番号を取得
 	m_playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
 	m_otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
+
+	m_playerCamera->SetPlayerNum(m_playerNo, m_otherPlayerNo);
+
 	// 自分のプレイヤー情報を初期化
 	m_player[m_playerNo]->Init(
 		m_onlineTwoPlayerMatchEngine->GetGamePad(m_playerNo),
 		pos[m_playerNo],
 		rotAngle[m_playerNo],
+		m_playerNo,
 		m_player[m_otherPlayerNo]
 	);
 	// 相手のプレイヤー情報を初期化
@@ -134,6 +138,7 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 		m_onlineTwoPlayerMatchEngine->GetGamePad(m_otherPlayerNo),
 		pos[m_otherPlayerNo],
 		rotAngle[m_otherPlayerNo],
+		m_otherPlayerNo,
 		m_player[m_playerNo]
 	);
 

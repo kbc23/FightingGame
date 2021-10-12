@@ -2,6 +2,7 @@
 #include "player.h"
 
 #include "constant.h"
+#include "player_camera.h"
 
 Player::Player()
 {
@@ -22,10 +23,12 @@ void Player::Init(
     GamePad& gamePad,
     const Vector3& initPos,
     float initRotAngle,
+    int playerNum,
     Player* pOtherPlayer
 )
 {
     m_gamePad = &gamePad;
+    m_playerNum = playerNum;
     m_otherPlayer = pOtherPlayer;
 
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
@@ -35,6 +38,8 @@ void Player::Init(
         initRotAngle,
         &pOtherPlayer->GetActor()
     );
+
+    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 }
 
 void Player::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot)
@@ -101,7 +106,7 @@ const Vector3& Player::Move()
 
     // カメラの前方向を取得
     // ※カメラの前方向を参照する技を使うときに[cameraFront]が使えるかも
-    Vector3 cameraFront = m_actor->GetPosition() - g_camera3D->GetPosition();
+    Vector3 cameraFront = m_actor->GetPosition() - m_findPlayerCamera->GetPosition(m_playerNum);
     cameraFront.y = 0.0f;
     cameraFront.Normalize();
 

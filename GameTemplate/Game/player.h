@@ -1,6 +1,8 @@
 #pragma once
 #include "actor.h"
 
+class PlayerCamera;
+
 class Player : public IGameObject
 {
 public:
@@ -20,6 +22,7 @@ public:
         GamePad& gamePad,
         const Vector3& initPos,
         float initRotAngle,
+        int playerNum,
         Player* pOtherPlayer
     );
 
@@ -71,6 +74,8 @@ private: // data menber
     GamePad* m_gamePad = nullptr; // ゲームパッド
     Player* m_otherPlayer = nullptr; // 対戦相手
 
+    PlayerCamera* m_findPlayerCamera = nullptr;
+
 
     ////////////////////////////////////////////////////////////
     // プレイヤーのステータス
@@ -84,5 +89,9 @@ private: // data menber
 
     bool m_flagOperation = true; // 操作可能か
 
+    ////////////////////////////////////////////////////////////
+    // その他
+    ////////////////////////////////////////////////////////////
 
+    int m_playerNum = -1;
 };
