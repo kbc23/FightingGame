@@ -52,6 +52,11 @@ public: // Get function
         return m_actor->GetPosition();
     }
 
+    Actor& GetActor()
+    {
+        return *m_actor;
+    }
+
 
 private: // constant
     const int m_MAX_HP = 1000; // プレイヤーの体力の最大値

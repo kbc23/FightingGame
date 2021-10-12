@@ -14,14 +14,12 @@ public:
 
     /**
      * @brief 初期化
-     * @param gamePad キャラクターの移動に使用するゲームパッド
      * @param filePath モデルのファイルパス
      * @param initPos 初期位置
      * @param initRotAngle 初期向き
      * @param pOtherActor 相手のモデル
     */
     void Init(
-        GamePad& gamePad,
         const char* filePath,
         const Vector3& initPos,
         float initRotAngle,

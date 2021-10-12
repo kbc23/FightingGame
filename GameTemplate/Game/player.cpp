@@ -28,6 +28,14 @@ void Player::Init(
     m_gamePad = &gamePad;
     m_otherPlayer = pOtherPlayer;
 
+    m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
+    m_actor->Init(
+        "Assets/modelData/unityChan.tkm",
+        initPos,
+        initRotAngle,
+        &pOtherPlayer->GetActor()
+    );
+
     //// すべてのプレイヤーが揃った。
     //// モデル関連のNewGO
     //m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);

@@ -7,13 +7,13 @@
 
 Game::Game()
 {
-	m_modelCharacter = NewGO<ModelRender>(0);
-	m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
+	//m_modelCharacter = NewGO<ModelRender>(0);
+	//m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
 
-    m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
+    //m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
+    //m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
 
-	m_modelStage->SetPosition(m_position);
+	//m_modelStage->SetPosition(m_position);
 
     //g_camera3D->SetTarget({ 0.0f,0.0f,0.0f });
     //g_camera3D->SetPosition({ 0.0f,800.0f,300.0f });
@@ -32,16 +32,6 @@ bool Game::Start()
 
 void Game::Update()
 {
-	//if (true == MyDebug::GetInstance()->GetDebugSoloMode()) {
-	//	//１人でデバッグする
-	//	SoloMode();
-
-	//	return;
-	//}
-
-	return;
-
-
 	if (m_onlineTwoPlayerMatchEngine) {
 		m_onlineTwoPlayerMatchEngine->Update();
 	}
@@ -111,49 +101,82 @@ void Game::Update()
 void Game::OnAllPlayerJoined(void* pData, int size)
 {
 	// すべてのプレイヤーが揃った
-	
-
-
-
-	// 下と上は別
-	// すべてのプレイヤーが揃った
-	// モデル関連のNewGO
-	m_actor[0] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-	m_actor[1] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
+	m_player[0] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
+	m_player[1] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
 	const Vector3 pos[] = {
-		{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
-		{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
+	{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
+	{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
 	};
 	float rotAngle[] = {
 		-90.0f,
 		90.0f
 	};
-
-	// 自分のプレイヤー番号を取得
+	// 自分と相手のプレイヤー番号を取得
 	int playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
 	int otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
-	// 自分
-	m_actor[playerNo]->Init(
+	// 自分のプレイヤー情報を初期化
+	m_player[playerNo]->Init(
 		m_onlineTwoPlayerMatchEngine->GetGamePad(playerNo),
-		"Assets/modelData/unityChan.tkm",
 		pos[playerNo],
 		rotAngle[playerNo],
-		m_actor[otherPlayerNo]
+		m_player[otherPlayerNo]
 	);
-	// 対戦相手
-	m_actor[otherPlayerNo]->Init(
+	// 相手のプレイヤー情報を初期化
+	m_player[otherPlayerNo]->Init(
 		m_onlineTwoPlayerMatchEngine->GetGamePad(otherPlayerNo),
-		"Assets/modelData/unityChan.tkm",
 		pos[otherPlayerNo],
 		rotAngle[otherPlayerNo],
-		m_actor[playerNo]
+		m_player[playerNo]
 	);
-
 
 	// ロードが終わってゲーム開始可能になったことを通知する。
 	m_onlineTwoPlayerMatchEngine->NotifyPossibleStartPlayGame();
 	// ほかのプレイヤーがゲーム開始可能になるまで待つ。
 	m_step = EnStep::enStep_WaitAllPlayerStartGame;
+
+	//m_fontRender.SetText(L"WaitAllPlayerStartGame!!");
+
+	return;
+
+	// 下と上は別
+	// すべてのプレイヤーが揃った
+	// モデル関連のNewGO
+	//m_actor[0] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
+	//m_actor[1] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
+	//const Vector3 pos2[] = {
+	//	{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
+	//	{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
+	//};
+	//float rotAngle2[] = {
+	//	-90.0f,
+	//	90.0f
+	//};
+
+	//// 自分のプレイヤー番号を取得
+	//int playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
+	//int otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
+	//// 自分
+	//m_actor[playerNo]->Init(
+	//	m_onlineTwoPlayerMatchEngine->GetGamePad(playerNo),
+	//	"Assets/modelData/unityChan.tkm",
+	//	pos2[playerNo],
+	//	rotAngle2[playerNo],
+	//	m_actor[otherPlayerNo]
+	//);
+	//// 対戦相手
+	//m_actor[otherPlayerNo]->Init(
+	//	m_onlineTwoPlayerMatchEngine->GetGamePad(otherPlayerNo),
+	//	"Assets/modelData/unityChan.tkm",
+	//	pos2[otherPlayerNo],
+	//	rotAngle2[otherPlayerNo],
+	//	m_actor[playerNo]
+	//);
+
+
+	//// ロードが終わってゲーム開始可能になったことを通知する。
+	//m_onlineTwoPlayerMatchEngine->NotifyPossibleStartPlayGame();
+	//// ほかのプレイヤーがゲーム開始可能になるまで待つ。
+	//m_step = EnStep::enStep_WaitAllPlayerStartGame;
 
 	//m_fontRender.SetText(L"WaitAllPlayerStartGame!!");
 }

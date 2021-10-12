@@ -28,15 +28,12 @@ bool Actor::Start()
 }
 
 void Actor::Init(
-    GamePad& gamePad,
     const char* filePath,
     const Vector3& initPos,
     float initRotAngle,
     Actor* pOtherActor
 )
 {
-    //m_gamePad = &gamePad;
-
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true);
     m_position = initPos;
