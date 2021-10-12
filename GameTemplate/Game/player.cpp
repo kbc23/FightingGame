@@ -89,14 +89,17 @@ void Player::Controller()
     }
 
     Vector3 position = { 0.0f,0.0f,0.0f };
+    Vector3 moveAmount = { 0.0f,0.0f,0.0f };
     float rotY = 0.0f;
 
     // プレイヤーの移動
     if (m_gamePad->GetLStickXF() != 0.0f) {
-        position.x -= m_gamePad->GetLStickXF() * 5.0f;
+        //position.x -= m_gamePad->GetLStickXF() * 5.0f;
+        moveAmount = Move();
     }
     if (m_gamePad->GetLStickYF() != 0.0f) {
-        position.z -= m_gamePad->GetLStickYF() * 5.0f;
+        //position.z -= m_gamePad->GetLStickYF() * 5.0f * g_camera3D->GetRight().z;
+        moveAmount = Move();
     }
     // Aボタン: 通常攻撃
     if (m_gamePad->IsPress(enButtonA) == true) {
@@ -108,7 +111,7 @@ void Player::Controller()
         // Bボタンを押したときの処理
         rotY -= 0.01f;
     }
-    //?: 必殺技
+    // ?: 必殺技
     if (true) {
 
     }
@@ -121,6 +124,35 @@ void Player::Controller()
 
     }
 
-    //プレイヤーのモデルに位置情報などのステータス情報を渡す
-    m_actor->AddStatus(position, rotY);
+    // プレイヤーのモデルに位置情報などのステータス情報を渡す
+    m_actor->AddStatus(moveAmount, rotY);
+}
+
+const Vector3& Player::Move()
+{
+    // 現在の位置情報を保存
+    Vector3 oldPos = m_actor->GetPosition();
+
+    // カメラの前方向を取得
+    // ※カメラの前方向を参照する技を使うときに[cameraFront]が使えるかも
+    Vector3 cameraFront = m_actor->GetPosition() - g_camera3D->GetPosition();
+    cameraFront.y = 0.0f;
+    cameraFront.Normalize();
+
+    // カメラの右方向
+    Vector3 cameraRight = Cross(g_vec3AxisY, cameraFront);
+
+    float dot = cameraFront.Dot(Vector3::AxisZ); // 内積
+    float angle = acosf(dot); // アークコサイン
+    if (cameraFront.x < 0) {
+        angle *= -1;
+    }
+
+    float characterSpeed = 6.0f; // キャラクターの移動速度
+
+    Vector3 moveAmount = cameraFront * m_gamePad->GetLStickYF() * characterSpeed + cameraRight * m_gamePad->GetLStickXF() * characterSpeed;
+
+    return moveAmount;
+
+    //m_position = m_charaCon.Execute(moveAmount, 1.0f);
 }

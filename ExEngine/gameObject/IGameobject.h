@@ -184,6 +184,6 @@ namespace igo
 		constexpr const char* ACTOR = "actor";
 		constexpr const char* PLAYER = "player";
 		constexpr const char* OTHER_PLAYER = "otherPlayer";
+		constexpr const char* PLAYER_CAMERA = "playerCamera";
 	}
-
 }

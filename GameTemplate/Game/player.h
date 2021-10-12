@@ -35,6 +35,9 @@ private:
     void Controller();
 
 
+    const Vector3& Move();
+
+
 public: // Get function
     const Vector3& GetPosition()
     {
@@ -53,7 +56,7 @@ private: // data menber
 
     Actor* m_actor = nullptr; // キャラクター
     GamePad* m_gamePad = nullptr;
-    PlayerCamera* m_playerCamera = nullptr;
+    PlayerCamera* m_findPlayerCamera = nullptr;
     Player* m_otherPlayer = nullptr; // 対戦相手
 
 

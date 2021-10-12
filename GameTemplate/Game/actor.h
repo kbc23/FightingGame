@@ -34,7 +34,7 @@ public:
 
     void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot);
 
-    void AddStatus(const Vector3& addPos, const float addRotAngle);
+    void AddStatus(Vector3& addMoveAmount, const float addRotAngle);
 
 
 
@@ -44,12 +44,19 @@ private:
     */
     void SetModelStatus();
 
+    void Move();
+
 
 
 public: // Get function
     const Vector3& GetPosition()
     {
         return m_position;
+    }
+
+    const Quaternion& GetRotation()
+    {
+        return m_rotation;
     }
 
 
@@ -66,6 +73,8 @@ private: // data menber
     ModelRender* m_modelCharacter = { nullptr }; // プレイヤーキャラクターのモデル
     //GamePad* m_gamePad = nullptr;
     Actor* m_otherActor = nullptr; // 対戦相手
+    CharacterController m_charaCon;
+
 
     ////////////////////////////////////////////////////////////
     // キャラクターのステータス

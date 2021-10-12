@@ -26,7 +26,7 @@ void MyDebug::Init()
     m_player[con::enOtherPlayer]->DebugInit("Assets/modelData/unityChan.tkm", con::enOtherPlayer,
         pos[con::enOtherPlayer], rotAngle[con::enOtherPlayer]);
 
-    m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal);
+    m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal, igo::className::PLAYER_CAMERA);
 
     //m_actor[con::enPlayer] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
     //m_actor[con::enPlayer]->DebugInit("Assets/modelData/unityChan.tkm", con::enPlayer, pos[0]);
