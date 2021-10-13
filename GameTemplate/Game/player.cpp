@@ -45,9 +45,13 @@ void Player::Init(
 void Player::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot)
 {
     m_gamePad = g_pad[playerNum];
+
+    m_playerNum = playerNum;
     
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
     m_actor->DebugInit(filePath, playerNum, initPos, initRot);
+
+    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 }
 
 void Player::Update()
@@ -119,17 +123,14 @@ const Vector3& Player::Move()
     Vector3 pospos = { 0.0f,0.0f,0.0f };
 
     if (m_gamePad->GetLStickXF() != 0.0f) {
-        pospos.x += m_gamePad->GetLStickXF() * characterSpeed;
+        pospos.x -= m_gamePad->GetLStickXF() * characterSpeed;
     }
     if (m_gamePad->GetLStickYF() != 0.0f) {
-        pospos.z += m_gamePad->GetLStickYF() * characterSpeed;
+        pospos.z -= m_gamePad->GetLStickYF() * characterSpeed;
     }
 
     //キャラクターの移動量を計算
     Vector3 moveAmount = cameraFront * pospos.z + cameraRight * pospos.x;
-
-    // 相手プレイヤーの移動処理に自分目線のカメラ情報を使っているため、
-    // 相手の移動処理を上下反転するか、相手目線のカメラを別で作る必要がある
 
     return moveAmount;
 }

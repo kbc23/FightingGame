@@ -5,8 +5,22 @@
 #include "player.h"
 #include "player_camera.h"
 
+namespace
+{
+    enum EnPlayer
+    {
+        enPlayer,
+        enOtherPlayer
+    };
+}
+
 void MyDebug::Init()
 {
+    m_player[enPlayer] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
+    m_player[enOtherPlayer] = NewGO<Player>(igo::EnPriority::normal, igo::className::OTHER_PLAYER);
+
+    m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal, igo::className::PLAYER_CAMERA);
+
     const Vector3 pos[] = {
     {100.0f, 0.0f, 0.0f},		// 1PÇÃèâä˙ç¿ïW
     {-100.0f, 0.0f, 0.0f},		// 2PÇÃèâä˙ç¿ïW
@@ -16,19 +30,22 @@ void MyDebug::Init()
     0.0f
     };
 
-    m_player[con::enPlayer] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
-    m_player[con::enPlayer]->DebugInit("Assets/modelData/unityChan.tkm", con::enPlayer,
-        pos[con::enPlayer], rotAngle[con::enPlayer]);
-    m_player[con::enOtherPlayer] = NewGO<Player>(igo::EnPriority::normal, igo::className::OTHER_PLAYER);
-    m_player[con::enOtherPlayer]->DebugInit("Assets/modelData/unityChan.tkm", con::enOtherPlayer,
-        pos[con::enOtherPlayer], rotAngle[con::enOtherPlayer]);
+    m_playerCamera->SetPlayerNum(enPlayer, enOtherPlayer);
 
-    m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal, igo::className::PLAYER_CAMERA);
+    m_player[enPlayer]->DebugInit("Assets/modelData/unityChan.tkm", enPlayer,
+        pos[enPlayer], rotAngle[enPlayer]);
+    m_player[enOtherPlayer]->DebugInit("Assets/modelData/unityChan.tkm", enOtherPlayer,
+        pos[enOtherPlayer], rotAngle[enOtherPlayer]);
+
+    m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
+    m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
+
+    m_modelStage->SetPosition({ 0.0f,0.0f,0.0f });
 }
 
 void MyDebug::Finish()
 {
-
+    DeleteGO(m_modelStage);
 }
 
 bool MyDebug::Start()
@@ -38,8 +55,8 @@ bool MyDebug::Start()
 
 void MyDebug::Update()
 {
-    m_playerCamera->SetPlayerPosition(m_player[con::enPlayer]->GetPosition());
-    m_playerCamera->SetEnemyPosition(m_player[con::enOtherPlayer]->GetPosition());
+    m_playerCamera->SetPlayerPosition(m_player[enPlayer]->GetPosition());
+    m_playerCamera->SetEnemyPosition(m_player[enOtherPlayer]->GetPosition());
 }
 
 void MyDebug::SoloMode()

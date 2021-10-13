@@ -36,16 +36,6 @@ private:
 	void OnError();
 
 
-	////////////////////////////////////////////////////////////
-	// １人でデバッグする用
-	////////////////////////////////////////////////////////////
-private:
-	/**
-	 * @brief ネットに繋がず、１人でプレイする（デバッグ用）
-	*/
-	void SoloMode();
-
-
 private: //enum
 	enum class EnStep {
 		enStep_InitNetWork,				// ネットワークの初期化をおこなう。
@@ -67,11 +57,7 @@ private: //data menber
 	// クラスのインスタンス
 	////////////////////////////////////////////////////////////
 	
-	ModelRender* m_modelCharacter = { nullptr }; // キャラクターのモデル
-    ModelRender* m_modelStage = nullptr; // ステージのモデル
-    Shadow* m_shadowModelCharacter = nullptr; // キャラクターの影
 	Player* m_player[2];
-	Actor* m_actor[2]; // キャラクター
 	NetWork* m_onlineTwoPlayerMatchEngine = nullptr; // 完全同期二人対戦用エンジン
 	PlayerCamera* m_playerCamera = nullptr;
 

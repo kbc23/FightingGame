@@ -9,22 +9,12 @@
 
 Game::Game()
 {
-	//m_modelCharacter = NewGO<ModelRender>(0);
-	//m_modelCharacter->Init("Assets/modelData/unityChan.tkm", false, true);
 
-    //m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
-    //m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
-
-	//m_modelStage->SetPosition(m_position);
-
-    //g_camera3D->SetTarget({ 0.0f,0.0f,0.0f });
-    //g_camera3D->SetPosition({ 0.0f,800.0f,300.0f });
 }
 
 Game::~Game()
 {
-    DeleteGO(m_modelCharacter);
-    DeleteGO(m_modelStage);
+
 }
 
 bool Game::Start()
@@ -206,30 +196,4 @@ void Game::OnError()
 {
 	MessageBoxA(nullptr, "通信エラーが起きました。", "エラー", MB_OK);
 	m_step = EnStep::enStep_Error;
-}
-
-////////////////////////////////////////////////////////////
-// １人でデバッグする用
-////////////////////////////////////////////////////////////
-
-void Game::SoloMode()
-{
-  if (g_pad[0]->GetLStickXF() != 0.0f) {
-      m_position.x -= g_pad[0]->GetLStickXF() * 5.0f;
-  }
-  if (g_pad[0]->GetLStickYF() != 0.0f) {
-      m_position.z -= g_pad[0]->GetLStickYF() * 5.0f;
-  }
-
-  if (g_pad[0]->IsPress(enButtonA) == true) {
-	  m_rotY += 0.01f;
-	  m_rotation.SetRotationY(m_rotY);
-  }
-  if (g_pad[0]->IsPress(enButtonB) == true) {
-	  m_rotY -= 0.01f;
-	  m_rotation.SetRotationY(m_rotY);
-  }
-
-  m_modelCharacter->SetPosition(m_position);
-  m_modelCharacter->SetRotation(m_rotation);
 }

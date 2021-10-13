@@ -1,4 +1,5 @@
 #pragma once
+#include "model_render.h"
 
 class Player;
 class PlayerCamera;
@@ -87,6 +88,8 @@ private: // data menber
 
 	Player* m_player[2] = { nullptr };
 	PlayerCamera* m_playerCamera = nullptr;
+	ModelRender* m_modelStage = nullptr; // ステージのモデル
+
 
 	////////////////////////////////////////////////////////////
 	// フラグ
