@@ -69,8 +69,31 @@ void Actor::Update()
 void Actor::AddStatus(Vector3& addMoveAmount, const float addRotAngle)
 {
     m_position = m_charaCon.Execute(addMoveAmount, 1.0f); // キャラクターの位置を決定
-    m_rotY += addRotAngle;
-    m_rotation.SetRotationY(m_rotY); // キャラクターの向きを決定
+    Turn(addMoveAmount);
+
+
+
+    //m_rotY += addRotAngle;
+    //m_rotation.SetRotationY(m_rotY); // キャラクターの向きを決定
+}
+
+void Actor::Turn(Vector3& addMoveAmount)
+{
+    if (fabsf(addMoveAmount.x) < 0.001f
+        && fabsf(addMoveAmount.z) < 0.001f) {
+        //m_moveSpeed.xとm_moveSpeed.zの絶対値がともに0.001以下ということは
+        //このフレームではキャラは移動していないので旋回する必要はない。
+        return;
+    }
+    //atan2はtanθの値を角度(ラジアン単位)に変換してくれる関数。
+    //m_moveSpeed.x / m_moveSpeed.zの結果はtanθになる。
+    //atan2を使用して、角度を求めている。
+    //これが回転角度になる。
+    float angle = atan2(addMoveAmount.x, addMoveAmount.z);
+    //atanが返してくる角度はラジアン単位なので
+    //SetRotationDegではなくSetRotationを使用する。
+    m_rotation.SetRotation(Vector3::AxisY, angle);
+
 }
 
 void Actor::SetModelStatus()

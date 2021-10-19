@@ -42,7 +42,7 @@ public:
     */
     void AddStatus(Vector3& addMoveAmount, const float addRotAngle);
 
-
+    void Turn(Vector3& addMoveAmount);
 
 private:
     /**

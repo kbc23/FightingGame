@@ -80,12 +80,11 @@ void Player::Update()
     if (true == m_flagAttack) {
         ++m_attackTime;
         if (120 <= m_attackTime) {
-            m_attackJudgment->Release();
+            m_attackJudgment->Release(); // UŒ‚”»’è‚Ìíœ
             m_flagAttack = false;
             m_attackTime = 0;
         }
     }
-
     // Debug end
 }
 
@@ -160,6 +159,8 @@ const Vector3& Player::Move()
 
     return moveAmount;
 }
+
+void Turn();
 
 void Player::HitAttack()
 {
