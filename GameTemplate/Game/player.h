@@ -2,6 +2,7 @@
 #include "actor.h"
 
 class PlayerCamera;
+class AttackJudgment;
 
 class Player : public IGameObject
 {
@@ -60,6 +61,15 @@ public: // Get function
         return *m_actor;
     }
 
+    /**
+     * @brief 剛体を取得する関数。
+     * @return 剛体
+    */
+    RigidBody* GetRigidBody()
+    {
+        return m_actor->GetRigidBody();
+    }
+
 
 private: // constant
     const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
@@ -77,6 +87,7 @@ private: // data menber
     Actor* m_actor = nullptr; // キャラクター
     GamePad* m_gamePad = nullptr; // ゲームパッド
     Player* m_otherPlayer = nullptr; // 対戦相手
+    AttackJudgment* m_attackJudgment = nullptr; // 攻撃判定
 
     //////////////////////////////
     // FindGO

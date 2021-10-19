@@ -41,19 +41,26 @@ public:
 		rot.CopyTo(btRot);
 		btTrans.setRotation(btRot);
 	}
-	void	setIgnoreCollisionCheck(const btCollisionObject* co, bool ignoreCollisionCheck) {
+
+	void setIgnoreCollisionCheck(const btCollisionObject* co, bool ignoreCollisionCheck) {
 		m_ghostObject.setIgnoreCollisionCheck(co, ignoreCollisionCheck);
 	}
+
 	btGhostObject* GetGhostObject() { return &m_ghostObject; }
 
 	bool IsRegistPhysicsWorld() {
 		return m_isRegistPhysicsWorld;
 	}
+
+
 private:
 	/*!
 	* @brief	ゴースト作成処理の共通処理。
 	*/
 	void CreateCommon(Vector3 pos, Quaternion rot) override;
+
+
+
 private:
 	bool						m_isRegistPhysicsWorld = false;	//!<物理ワールドに登録しているかどうかのフラグ。
 	btGhostObject				m_ghostObject;	//!<ゴースト

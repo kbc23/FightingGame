@@ -63,6 +63,11 @@ public: // Get function
         return m_rotation;
     }
 
+    RigidBody* GetRigidBody()
+    {
+        return m_charaCon.GetRigidBody();
+    }
+
 
 
 

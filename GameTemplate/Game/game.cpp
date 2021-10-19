@@ -97,7 +97,7 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 {
 	// Ç∑Ç◊ÇƒÇÃÉvÉåÉCÉÑÅ[Ç™ëµÇ¡ÇΩ
 	m_player[0] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
-	m_player[1] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
+	m_player[1] = NewGO<Player>(igo::EnPriority::normal, igo::className::OTHER_PLAYER);
 
 	m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal, igo::className::PLAYER_CAMERA);
 

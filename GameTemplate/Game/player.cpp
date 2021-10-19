@@ -3,6 +3,7 @@
 
 #include "constant.h"
 #include "player_camera.h"
+#include "attack_judgment.h"
 
 Player::Player()
 {
@@ -11,7 +12,8 @@ Player::Player()
 
 Player::~Player()
 {
-
+    DeleteGO(m_actor);
+    DeleteGO(m_attackJudgment);
 }
 
 bool Player::Start()
@@ -40,6 +42,8 @@ void Player::Init(
     );
 
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
+
+    m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
 }
 
 void Player::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot)
@@ -52,11 +56,23 @@ void Player::DebugInit(const char* filePath, const int playerNum, const Vector3&
     m_actor->DebugInit(filePath, playerNum, initPos, initRot);
 
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
+
+    m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
 }
 
 void Player::Update()
 {
     Controller();
+
+    // Debug start
+    float rotY = 0.0f;
+    rotY = m_attackJudgment->DebugRotation();
+    if (0.0f != rotY) {
+        Vector3 moveAmount = { 0.0f,0.0f,0.0f }; // プレイヤーの移動量
+
+        m_actor->AddStatus(moveAmount, rotY);
+    }
+    // Debug end
 }
 
 void Player::Controller()
@@ -79,7 +95,9 @@ void Player::Controller()
     // Aボタン: 通常攻撃
     if (m_gamePad->IsPress(enButtonA) == true) {
         // Aボタンを押したときの処理
-        rotY += 0.01f; // 仮
+        //rotY += 0.01f; // 仮
+        // 攻撃判定のエリアを作成
+        m_attackJudgment->Create({ 0.0f,100.0f,0.0f }, g_quatIdentity, { 100.0f, 100.0f, 100.0f });
     }
     // Bボタン: 特殊攻撃
     if (m_gamePad->IsPress(enButtonB) == true) {
