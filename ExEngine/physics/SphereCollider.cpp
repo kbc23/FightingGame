@@ -8,7 +8,7 @@
 #include "SphereCollider.h"
 
 
-void SphereCollider::Create( const float radius )
-{
-	m_shape = std::make_unique<btSphereShape>(radius);
-}
+//void SphereCollider::Create( const float radius )
+//{
+//	m_shape = std::make_unique<btSphereShape>(radius);
+//}

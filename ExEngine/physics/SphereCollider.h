@@ -9,8 +9,12 @@
 class SphereCollider : public ICollider
 {
 public:
+	// LNK2019‚ª”­¶‚·‚é‚½‚ßƒCƒ“ƒ‰ƒCƒ“ŠÖ”‰»
+	void Create(const float radius)
+	{
+		m_shape = std::make_unique<btSphereShape>(radius);
+	}
 
-	void Create( const float radius );
 	btCollisionShape* GetBody() const override
 	{
 		return m_shape.get();

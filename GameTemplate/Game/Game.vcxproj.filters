@@ -75,6 +75,9 @@
     <Filter Include="MyCode\MainProcessing\Player">
       <UniqueIdentifier>{27eb1e4a-fcac-4398-8d63-4ff6e55c32ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCode\Engine\GhostObject">
+      <UniqueIdentifier>{d547e965-2903-46bd-9bb6-dea7718c021b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -274,6 +277,15 @@
     </ClCompile>
     <ClCompile Include="debug_wire_frame.cpp">
       <Filter>MyCode\Engine\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_judgment.cpp">
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="physics_object_base.cpp">
+      <Filter>MyCode\Engine\GhostObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ghost_object.cpp">
+      <Filter>MyCode\Engine\GhostObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -501,6 +513,15 @@
     </ClInclude>
     <ClInclude Include="debug_wire_frame.h">
       <Filter>MyCode\Engine\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_judgment.h">
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_object_base.h">
+      <Filter>MyCode\Engine\GhostObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ghost_object.h">
+      <Filter>MyCode\Engine\GhostObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
