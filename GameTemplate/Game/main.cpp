@@ -100,6 +100,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	if (false == debugModeStetus::StartDebugMode()) {
 		game = NewGO<Game>(igo::EnPriority::normal, igo::className::GAME);
 	}
+	// デバッグモードのとき
+	else {
+		PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	}
 	
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
@@ -140,6 +144,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		// モデルのレンダリング
 		GameObjectManager::GetInstance()->ExecuteRender(renderContext);
+
+		// ワイヤーフレームの描画（デバッグモード）
+		PhysicsWorld::GetInstance()->DebubDrawWorld(renderContext);
 		
 		//////////////////////////////////////
 		//絵を描くコードを書くのはここまで！！！

@@ -67,6 +67,11 @@ void PhysicsWorld::Init()
 	);
 
 	m_dynamicWorld->setGravity(btVector3(0, -100, 0));
+
+	//デバッグワイヤーフレームを初期化。
+	m_debugWireFrame.Init();
+	m_dynamicWorld->setDebugDrawer(&m_debugWireFrame);
+
 #if BUILD_LEVEL!=BUILD_LEVEL_MASTER
 	m_debugDraw.Init();
 	m_dynamicWorld->setDebugDrawer(&m_debugDraw);

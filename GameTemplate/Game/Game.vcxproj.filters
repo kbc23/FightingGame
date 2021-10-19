@@ -272,6 +272,9 @@
     <ClCompile Include="player_camera.cpp">
       <Filter>MyCode\MainProcessing\Player</Filter>
     </ClCompile>
+    <ClCompile Include="debug_wire_frame.cpp">
+      <Filter>MyCode\Engine\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -496,6 +499,9 @@
     <ClInclude Include="player_camera.h">
       <Filter>MyCode\MainProcessing\Player</Filter>
     </ClInclude>
+    <ClInclude Include="debug_wire_frame.h">
+      <Filter>MyCode\Engine\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\shader\sampleDrawShadowMap.fx">
@@ -505,6 +511,9 @@
       <Filter>MyCode\Assets\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Assets\shader\model.fx">
+      <Filter>MyCode\Assets\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\shader\debugWireFrame.fx">
       <Filter>MyCode\Assets\Shader</Filter>
     </FxCompile>
   </ItemGroup>
