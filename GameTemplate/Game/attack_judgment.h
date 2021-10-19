@@ -1,6 +1,6 @@
 #pragma once
+#include "ghost_object.h"
 
-class GhostObject;
 class Player;
 
 class AttackJudgment : public IGameObject
@@ -13,22 +13,34 @@ public:
 
 
 private:
-    bool CheckHit();
+    const bool CheckHit();
 
 
 
 public:
     /**
-     * @brief 攻撃判定の判定エリアの作成
+     * @brief 攻撃判定エリアの作成
      * @param pos 位置
      * @param rot 回転
     */
     void Create(const Vector3& pos, const Quaternion& rot, const Vector3& size);
 
+    /**
+     * @brief 攻撃判定エリアの削除
+    */
+    void Release()
+    {
+        m_ghostBox->Release();
+    }
+
+    /** Debug
+     * @brief 当たり判定が攻撃判定に触れているとき、モデルを回転させるための数値を受け取る関数
+     * @return 
+    */
     const float DebugRotation()
     {
         if (true == CheckHit()) {
-            return 10.0f;
+            return 1.0f;
         }
 
         return 0.0f;

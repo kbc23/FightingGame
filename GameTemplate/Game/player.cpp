@@ -46,11 +46,17 @@ void Player::Init(
     m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
 }
 
-void Player::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot)
+void Player::DebugInit(
+    const char* filePath,
+    const int playerNum,
+    const Vector3& initPos,
+    const float initRot,
+    Player* pOtherPlayer
+)
 {
     m_gamePad = g_pad[playerNum];
-
     m_playerNum = playerNum;
+    m_otherPlayer = pOtherPlayer;
     
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
     m_actor->DebugInit(filePath, playerNum, initPos, initRot);
@@ -68,10 +74,18 @@ void Player::Update()
     float rotY = 0.0f;
     rotY = m_attackJudgment->DebugRotation();
     if (0.0f != rotY) {
-        Vector3 moveAmount = { 0.0f,0.0f,0.0f }; // プレイヤーの移動量
-
-        m_actor->AddStatus(moveAmount, rotY);
+        DebugHitAttack(rotY);
     }
+
+    if (true == m_flagAttack) {
+        ++m_attackTime;
+        if (120 <= m_attackTime) {
+            m_attackJudgment->Release();
+            m_flagAttack = false;
+            m_attackTime = 0;
+        }
+    }
+
     // Debug end
 }
 
@@ -85,22 +99,16 @@ void Player::Controller()
     float rotY = 0.0f; // プレイヤーの回転量
 
     // プレイヤーの移動
-    //if (m_gamePad->GetLStickXF() != 0.0f) {
-    //    moveAmount = Move();
-    //}
-    //if (m_gamePad->GetLStickYF() != 0.0f) {
-    //    moveAmount = Move();
-    //}
     moveAmount = Move();
+
     // Aボタン: 通常攻撃
-    if (m_gamePad->IsPress(enButtonA) == true) {
-        // Aボタンを押したときの処理
-        //rotY += 0.01f; // 仮
+    if (true == m_gamePad->IsPress(enButtonA) && false == m_flagAttack) {
         // 攻撃判定のエリアを作成
-        m_attackJudgment->Create({ 0.0f,100.0f,0.0f }, g_quatIdentity, { 100.0f, 100.0f, 100.0f });
+        m_attackJudgment->Create(m_actor->GetPosition(), m_actor->GetRotation(), { 100.0f, 100.0f, 100.0f });
+        m_flagAttack = true;
     }
     // Bボタン: 特殊攻撃
-    if (m_gamePad->IsPress(enButtonB) == true) {
+    if (true == m_gamePad->IsPress(enButtonB)) {
         // Bボタンを押したときの処理
         rotY -= 0.01f; // 仮
     }
@@ -151,4 +159,16 @@ const Vector3& Player::Move()
     Vector3 moveAmount = cameraFront * pospos.z + cameraRight * pospos.x;
 
     return moveAmount;
+}
+
+void Player::HitAttack()
+{
+    // ここでは、相手プレイヤーが自分の攻撃判定に触れた際の処理を記載する
+}
+
+void Player::DebugHitAttack(const float rotY)
+{
+    Vector3 moveAmount = { 0.0f,0.0f,0.0f }; // プレイヤーの移動量
+
+    m_otherPlayer->GetActor().AddStatus(moveAmount, rotY);
 }

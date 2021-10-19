@@ -34,7 +34,13 @@ public:
      * @param initPos ‰ŠúˆÊ’u
      * @param initRot ‰ŠúŒü‚«
     */
-    void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot);
+    void DebugInit(
+        const char* filePath,
+        const int playerNum,
+        const Vector3& initPos,
+        const float initRot,
+        Player* pOtherPlayer
+    );
 
 
 private:
@@ -48,6 +54,10 @@ private:
      * @return ˆÚ“®—Ê
     */
     const Vector3& Move();
+
+    void HitAttack();
+
+    void DebugHitAttack(const float rotY);
 
 
 public: // Get function
@@ -112,4 +122,7 @@ private: // data menber
     ////////////////////////////////////////////////////////////
 
     int m_playerNum = -1;
+
+    int m_attackTime = 0;
+    bool m_flagAttack = false;
 };

@@ -33,9 +33,9 @@ void MyDebug::Init()
     m_playerCamera->SetPlayerNum(enPlayer, enOtherPlayer);
 
     m_player[enPlayer]->DebugInit("Assets/modelData/unityChan.tkm", enPlayer,
-        pos[enPlayer], rotAngle[enPlayer]);
+        pos[enPlayer], rotAngle[enPlayer], m_player[enOtherPlayer]);
     m_player[enOtherPlayer]->DebugInit("Assets/modelData/unityChan.tkm", enOtherPlayer,
-        pos[enOtherPlayer], rotAngle[enOtherPlayer]);
+        pos[enOtherPlayer], rotAngle[enOtherPlayer], m_player[enPlayer]);
 
     m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);

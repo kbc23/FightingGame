@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "attack_judgment.h"
 
-#include "ghost_object.h"
 #include "player.h"
 
 AttackJudgment::AttackJudgment()
@@ -18,7 +17,7 @@ bool AttackJudgment::Start()
 {
     m_ghostBox = new GhostObject;
 
-    m_findPlayer = FindGO<Player>(igo::className::PLAYER);
+    m_findPlayer = FindGO<Player>(igo::className::OTHER_PLAYER);
 
     return true;
 }
@@ -28,9 +27,9 @@ void AttackJudgment::Update()
 
 }
 
-bool AttackJudgment::CheckHit()
+const bool AttackJudgment::CheckHit()
 {
-    bool checkHit = false;
+    bool checkHit = false; // “–‚½‚è”»’è‚ÆUŒ‚”»’è‚ªG‚ê‚Ä‚¢‚é‚©
 
     //ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è‚ÆUŒ‚”»’è‚ªG‚ê‚½‚©‚Ì”»’è‚¾‚ÆŽv‚¤
     PhysicsWorld::GetInstance()->ContactTest(*m_findPlayer->GetRigidBody(),
