@@ -4,6 +4,25 @@
 #include "constant.h"
 #include "player_camera.h"
 #include "attack_judgment.h"
+#include "player_UI.h"
+
+
+
+namespace nsAttackData
+{
+    ////////////////////////////////////////////////////////////
+    // 通常攻撃
+    ////////////////////////////////////////////////////////////
+
+    namespace nsNormalAttack
+    {
+        const int POWER = 100;
+        const int TIME_LIMIT = 30;
+        const Vector3 RANGE = { 100.0f,100.0f,100.0f };
+    }
+}
+
+
 
 Player::Player()
 {
@@ -44,6 +63,7 @@ void Player::Init(
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
     m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
+    m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 }
 
 void Player::DebugInit(
@@ -64,6 +84,7 @@ void Player::DebugInit(
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
     m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
+    m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 }
 
 void Player::Update()
@@ -71,26 +92,34 @@ void Player::Update()
     Controller();
 
     // Debug start
-    float rotY = 0.0f;
-    rotY = m_attackJudgment->DebugRotation();
-    if (0.0f != rotY) {
-        DebugHitAttack(rotY);
-    }
+    //float rotY = 0.0f;
+    //rotY = m_attackJudgment->DebugRotation();
+    //if (0.0f != rotY) {
+    //    DebugHitAttack(rotY);
+    //}
 
-    if (true == m_flagAttack) {
-        ++m_attackTime;
-        if (120 <= m_attackTime) {
-            m_attackJudgment->Release(); // 攻撃判定の削除
-            m_flagAttack = false;
-            m_attackTime = 0;
-        }
-    }
+    //if (true == m_flagAttack) {
+    //    ++m_attackTime;
+    //    if (120 <= m_attackTime) {
+    //        m_attackJudgment->Release(); // 攻撃判定の削除
+    //        m_flagAttack = false;
+    //        m_attackTime = 0;
+    //    }
+    //}
     // Debug end
+
+    AttackUpdate();
+
+    //////////////////////////////
+    // UIのUpdate
+    //////////////////////////////
+
+    m_playerUI->UpdateHpUI(m_hp);
 }
 
 void Player::Controller()
 {
-    if (false == m_flagOperation) {
+    if (false == m_flagOperation || true == m_attackData.flagAttackNow) {
         return;
     }
 
@@ -103,8 +132,10 @@ void Player::Controller()
     // Aボタン: 通常攻撃
     if (true == m_gamePad->IsPress(enButtonA) && false == m_flagAttack) {
         // 攻撃判定のエリアを作成
-        m_attackJudgment->Create(m_actor->GetPosition(), m_actor->GetRotation(), { 100.0f, 100.0f, 100.0f });
-        m_flagAttack = true;
+        AttackCreate(EnAttackType::normal);
+
+        //m_attackJudgment->Create(m_actor->GetPosition(), m_actor->GetRotation(), { 100.0f, 100.0f, 100.0f });
+        //m_flagAttack = true;
     }
     // Bボタン: 特殊攻撃
     if (true == m_gamePad->IsPress(enButtonB)) {
@@ -160,7 +191,64 @@ const Vector3& Player::Move()
     return moveAmount;
 }
 
-void Turn();
+////////////////////////////////////////////////////////////
+// 攻撃関連
+////////////////////////////////////////////////////////////
+
+void Player::AttackCreate(const int attackType)
+{
+    // 通常攻撃
+    if (EnAttackType::normal == attackType) {
+        m_attackData.power = nsAttackData::nsNormalAttack::POWER;
+        m_attackData.timeLimit = nsAttackData::nsNormalAttack::TIME_LIMIT;
+        m_attackData.Range = nsAttackData::nsNormalAttack::RANGE;
+        m_attackData.flagAttackNow = true;
+        m_attackData.attackType = EnAttackType::normal;
+    }
+
+    // キャラクターの前方を攻撃範囲にする
+    // キャラクターの前方向を取得して生成位置を変更する
+    Vector3 createPosition = CreateAttackPosition();
+
+    // 攻撃範囲を生成
+    m_attackJudgment->Create(createPosition, m_actor->GetRotation(), m_attackData.Range);
+}
+
+const Vector3& Player::CreateAttackPosition()
+{
+    // 生成する攻撃範囲のポジション
+    // 前方向に攻撃範囲の前方向の半分の値を追加する
+    Vector3 attackRangePosition =
+    {
+        m_actor->GetPosition().x,
+        m_actor->GetPosition().y,
+        m_actor->GetPosition().z - m_attackData.Range.z / 2 // カメラの前方向に攻撃範囲の前方向の半分の値を追加
+    };
+    Vector3 playerPosition = m_actor->GetPosition(); // キャラクターのポジション
+
+    Vector3 toPos = attackRangePosition - playerPosition; // 攻撃範囲のポジションからキャラクターのポジションのベクトルを取得
+    m_actor->GetRotation().Apply(toPos); // キャラクターのQuaternionを使ってベクトルをプレイヤーの前方向に回転させる
+
+    return playerPosition - toPos; // 上記で取得した情報から、攻撃範囲を生成するポジションを取得
+}
+
+void Player::AttackUpdate()
+{
+    if (false == m_attackData.flagAttackNow) {
+        return;
+    }
+
+    // 攻撃が当たったか
+    if (true == m_attackJudgment->CheckHit()) {
+        HitAttack();
+    }
+
+    ++m_attackData.time;
+
+    if (m_attackData.timeLimit <= m_attackData.time) {
+        ResetAttackData();
+    }
+}
 
 void Player::HitAttack()
 {
@@ -172,4 +260,16 @@ void Player::DebugHitAttack(const float rotY)
     Vector3 moveAmount = { 0.0f,0.0f,0.0f }; // プレイヤーの移動量
 
     m_otherPlayer->GetActor().AddStatus(moveAmount, rotY);
+}
+
+void Player::ResetAttackData()
+{
+    m_attackJudgment->Release(); // 攻撃判定の削除
+
+    m_attackData.power = 0;
+    m_attackData.time = 0;
+    m_attackData.timeLimit = 0;
+    m_attackData.Range = Vector3::Zero;
+    m_attackData.flagAlreadyAttacked = false;
+    m_attackData.flagAttackNow = false;
 }

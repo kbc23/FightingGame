@@ -42,6 +42,10 @@ public:
     */
     void AddStatus(Vector3& addMoveAmount, const float addRotAngle);
 
+    /**
+     * @brief キャラクターが移動方向に向く処理
+     * @param addMoveAmount 更新する移動量
+    */
     void Turn(Vector3& addMoveAmount);
 
 private:

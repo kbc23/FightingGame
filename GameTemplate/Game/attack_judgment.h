@@ -12,7 +12,7 @@ public:
     void Update() override final;
 
 
-private:
+public:
     const bool CheckHit();
 
 

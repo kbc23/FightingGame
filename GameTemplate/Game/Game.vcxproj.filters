@@ -78,6 +78,9 @@
     <Filter Include="MyCode\Engine\GhostObject">
       <UniqueIdentifier>{d547e965-2903-46bd-9bb6-dea7718c021b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCode\Engine\Font">
+      <UniqueIdentifier>{243d6f5d-eac1-44e5-b5cd-567b51b236ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -286,6 +289,12 @@
     </ClCompile>
     <ClCompile Include="ghost_object.cpp">
       <Filter>MyCode\Engine\GhostObject</Filter>
+    </ClCompile>
+    <ClCompile Include="font_render.cpp">
+      <Filter>MyCode\Engine\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="player_UI.cpp">
+      <Filter>MyCode\MainProcessing\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -522,6 +531,12 @@
     </ClInclude>
     <ClInclude Include="ghost_object.h">
       <Filter>MyCode\Engine\GhostObject</Filter>
+    </ClInclude>
+    <ClInclude Include="font_render.h">
+      <Filter>MyCode\Engine\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="player_UI.h">
+      <Filter>MyCode\MainProcessing\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

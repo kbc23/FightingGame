@@ -3,6 +3,7 @@
 
 class PlayerCamera;
 class AttackJudgment;
+class PlayerUI;
 
 class Player : public IGameObject
 {
@@ -55,9 +56,35 @@ private:
     */
     const Vector3& Move();
 
+    ////////////////////////////////////////////////////////////
+    // 攻撃関連
+    ////////////////////////////////////////////////////////////
+
+    /**
+     * @brief 攻撃情報を作成
+    */
+    void AttackCreate(const int attackType);
+
+    /**
+     * @brief 攻撃範囲の位置情報を作成
+     * 位置がプレイヤーの前方のときに使用
+     * @return 攻撃範囲の位置
+    */
+    const Vector3& CreateAttackPosition();
+
+    void AttackUpdate();
+
+    /**
+     * @brief 攻撃が当たった際の処理
+    */
     void HitAttack();
 
     void DebugHitAttack(const float rotY);
+    
+    /**
+     * @brief 攻撃情報をリセット
+    */
+    void ResetAttackData();
 
 
 public: // Get function
@@ -85,6 +112,35 @@ private: // constant
     const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
 
 
+private: // enum
+    /**
+     * @brief 攻撃の種類
+    */
+    enum EnAttackType
+    {
+        notAttacking, // 攻撃していない
+        normal, // 通常攻撃
+    };
+
+
+private: // struct
+    /**
+     * @brief 攻撃情報に関するデータの構造体
+    */
+    struct StAttackData
+    {
+        int power = 0; // 攻撃力
+        int time = 0; // 攻撃時間
+        int timeLimit = 0; // 攻撃の制限時間
+        Vector3 Range = Vector3::Zero; //攻撃範囲
+        bool flagAlreadyAttacked = false; // 攻撃がもう当たっているか
+        bool flagAttackNow = false; // 現在攻撃中か
+        int attackType = EnAttackType::notAttacking; //攻撃の種類
+    };
+
+    StAttackData m_attackData;
+
+
 private: // data menber
     ////////////////////////////////////////////////////////////
     // クラスのインスタンス
@@ -98,6 +154,7 @@ private: // data menber
     GamePad* m_gamePad = nullptr; // ゲームパッド
     Player* m_otherPlayer = nullptr; // 対戦相手
     AttackJudgment* m_attackJudgment = nullptr; // 攻撃判定
+    PlayerUI* m_playerUI = nullptr; // プレイヤーに関するUI
 
     //////////////////////////////
     // FindGO
@@ -121,7 +178,7 @@ private: // data menber
     // その他
     ////////////////////////////////////////////////////////////
 
-    int m_playerNum = -1;
+    int m_playerNum = -1; // 自分か相手のどちらかを区別する番号
 
     int m_attackTime = 0;
     bool m_flagAttack = false;
