@@ -77,8 +77,8 @@ void Game::Update()
 		//	ReturnCharacterSelect();
 		//}
 
-		m_playerCamera->SetPlayerPosition(m_player[m_playerNo]->GetPosition());
-		m_playerCamera->SetEnemyPosition(m_player[m_otherPlayerNo]->GetPosition());
+		m_playerCamera->SetPlayerPosition(m_player[m_playerNum]->GetPosition());
+		m_playerCamera->SetEnemyPosition(m_player[m_otherPlayerNum]->GetPosition());
 	}break;
 	case EnStep::enStep_Error:
 		//ReturnCharacterSelect();
@@ -110,76 +110,32 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 		90.0f
 	};
 	// 自分と相手のプレイヤー番号を取得
-	m_playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
-	m_otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
+	m_playerNum = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
+	m_otherPlayerNum = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
 
-	m_playerCamera->SetPlayerNum(m_playerNo, m_otherPlayerNo);
+	m_playerCamera->SetPlayerNum(m_playerNum, m_otherPlayerNum);
 
 	// 自分のプレイヤー情報を初期化
-	m_player[m_playerNo]->Init(
-		m_onlineTwoPlayerMatchEngine->GetGamePad(m_playerNo),
-		pos[m_playerNo],
-		rotAngle[m_playerNo],
-		m_playerNo,
-		m_player[m_otherPlayerNo]
+	m_player[m_playerNum]->Init(
+		m_onlineTwoPlayerMatchEngine->GetGamePad(m_playerNum),
+		pos[m_playerNum],
+		rotAngle[m_playerNum],
+		m_playerNum,
+		m_player[m_otherPlayerNum]
 	);
 	// 相手のプレイヤー情報を初期化
-	m_player[m_otherPlayerNo]->Init(
-		m_onlineTwoPlayerMatchEngine->GetGamePad(m_otherPlayerNo),
-		pos[m_otherPlayerNo],
-		rotAngle[m_otherPlayerNo],
-		m_otherPlayerNo,
-		m_player[m_playerNo]
+	m_player[m_otherPlayerNum]->Init(
+		m_onlineTwoPlayerMatchEngine->GetGamePad(m_otherPlayerNum),
+		pos[m_otherPlayerNum],
+		rotAngle[m_otherPlayerNum],
+		m_otherPlayerNum,
+		m_player[m_playerNum]
 	);
 
 	// ロードが終わってゲーム開始可能になったことを通知する。
 	m_onlineTwoPlayerMatchEngine->NotifyPossibleStartPlayGame();
 	// ほかのプレイヤーがゲーム開始可能になるまで待つ。
 	m_step = EnStep::enStep_WaitAllPlayerStartGame;
-
-	//m_fontRender.SetText(L"WaitAllPlayerStartGame!!");
-
-	return;
-
-	// 下と上は別
-	// すべてのプレイヤーが揃った
-	// モデル関連のNewGO
-	//m_actor[0] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-	//m_actor[1] = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-	//const Vector3 pos2[] = {
-	//	{100.0f, 0.0f, 0.0f},		// 1Pの初期座標
-	//	{-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
-	//};
-	//float rotAngle2[] = {
-	//	-90.0f,
-	//	90.0f
-	//};
-
-	//// 自分のプレイヤー番号を取得
-	//int playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
-	//int otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
-	//// 自分
-	//m_actor[playerNo]->Init(
-	//	m_onlineTwoPlayerMatchEngine->GetGamePad(playerNo),
-	//	"Assets/modelData/unityChan.tkm",
-	//	pos2[playerNo],
-	//	rotAngle2[playerNo],
-	//	m_actor[otherPlayerNo]
-	//);
-	//// 対戦相手
-	//m_actor[otherPlayerNo]->Init(
-	//	m_onlineTwoPlayerMatchEngine->GetGamePad(otherPlayerNo),
-	//	"Assets/modelData/unityChan.tkm",
-	//	pos2[otherPlayerNo],
-	//	rotAngle2[otherPlayerNo],
-	//	m_actor[playerNo]
-	//);
-
-
-	//// ロードが終わってゲーム開始可能になったことを通知する。
-	//m_onlineTwoPlayerMatchEngine->NotifyPossibleStartPlayGame();
-	//// ほかのプレイヤーがゲーム開始可能になるまで待つ。
-	//m_step = EnStep::enStep_WaitAllPlayerStartGame;
 
 	//m_fontRender.SetText(L"WaitAllPlayerStartGame!!");
 }

@@ -296,6 +296,9 @@
     <ClCompile Include="player_UI.cpp">
       <Filter>MyCode\MainProcessing\Player</Filter>
     </ClCompile>
+    <ClCompile Include="game_data.cpp">
+      <Filter>MyCode\MainProcessing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -537,6 +540,9 @@
     </ClInclude>
     <ClInclude Include="player_UI.h">
       <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="game_data.h">
+      <Filter>MyCode\MainProcessing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

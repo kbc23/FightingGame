@@ -71,7 +71,7 @@ private: //data menber
 
 	int m_charaNo = 0; // なんかある（多分選択したキャラクターのこと）
 
-	int m_playerNo = -1;
-	int m_otherPlayerNo = -1;
+	int m_playerNum = -1;
+	int m_otherPlayerNum = -1;
 
 };

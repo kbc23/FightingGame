@@ -296,6 +296,7 @@
     <ClCompile Include="attack_judgment.cpp" />
     <ClCompile Include="debug_wire_frame.cpp" />
     <ClCompile Include="font_render.cpp" />
+    <ClCompile Include="game_data.cpp" />
     <ClCompile Include="ghost_object.cpp" />
     <ClCompile Include="my_debug.cpp" />
     <ClCompile Include="game.cpp" />
@@ -388,6 +389,7 @@
     <ClInclude Include="font_render.h" />
     <ClInclude Include="FPSLimitter.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="game_data.h" />
     <ClInclude Include="ghost_object.h" />
     <ClInclude Include="my_debug.h" />
     <ClInclude Include="model_render.h" />

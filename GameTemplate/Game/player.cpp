@@ -19,6 +19,7 @@ namespace nsAttackData
         const int POWER = 100;
         const int TIME_LIMIT = 30;
         const Vector3 RANGE = { 100.0f,100.0f,100.0f };
+        const float POSITION_UP_Y = 50.0f;
     }
 }
 
@@ -91,23 +92,6 @@ void Player::Update()
 {
     Controller();
 
-    // Debug start
-    //float rotY = 0.0f;
-    //rotY = m_attackJudgment->DebugRotation();
-    //if (0.0f != rotY) {
-    //    DebugHitAttack(rotY);
-    //}
-
-    //if (true == m_flagAttack) {
-    //    ++m_attackTime;
-    //    if (120 <= m_attackTime) {
-    //        m_attackJudgment->Release(); // 攻撃判定の削除
-    //        m_flagAttack = false;
-    //        m_attackTime = 0;
-    //    }
-    //}
-    // Debug end
-
     AttackUpdate();
 
     //////////////////////////////
@@ -130,12 +114,9 @@ void Player::Controller()
     moveAmount = Move();
 
     // Aボタン: 通常攻撃
-    if (true == m_gamePad->IsPress(enButtonA) && false == m_flagAttack) {
+    if (true == m_gamePad->IsPress(enButtonA)) {
         // 攻撃判定のエリアを作成
         AttackCreate(EnAttackType::normal);
-
-        //m_attackJudgment->Create(m_actor->GetPosition(), m_actor->GetRotation(), { 100.0f, 100.0f, 100.0f });
-        //m_flagAttack = true;
     }
     // Bボタン: 特殊攻撃
     if (true == m_gamePad->IsPress(enButtonB)) {
@@ -202,6 +183,7 @@ void Player::AttackCreate(const int attackType)
         m_attackData.power = nsAttackData::nsNormalAttack::POWER;
         m_attackData.timeLimit = nsAttackData::nsNormalAttack::TIME_LIMIT;
         m_attackData.Range = nsAttackData::nsNormalAttack::RANGE;
+        m_attackData.positionUpY = nsAttackData::nsNormalAttack::POSITION_UP_Y;
         m_attackData.flagAttackNow = true;
         m_attackData.attackType = EnAttackType::normal;
     }
@@ -209,6 +191,9 @@ void Player::AttackCreate(const int attackType)
     // キャラクターの前方を攻撃範囲にする
     // キャラクターの前方向を取得して生成位置を変更する
     Vector3 createPosition = CreateAttackPosition();
+
+    // 指定した値だけY座標を上昇する
+    createPosition.y = m_attackData.positionUpY;
 
     // 攻撃範囲を生成
     m_attackJudgment->Create(createPosition, m_actor->GetRotation(), m_attackData.Range);
@@ -224,12 +209,16 @@ const Vector3& Player::CreateAttackPosition()
         m_actor->GetPosition().y,
         m_actor->GetPosition().z - m_attackData.Range.z / 2 // カメラの前方向に攻撃範囲の前方向の半分の値を追加
     };
-    Vector3 playerPosition = m_actor->GetPosition(); // キャラクターのポジション
+    // キャラクターのポジション
+    Vector3 playerPosition = m_actor->GetPosition();
 
-    Vector3 toPos = attackRangePosition - playerPosition; // 攻撃範囲のポジションからキャラクターのポジションのベクトルを取得
-    m_actor->GetRotation().Apply(toPos); // キャラクターのQuaternionを使ってベクトルをプレイヤーの前方向に回転させる
+    // 攻撃範囲のポジションからキャラクターのポジションのベクトルを取得
+    Vector3 toPos = attackRangePosition - playerPosition;
+    // キャラクターのQuaternionを使ってベクトルをプレイヤーの前方向に回転させる
+    m_actor->GetRotation().Apply(toPos);
 
-    return playerPosition - toPos; // 上記で取得した情報から、攻撃範囲を生成するポジションを取得
+    // 上記で取得した情報から、攻撃範囲を生成するポジションを取得
+    return playerPosition - toPos;
 }
 
 void Player::AttackUpdate()
@@ -238,8 +227,8 @@ void Player::AttackUpdate()
         return;
     }
 
-    // 攻撃が当たったか
-    if (true == m_attackJudgment->CheckHit()) {
+    // 攻撃が当たったか（攻撃がまだ当たっていないときのみ）
+    if (false == m_attackData.flagAlreadyAttacked && true == m_attackJudgment->CheckHit()) {
         HitAttack();
     }
 
@@ -253,6 +242,9 @@ void Player::AttackUpdate()
 void Player::HitAttack()
 {
     // ここでは、相手プレイヤーが自分の攻撃判定に触れた際の処理を記載する
+    m_otherPlayer->ReceiveDamage(m_attackData.power);
+
+    m_attackData.flagAlreadyAttacked = true;
 }
 
 void Player::DebugHitAttack(const float rotY)
@@ -270,6 +262,7 @@ void Player::ResetAttackData()
     m_attackData.time = 0;
     m_attackData.timeLimit = 0;
     m_attackData.Range = Vector3::Zero;
+    m_attackData.positionUpY = 0.0f;
     m_attackData.flagAlreadyAttacked = false;
     m_attackData.flagAttackNow = false;
 }

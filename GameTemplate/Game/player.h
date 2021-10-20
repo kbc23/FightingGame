@@ -108,6 +108,22 @@ public: // Get function
     }
 
 
+public: // Set function
+    /**
+     * @brief ダメージの処理
+     * @param damage ダメージ量
+    */
+    void ReceiveDamage(const int damage)
+    {
+        m_hp = m_hp - damage;
+
+        // HPが０未満の場合、HPを０に設定
+        if (0 > m_hp) {
+            m_hp = 0;
+        }
+    }
+
+
 private: // constant
     const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
 
@@ -133,9 +149,10 @@ private: // struct
         int time = 0; // 攻撃時間
         int timeLimit = 0; // 攻撃の制限時間
         Vector3 Range = Vector3::Zero; //攻撃範囲
+        float positionUpY = 0.0f; // 上昇させるY座標の量
         bool flagAlreadyAttacked = false; // 攻撃がもう当たっているか
         bool flagAttackNow = false; // 現在攻撃中か
-        int attackType = EnAttackType::notAttacking; //攻撃の種類
+        int attackType = EnAttackType::notAttacking; // 攻撃の種類
     };
 
     StAttackData m_attackData;
@@ -179,7 +196,4 @@ private: // data menber
     ////////////////////////////////////////////////////////////
 
     int m_playerNum = -1; // 自分か相手のどちらかを区別する番号
-
-    int m_attackTime = 0;
-    bool m_flagAttack = false;
 };
