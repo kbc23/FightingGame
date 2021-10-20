@@ -14,10 +14,12 @@ PlayerUI::~PlayerUI()
 
 bool PlayerUI::Start()
 {
+    m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
+
     return true;
 }
 
 void PlayerUI::Update()
 {
-
+    
 }

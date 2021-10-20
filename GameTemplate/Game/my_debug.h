@@ -3,6 +3,7 @@
 
 class Player;
 class PlayerCamera;
+class GameData;
 
 class MyDebug : public IGameObject
 {
@@ -89,7 +90,7 @@ private: // data menber
 	Player* m_player[2] = { nullptr };
 	PlayerCamera* m_playerCamera = nullptr;
 	ModelRender* m_modelStage = nullptr; // ステージのモデル
-
+	GameData* m_gameData = nullptr;
 
 	////////////////////////////////////////////////////////////
 	// フラグ

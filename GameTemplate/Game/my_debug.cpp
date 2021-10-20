@@ -4,6 +4,7 @@
 #include "constant.h"
 #include "player.h"
 #include "player_camera.h"
+#include "game_data.h"
 
 namespace
 {
@@ -29,6 +30,9 @@ void MyDebug::Init()
     -90.0f,
     0.0f
     };
+
+    m_gameData = NewGO<GameData>(igo::EnPriority::normal, igo::className::GAME_DATA);
+    m_gameData->SetPlayerNumAndOtherPlayerNum(enPlayer, enOtherPlayer);
 
     m_playerCamera->SetPlayerNum(enPlayer, enOtherPlayer);
 

@@ -3,9 +3,9 @@
 
 #include "constant.h"
 #include "my_debug.h"
-#include "actor.h"
 #include "player.h"
 #include "player_camera.h"
+#include "game_data.h"
 
 Game::Game()
 {
@@ -112,6 +112,9 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 	// Ž©•ª‚Æ‘ŠŽè‚ÌƒvƒŒƒCƒ„[”Ô†‚ðŽæ“¾
 	m_playerNum = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
 	m_otherPlayerNum = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
+
+	m_gameData = NewGO<GameData>(igo::EnPriority::normal, igo::className::GAME_DATA);
+	m_gameData->SetPlayerNumAndOtherPlayerNum(m_playerNum, m_otherPlayerNum);
 
 	m_playerCamera->SetPlayerNum(m_playerNum, m_otherPlayerNum);
 

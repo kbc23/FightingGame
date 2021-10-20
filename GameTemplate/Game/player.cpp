@@ -17,7 +17,7 @@ namespace nsAttackData
     namespace nsNormalAttack
     {
         const int POWER = 100;
-        const int TIME_LIMIT = 30;
+        const int TIME_LIMIT = 10;
         const Vector3 RANGE = { 100.0f,100.0f,100.0f };
         const float POSITION_UP_Y = 50.0f;
     }
@@ -98,7 +98,7 @@ void Player::Update()
     // UIのUpdate
     //////////////////////////////
 
-    m_playerUI->UpdateHpUI(m_hp);
+    m_playerUI->UpdateHpUI(m_hp, m_playerNum);
 }
 
 void Player::Controller()
@@ -114,14 +114,14 @@ void Player::Controller()
     moveAmount = Move();
 
     // Aボタン: 通常攻撃
-    if (true == m_gamePad->IsPress(enButtonA)) {
+    if (true == m_gamePad->IsTrigger(enButtonA)) {
         // 攻撃判定のエリアを作成
         AttackCreate(EnAttackType::normal);
     }
     // Bボタン: 特殊攻撃
-    if (true == m_gamePad->IsPress(enButtonB)) {
+    if (true == m_gamePad->IsTrigger(enButtonB)) {
         // Bボタンを押したときの処理
-        rotY -= 0.01f; // 仮
+        //rotY -= 0.01f; // 仮
     }
     // ?: 必殺技
     if (true) {
@@ -249,15 +249,18 @@ void Player::HitAttack()
 
 void Player::DebugHitAttack(const float rotY)
 {
-    Vector3 moveAmount = { 0.0f,0.0f,0.0f }; // プレイヤーの移動量
+    // プレイヤーの移動量
+    Vector3 moveAmount = { 0.0f,0.0f,0.0f };
 
     m_otherPlayer->GetActor().AddStatus(moveAmount, rotY);
 }
 
 void Player::ResetAttackData()
 {
-    m_attackJudgment->Release(); // 攻撃判定の削除
+    // 攻撃判定の削除
+    m_attackJudgment->Release();
 
+    // 攻撃時のステータスの初期化
     m_attackData.power = 0;
     m_attackData.time = 0;
     m_attackData.timeLimit = 0;

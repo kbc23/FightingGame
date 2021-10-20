@@ -1,5 +1,6 @@
 #pragma once
 #include "font_render.h"
+#include "game_data.h"
 
 /**
  * @brief プレイヤーに関するUIを管理するクラス
@@ -15,9 +16,20 @@ public:
 
 
 public: // Update data
-    void UpdateHpUI(const int hp)
+    void UpdateHpUI(const int hp, const int playerNum)
     {
         m_hpUI->SetText(hp);
+        SetPosition(playerNum);
+    }
+
+    void SetPosition(const int playerNum)
+    {
+        if (playerNum == m_findGameData->GetPlayerNum()) {
+            m_hpUI->SetPositionX(-200.0f);
+        }
+        else if (playerNum == m_findGameData->GetOtherPlayerNum()) {
+            m_hpUI->SetPositionX(200.0f);
+        }
     }
 
 
@@ -28,6 +40,8 @@ private: // data menber
     ////////////////////////////////////////////////////////////
 
     FontRender* m_hpUI = nullptr;
+
+    GameData* m_findGameData = nullptr;
 
     ////////////////////////////////////////////////////////////
     // その他

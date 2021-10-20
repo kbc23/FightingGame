@@ -4,8 +4,8 @@
 #include "net_work.h"
 
 class PlayerCamera;
-class Actor;
 class Player;
+class GameData;
 
 class Game : public IGameObject
 {
@@ -60,6 +60,7 @@ private: //data menber
 	Player* m_player[2];
 	NetWork* m_onlineTwoPlayerMatchEngine = nullptr; // 完全同期二人対戦用エンジン
 	PlayerCamera* m_playerCamera = nullptr;
+	GameData* m_gameData = nullptr;
 
 	////////////////////////////////////////////////////////////
 	// その他
