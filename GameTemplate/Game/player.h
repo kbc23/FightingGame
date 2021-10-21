@@ -4,6 +4,7 @@
 class PlayerCamera;
 class AttackJudgment;
 class PlayerUI;
+class GameData;
 
 class Player : public IGameObject
 {
@@ -45,6 +46,10 @@ public:
 
 
 private:
+    ////////////////////////////////////////////////////////////
+    // 移動処理
+    ////////////////////////////////////////////////////////////
+
     /**
      * @brief プレイヤーの入力を受ける
     */
@@ -59,12 +64,13 @@ private:
     ////////////////////////////////////////////////////////////
     // 攻撃関連
     ////////////////////////////////////////////////////////////
-
+public:
     /**
      * @brief 攻撃情報を作成
     */
     void AttackCreate(const int attackType);
 
+private:
     /**
      * @brief 攻撃範囲の位置情報を作成
      * 位置がプレイヤーの前方のときに使用
@@ -78,8 +84,6 @@ private:
      * @brief 攻撃が当たった際の処理
     */
     void HitAttack();
-
-    void DebugHitAttack(const float rotY);
     
     /**
      * @brief 攻撃情報をリセット
@@ -107,6 +111,11 @@ public: // Get function
         return m_actor->GetRigidBody();
     }
 
+    const bool CheckHp_0()
+    {
+        return m_flagHp_0;
+    }
+
 
 public: // Set function
     /**
@@ -115,11 +124,30 @@ public: // Set function
     */
     void ReceiveDamage(const int damage)
     {
+        // HPが０になら処理をしない
+        if (true == m_flagHp_0) {
+            return;
+        }
+
         m_hp = m_hp - damage;
 
-        // HPが０未満の場合、HPを０に設定
-        if (0 > m_hp) {
+        // HPの確認
+        CheckHp();
+    }
+
+    void SetmFlagGameEndStopOperation(const bool flag)
+    {
+        m_flagGameEndStopOperation = flag;
+    }
+
+
+private: // Used in the Set function
+    void CheckHp()
+    {
+        // HPが０以下の場合、HPを０に設定し、敗北した状態にする
+        if (0 >= m_hp) {
             m_hp = 0;
+            m_flagHp_0 = true;
         }
     }
 
@@ -137,6 +165,7 @@ private: // enum
         notAttacking, // 攻撃していない
         normal, // 通常攻撃
     };
+
 
 
 private: // struct
@@ -178,6 +207,7 @@ private: // data menber
     //////////////////////////////
 
     PlayerCamera* m_findPlayerCamera = nullptr;
+    GameData* m_findGameData = nullptr;
 
     ////////////////////////////////////////////////////////////
     // プレイヤーのステータス
@@ -190,6 +220,8 @@ private: // data menber
     ////////////////////////////////////////////////////////////
 
     bool m_flagOperation = true; // 操作可能か
+    bool m_flagHp_0 = false; // HPが０になったか
+    bool m_flagGameEndStopOperation = false; // ゲームが終了して操作ができなくなっているか
 
     ////////////////////////////////////////////////////////////
     // その他

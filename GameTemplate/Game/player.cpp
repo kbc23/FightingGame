@@ -5,6 +5,7 @@
 #include "player_camera.h"
 #include "attack_judgment.h"
 #include "player_UI.h"
+#include "game_data.h"
 
 
 
@@ -17,7 +18,7 @@ namespace nsAttackData
     namespace nsNormalAttack
     {
         const int POWER = 100;
-        const int TIME_LIMIT = 10;
+        const int TIME_LIMIT = 60;
         const Vector3 RANGE = { 100.0f,100.0f,100.0f };
         const float POSITION_UP_Y = 50.0f;
     }
@@ -64,6 +65,8 @@ void Player::Init(
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
     m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
+    m_attackJudgment->Init(playerNum);
+
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 }
 
@@ -85,13 +88,23 @@ void Player::DebugInit(
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
     m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
+    m_attackJudgment->Init(playerNum);
+
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
+
+    m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
 }
 
 void Player::Update()
 {
+    // 操作
     Controller();
 
+    if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
+        AttackCreate(EnAttackType::normal);
+    }
+
+    // 攻撃関連のUpdate
     AttackUpdate();
 
     //////////////////////////////
@@ -101,8 +114,16 @@ void Player::Update()
     m_playerUI->UpdateHpUI(m_hp, m_playerNum);
 }
 
+////////////////////////////////////////////////////////////
+// 移動処理
+////////////////////////////////////////////////////////////
+
 void Player::Controller()
 {
+    if (true == m_flagGameEndStopOperation) {
+        return;
+    }
+
     if (false == m_flagOperation || true == m_attackData.flagAttackNow) {
         return;
     }
@@ -242,17 +263,10 @@ void Player::AttackUpdate()
 void Player::HitAttack()
 {
     // ここでは、相手プレイヤーが自分の攻撃判定に触れた際の処理を記載する
+    // ダメージ処理
     m_otherPlayer->ReceiveDamage(m_attackData.power);
 
     m_attackData.flagAlreadyAttacked = true;
-}
-
-void Player::DebugHitAttack(const float rotY)
-{
-    // プレイヤーの移動量
-    Vector3 moveAmount = { 0.0f,0.0f,0.0f };
-
-    m_otherPlayer->GetActor().AddStatus(moveAmount, rotY);
 }
 
 void Player::ResetAttackData()

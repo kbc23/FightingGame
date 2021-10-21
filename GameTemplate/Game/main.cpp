@@ -29,13 +29,13 @@ namespace debugModeStetus
 		// デバッグモードのインスタンスを作成
 		myDebug = NewGO<MyDebug>(igo::EnPriority::normal);
 
-		// デバッグモードにする
-		myDebug->OnDebugMode();
+		//// デバッグモードにする
+		//myDebug->OnDebugMode();
 
-		if (true == flagSoloMode) {
-			// ソロモードにする（デバッグモード）
-			myDebug->OnDebugSoloMode();
-		}
+		//if (true == flagSoloMode) {
+		//	// ソロモードにする（デバッグモード）
+		//	myDebug->OnDebugSoloMode();
+		//}
 
 		myDebug->Init();
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "model_render.h"
+#include "font_render.h"
 
 class Player;
 class PlayerCamera;
@@ -15,70 +16,36 @@ public:
 
 
 private:
-	void SoloMode();
+	////////////////////////////////////////////////////////////
+	// ゲーム終了関連
+	////////////////////////////////////////////////////////////
+
+	void GameEndUpdate();
+
+	bool CheckGameEnd();
 
 
-public:
+private: // enum
 	/**
-	 * @brief デバッグモードか
-	 * @return デバッグモードかどうか
+	 * @brief 勝敗
 	*/
-	const bool GetDebugMode()
+	enum EnWinOrLose
 	{
-		return m_debugMode;
-	}
-	/**
-	 * @brief デバッグのソロモードか
-	 * @return デバッグのソロモードかどうか
-	*/
-	const bool GetDebugSoloMode()
-	{
-		if (false == m_debugMode) {
-			return false;
-		}
+		win, // 勝利
+		lose, // 負け
+		inTheGame // 試合中
+	};
 
-		return m_debugSoloMode;
-	}
+	EnWinOrLose m_winOrLose[2] = { inTheGame,inTheGame };
 
 
+	enum class EnStatus
+	{
+		game, // ゲーム中
+		finishGame // ゲーム終了
+	};
 
-public:
-	/**
-	 * @brief デバッグに設定
-	*/
-	void OnDebugMode()
-	{
-		m_debugMode = true;
-	}
-	/**
-	 * @brief デバッグでなくする
-	*/
-	void OffDebugMode()
-	{
-		m_debugMode = false;
-	}
-	/**
-	 * @brief デバッグのソロモードに設定
-	*/
-	void OnDebugSoloMode()
-	{
-		if (false == m_debugMode) {
-			return;
-		}
-
-		m_debugSoloMode = true;
-	}
-	/**
-	 * @brief デバッグのソロモードでなくする
-	*/
-	void OffDebugSoloMode()
-	{
-		if (false == m_debugMode) {
-			return;
-		}
-
-		m_debugSoloMode = false;
-	}
+	EnStatus m_status = EnStatus::game;
 
 
 
@@ -91,13 +58,19 @@ private: // data menber
 	PlayerCamera* m_playerCamera = nullptr;
 	ModelRender* m_modelStage = nullptr; // ステージのモデル
 	GameData* m_gameData = nullptr;
+	FontRender* m_fontWinOrLose = nullptr;
 
 	////////////////////////////////////////////////////////////
 	// フラグ
 	////////////////////////////////////////////////////////////
 
-	bool m_debugMode = false; // デバッグモードか
-	bool m_debugSoloMode = false; // デバッグのソロモードか
+
+
+	////////////////////////////////////////////////////////////
+	// その他
+	////////////////////////////////////////////////////////////
+
+	int m_debugCountGameEnd = 0;
 };
 
 

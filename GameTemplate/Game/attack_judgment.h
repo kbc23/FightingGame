@@ -2,6 +2,7 @@
 #include "ghost_object.h"
 
 class Player;
+class GameData;
 
 class AttackJudgment : public IGameObject
 {
@@ -10,6 +11,8 @@ public:
     ~AttackJudgment();
     bool Start() override final;
     void Update() override final;
+
+    void Init(const int playerNum);
 
 
 public:
@@ -30,25 +33,35 @@ public:
     */
     void Release()
     {
+        if (false == m_flagInit) {
+            return;
+        }
+
         m_ghostBox->Release();
     }
 
-    /** Debug
-     * @brief 当たり判定が攻撃判定に触れているとき、モデルを回転させるための数値を受け取る関数
-     * @return 
-    */
-    const float DebugRotation()
-    {
-        if (true == CheckHit()) {
-            return 1.0f;
-        }
-
-        return 0.0f;
-    }
 
 private: // data menber
+    ////////////////////////////////////////////////////////////
+    // クラスのインスタンス
+    ////////////////////////////////////////////////////////////
+
+    //////////////////////////////
+    // NewGO
+    //////////////////////////////
+
     GhostObject* m_ghostBox = nullptr;
+
+    //////////////////////////////
+    // FindGO
+    //////////////////////////////
+
     Player* m_findPlayer = nullptr;
+    GameData* m_findGameData = nullptr;
 
+    ////////////////////////////////////////////////////////////
+    // フラグ
+    ////////////////////////////////////////////////////////////
 
+    bool m_flagInit = false; // 初期化したか
 };

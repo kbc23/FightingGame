@@ -11,7 +11,8 @@ namespace
     enum EnPlayer
     {
         enPlayer,
-        enOtherPlayer
+        enOtherPlayer,
+        EnPlayerNum
     };
 }
 
@@ -45,6 +46,8 @@ void MyDebug::Init()
     m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
 
     m_modelStage->SetPosition({ 0.0f,0.0f,0.0f });
+
+    m_fontWinOrLose = NewGO<FontRender>(igo::EnPriority::font);
 }
 
 void MyDebug::Finish()
@@ -59,11 +62,73 @@ bool MyDebug::Start()
 
 void MyDebug::Update()
 {
-    m_playerCamera->SetPlayerPosition(m_player[enPlayer]->GetPosition());
-    m_playerCamera->SetEnemyPosition(m_player[enOtherPlayer]->GetPosition());
+    switch (m_status) {
+    case EnStatus::game:
+        m_playerCamera->SetPlayerPosition(m_player[enPlayer]->GetPosition());
+        m_playerCamera->SetEnemyPosition(m_player[enOtherPlayer]->GetPosition());
+
+        // ゲーム終了判定
+        GameEndUpdate();
+
+        break;
+    case EnStatus::finishGame:
+
+
+        // Debug start
+        // ゲームの終了処理のテスト
+        ++m_debugCountGameEnd;
+
+        if (30 == m_debugCountGameEnd) {
+            if (EnWinOrLose::win == m_winOrLose[enPlayer]) {
+                m_fontWinOrLose->Init(L"WIN!");
+            }
+            else if (EnWinOrLose::lose == m_winOrLose[enPlayer]) {
+                m_fontWinOrLose->Init(L"LOSE...");
+            }
+        }
+
+        if (120 <= m_debugCountGameEnd) {
+            //ゲームを終了
+            exit(EXIT_SUCCESS);
+        }
+        // Debug end
+        break;
+    default:
+
+        break;
+    }
 }
 
-void MyDebug::SoloMode()
-{
+////////////////////////////////////////////////////////////
+// ゲーム終了関連
+////////////////////////////////////////////////////////////
 
+void MyDebug::GameEndUpdate()
+{
+    if (false == CheckGameEnd()) {
+        return;
+    }
+
+    m_status = EnStatus::finishGame;
+
+    m_player[enPlayer]->SetmFlagGameEndStopOperation(true);
+    m_player[enOtherPlayer]->SetmFlagGameEndStopOperation(true);
+}
+
+bool MyDebug::CheckGameEnd()
+{
+    if (true == m_player[enPlayer]->CheckHp_0()) {
+        m_winOrLose[enPlayer] = EnWinOrLose::lose;
+        m_winOrLose[enOtherPlayer] = EnWinOrLose::win;
+
+        return true;
+    }
+    else if (true == m_player[enOtherPlayer]->CheckHp_0()) {
+        m_winOrLose[enPlayer] = EnWinOrLose::win;
+        m_winOrLose[enOtherPlayer] = EnWinOrLose::lose;
+
+        return true;
+    }
+
+    return false;
 }
