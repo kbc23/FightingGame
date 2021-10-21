@@ -61,6 +61,8 @@ private:
     */
     const Vector3& Move();
 
+    const Vector3& DashMove();
+
     ////////////////////////////////////////////////////////////
     // 攻撃関連
     ////////////////////////////////////////////////////////////
@@ -231,10 +233,13 @@ private: // data menber
     bool m_flagHp_0 = false; // HPが０になったか
     bool m_flagGameEndStopOperation = false; // ゲームが終了して操作ができなくなっているか
     bool m_flagDefense = false; // 防御中か
+    bool m_flagDash = false; // ダッシュ中か
 
     ////////////////////////////////////////////////////////////
     // その他
     ////////////////////////////////////////////////////////////
 
     int m_playerNum = -1; // 自分か相手のどちらかを区別する番号
+
+    int m_countDash = 0;
 };

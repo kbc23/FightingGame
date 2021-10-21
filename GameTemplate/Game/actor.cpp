@@ -66,12 +66,12 @@ void Actor::Update()
     SetModelStatus();
 }
 
-void Actor::AddStatus(Vector3& addMoveAmount, const float addRotAngle)
+void Actor::AddStatus(Vector3& addMoveAmount)
 {
-    m_position = m_charaCon.Execute(addMoveAmount, 1.0f); // キャラクターの位置を決定
+    // キャラクターの位置を決定
+    m_position = m_charaCon.Execute(addMoveAmount, 1.0f);
+    // キャラクターの向きを決定
     Turn(addMoveAmount);
-    //m_rotY += addRotAngle;
-    //m_rotation.SetRotationY(m_rotY); // キャラクターの向きを決定
 }
 
 void Actor::Turn(Vector3& addMoveAmount)

@@ -18,7 +18,7 @@ namespace nsAttackData
     namespace nsNormalAttack
     {
         const int POWER = 100;
-        const int TIME_LIMIT = 60;
+        const int TIME_LIMIT = 5;
         const Vector3 RANGE = { 100.0f,100.0f,100.0f };
         const float POSITION_UP_Y = 50.0f;
     }
@@ -130,12 +130,6 @@ void Player::Controller()
         return;
     }
 
-    Vector3 moveAmount = { 0.0f,0.0f,0.0f }; // プレイヤーの移動量
-    float rotY = 0.0f; // プレイヤーの回転量
-
-    // プレイヤーの移動
-    moveAmount = Move();
-
     // Aボタン: 通常攻撃
     if (true == m_gamePad->IsTrigger(enButtonA)) {
         // 攻撃判定のエリアを作成
@@ -148,9 +142,9 @@ void Player::Controller()
     if (true) {
 
     }
-    // ?: 回避
-    if (true) {
-
+    // Xボタン（仮）: ダッシュ
+    if (true == m_gamePad->IsTrigger(enButtonX)) {
+        m_flagDash = true;
     }
     // Bボタン（仮）: ガード
     if (true == m_gamePad->IsPress(enButtonB)) {
@@ -160,8 +154,26 @@ void Player::Controller()
         m_flagDefense = false;
     }
 
+    // プレイヤーの移動
+    Vector3 moveAmount = Vector3::Zero;
+
+    if (false == m_flagDash) {
+        moveAmount = Move();
+    }
+    // ダッシュ
+    else {
+        moveAmount = DashMove();
+
+        ++m_countDash;
+
+        if (5 <= m_countDash) {
+            m_flagDash = false;
+            m_countDash = 0;
+        }
+    }
+
     // プレイヤーのモデルに位置情報などのステータス情報を渡す
-    m_actor->AddStatus(moveAmount, rotY);
+    m_actor->AddStatus(moveAmount);
 }
 
 const Vector3& Player::Move()
@@ -181,7 +193,7 @@ const Vector3& Player::Move()
     // キャラクターの移動速度
     float characterSpeed = 6.0f;
 
-    Vector3 pospos = { 0.0f,0.0f,0.0f };
+    Vector3 pospos = Vector3::Zero;
 
     if (m_gamePad->GetLStickXF() != 0.0f) {
         pospos.x -= m_gamePad->GetLStickXF() * characterSpeed;
@@ -194,6 +206,33 @@ const Vector3& Player::Move()
     Vector3 moveAmount = cameraFront * pospos.z + cameraRight * pospos.x;
 
     return moveAmount;
+}
+
+const Vector3& Player::DashMove()
+{
+    // ダッシュのために仮で作成するポジション
+    Vector3 attackRangePosition =
+    {
+        m_actor->GetPosition().x,
+        m_actor->GetPosition().y,
+        m_actor->GetPosition().z - 1.0f // カメラの前方向に少しだけ奥に置く
+    };
+    // キャラクターのポジション
+    Vector3 playerPosition = m_actor->GetPosition();
+
+    // 仮のポジションからキャラクターのポジションのベクトルを取得
+    Vector3 toPos = playerPosition - attackRangePosition;
+
+    // キャラクターの移動速度
+    float characterSpeed = 80.0f;
+
+    // キャラクターの移動量の計算
+    toPos.z = toPos.z * characterSpeed;
+    // キャラクターのQuaternionを使ってベクトルをプレイヤーの前方向に回転させる
+    m_actor->GetRotation().Apply(toPos);
+
+    // 上記で取得した情報から、攻撃範囲を生成するポジションを取得
+    return toPos;
 }
 
 ////////////////////////////////////////////////////////////
