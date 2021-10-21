@@ -100,9 +100,11 @@ void Player::Update()
     // 操作
     Controller();
 
+    // Debug start
     if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
         AttackCreate(EnAttackType::normal);
     }
+    // Debug end
 
     // 攻撃関連のUpdate
     AttackUpdate();
@@ -139,10 +141,8 @@ void Player::Controller()
         // 攻撃判定のエリアを作成
         AttackCreate(EnAttackType::normal);
     }
-    // Bボタン: 特殊攻撃
-    if (true == m_gamePad->IsTrigger(enButtonB)) {
-        // Bボタンを押したときの処理
-        //rotY -= 0.01f; // 仮
+    // ?: 特殊攻撃
+    if (true) {
     }
     // ?: 必殺技
     if (true) {
@@ -152,9 +152,12 @@ void Player::Controller()
     if (true) {
 
     }
-    // ?: ガード
-    if (true) {
-
+    // Bボタン（仮）: ガード
+    if (true == m_gamePad->IsPress(enButtonB)) {
+        m_flagDefense = true;
+    }
+    else {
+        m_flagDefense = false;
     }
 
     // プレイヤーのモデルに位置情報などのステータス情報を渡す
@@ -264,7 +267,9 @@ void Player::HitAttack()
 {
     // ここでは、相手プレイヤーが自分の攻撃判定に触れた際の処理を記載する
     // ダメージ処理
-    m_otherPlayer->ReceiveDamage(m_attackData.power);
+    if (false == m_otherPlayer->ReceiveDamage(m_attackData.power)) {
+        return;
+    }
 
     m_attackData.flagAlreadyAttacked = true;
 }

@@ -121,18 +121,26 @@ public: // Set function
     /**
      * @brief ダメージの処理
      * @param damage ダメージ量
+     * @return ダメージを与えられたか
     */
-    void ReceiveDamage(const int damage)
+    const bool ReceiveDamage(const int damage)
     {
         // HPが０になら処理をしない
         if (true == m_flagHp_0) {
-            return;
+            return false;
+        }
+
+        //防御中
+        if (true == m_flagDefense) {
+            return false;
         }
 
         m_hp = m_hp - damage;
 
         // HPの確認
         CheckHp();
+
+        return true;
     }
 
     void SetmFlagGameEndStopOperation(const bool flag)
@@ -222,6 +230,7 @@ private: // data menber
     bool m_flagOperation = true; // 操作可能か
     bool m_flagHp_0 = false; // HPが０になったか
     bool m_flagGameEndStopOperation = false; // ゲームが終了して操作ができなくなっているか
+    bool m_flagDefense = false; // 防御中か
 
     ////////////////////////////////////////////////////////////
     // その他
