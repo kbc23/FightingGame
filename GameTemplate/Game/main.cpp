@@ -92,9 +92,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		game = NewGO<Game>(igo::EnPriority::normal, igo::className::GAME);
 	}
 	// デバッグモードのとき
-	else {
-		PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
-	}
+
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	
 	
 	//////////////////////////////////////
 	// 初期化を行うコードを書くのはここまで！！！
