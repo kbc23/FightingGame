@@ -143,11 +143,11 @@ void Player::Controller()
 
     }
     // Xボタン（仮）: ダッシュ
-    if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonX)) {
+    if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonRB1)) {
         StartDash();
     }
     // Bボタン（仮）: ガード
-    if (false == m_dashStatus.flagDash && true == m_gamePad->IsPress(enButtonB)) {
+    if (false == m_dashStatus.flagDash && true == m_gamePad->IsPress(enButtonLB1)) {
         m_flagDefense = true;
     }
     else {
