@@ -155,6 +155,10 @@ void Player::Controller()
     else {
         m_flagDefense = false;
     }
+    if (true == m_gamePad->IsTrigger(enButtonStart)) {
+        //ゲームを終了
+        exit(EXIT_SUCCESS);
+    }
 
     // プレイヤーの移動
     Vector3 moveAmount = Vector3::Zero;
