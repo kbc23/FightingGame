@@ -17,10 +17,23 @@ namespace nsAttackData
 
     namespace nsNormalAttack
     {
-        const int POWER = 100;
-        const int TIME_LIMIT = 5;
-        const Vector3 RANGE = { 100.0f,100.0f,100.0f };
-        const float POSITION_UP_Y = 50.0f;
+        const int POWER = 100; // 攻撃力
+        const int ATTACK_TIME_LIMIT = 15; // 攻撃時間
+        const Vector3 RANGE = { 100.0f,50.0f,50.0f }; // 攻撃範囲
+        const float POSITION_UP_Y = 50.0f; // 攻撃範囲のY座標の調整
+    }
+
+    ////////////////////////////////////////////////////////////
+    // サブ攻撃
+    ////////////////////////////////////////////////////////////
+
+    namespace nsSubAttack
+    {
+        const int POWER = 100; // 攻撃力
+        const int ATTACK_TIME_LIMIT = 30; // 攻撃時間
+        const int DELAY_TIME_LIMIT = 20; // 攻撃までのディレイ
+        const Vector3 RANGE = { 50.0f,50.0f,500.0f }; // 攻撃範囲
+        const float POSITION_UP_Y = 50.0f; // 攻撃範囲のY座標の調整
     }
 }
 
@@ -135,24 +148,27 @@ void Player::Controller()
         // 攻撃判定のエリアを作成
         AttackCreate(EnAttackType::enNormal);
     }
-    // ?: 特殊攻撃
-    if (true) {
+    // B: サブ攻撃
+    if (false == m_flagDefense && false == m_dashStatus.flagDash && true == m_gamePad->IsTrigger(enButtonB)) {
+        // 攻撃判定のエリアを作成
+        AttackCreate(EnAttackType::enSub);
     }
     // ?: 必殺技
     if (true) {
 
     }
-    // Xボタン（仮）: ダッシュ
+    // R1ボタン: ダッシュ
     if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonRB1)) {
         StartDash();
     }
-    // Bボタン（仮）: ガード
+    // L1ボタン: ガード
     if (false == m_dashStatus.flagDash && true == m_gamePad->IsPress(enButtonLB1)) {
         m_flagDefense = true;
     }
     else {
         m_flagDefense = false;
     }
+    // Debug: Startボタン: ゲーム終了
     if (true == m_gamePad->IsTrigger(enButtonStart)) {
         //ゲームを終了
         exit(EXIT_SUCCESS);
@@ -245,13 +261,34 @@ void Player::AttackCreate(const int attackType)
     // 通常攻撃
     if (EnAttackType::enNormal == attackType) {
         m_attackData.power = nsAttackData::nsNormalAttack::POWER;
-        m_attackData.timeLimit = nsAttackData::nsNormalAttack::TIME_LIMIT;
+        m_attackData.attackTimeLimit = nsAttackData::nsNormalAttack::ATTACK_TIME_LIMIT;
         m_attackData.Range = nsAttackData::nsNormalAttack::RANGE;
         m_attackData.positionUpY = nsAttackData::nsNormalAttack::POSITION_UP_Y;
         m_attackData.flagAttackNow = true;
         m_attackData.attackType = EnAttackType::enNormal;
     }
+    else if (EnAttackType::enSub == attackType) {
+        m_attackData.power = nsAttackData::nsSubAttack::POWER;
+        m_attackData.attackTimeLimit = nsAttackData::nsSubAttack::ATTACK_TIME_LIMIT;
+        m_attackData.delayTimeLimit = nsAttackData::nsSubAttack::DELAY_TIME_LIMIT;
+        m_attackData.flagFinishDelay = false;
+        m_attackData.Range = nsAttackData::nsSubAttack::RANGE;
+        m_attackData.positionUpY = nsAttackData::nsSubAttack::POSITION_UP_Y;
+        m_attackData.flagAttackNow = true;
+        m_attackData.attackType = EnAttackType::enNormal;
+    }
 
+    // 攻撃前のディレイがあるならここで処理を終了
+    if (false == m_attackData.flagFinishDelay) {
+        return;
+    }
+
+    // 攻撃範囲を作成
+    CreateAttackRange();
+}
+
+void Player::CreateAttackRange()
+{
     // キャラクターの前方を攻撃範囲にする
     // キャラクターの前方向を取得して生成位置を変更する
     Vector3 createPosition = CreateAttackPosition();
@@ -271,7 +308,7 @@ const Vector3& Player::CreateAttackPosition()
     {
         m_actor->GetPosition().x,
         m_actor->GetPosition().y,
-        m_actor->GetPosition().z - m_attackData.Range.z / 2 // カメラの前方向に攻撃範囲の前方向の半分の値を追加
+        m_actor->GetPosition().z - m_attackData.Range.z / 2 - 20.0f // カメラの前方向に攻撃範囲の前方向の半分の値を追加
     };
     // キャラクターのポジション
     Vector3 playerPosition = m_actor->GetPosition();
@@ -291,15 +328,32 @@ void Player::AttackUpdate()
         return;
     }
 
+    if (false == m_attackData.flagFinishDelay) {
+        DelayAttack();
+        return;
+    }
+
     // 攻撃が当たったか（攻撃がまだ当たっていないときのみ）
     if (false == m_attackData.flagAlreadyAttacked && true == m_attackJudgment->CheckHit()) {
         HitAttack();
     }
 
-    ++m_attackData.time;
+    ++m_attackData.attackTime;
 
-    if (m_attackData.timeLimit <= m_attackData.time) {
+    if (m_attackData.attackTimeLimit <= m_attackData.attackTime) {
         ResetAttackData();
+    }
+}
+
+void Player::DelayAttack()
+{
+    ++m_attackData.delayTime;
+
+    if (m_attackData.delayTimeLimit <= m_attackData.delayTime) {
+        // 攻撃範囲を作成
+        CreateAttackRange();
+
+        m_attackData.flagFinishDelay = true;
     }
 }
 
@@ -321,8 +375,11 @@ void Player::ResetAttackData()
 
     // 攻撃時のステータスの初期化
     m_attackData.power = 0;
-    m_attackData.time = 0;
-    m_attackData.timeLimit = 0;
+    m_attackData.attackTime = 0;
+    m_attackData.attackTimeLimit = 0;
+    m_attackData.delayTime = 0;
+    m_attackData.delayTimeLimit = 0;
+    m_attackData.flagFinishDelay = true;
     m_attackData.Range = Vector3::Zero;
     m_attackData.positionUpY = 0.0f;
     m_attackData.flagAlreadyAttacked = false;
@@ -335,11 +392,10 @@ void Player::ResetAttackData()
 
 void Player::StartDash()
 {
+    // ダッシュ中か残り回数が０のときは処理をしない
     if (true == m_dashStatus.flagDash || 0 >= m_dashStatus.remainingNumberOfTimes) {
         return;
     }
-
-    int i = 10;
 
     --m_dashStatus.remainingNumberOfTimes; // 残り回数を１減少
 
@@ -357,18 +413,14 @@ void Player::DashUpdate()
     ++m_dashStatus.countDash;
 
     if (m_dashStatus.MAX_COUNT_DASH <= m_dashStatus.countDash) {
-        EndDash();
+        m_dashStatus.flagDash = false;
+        m_dashStatus.countDash = 0;
     }
-}
-
-void Player::EndDash()
-{
-    m_dashStatus.flagDash = false;
-    m_dashStatus.countDash = 0;
 }
 
 void Player::DashRecoveryTime()
 {
+    // 残り回数が最大なら処理をしない
     if (m_dashStatus.MAX_REMAINING_NUMBER_OF_TIMES <= m_dashStatus.remainingNumberOfTimes) {
         return;
     }

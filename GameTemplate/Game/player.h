@@ -76,6 +76,11 @@ private:
     void AttackCreate(const int attackType);
 
     /**
+     * @brief 攻撃範囲を作成
+    */
+    void CreateAttackRange();
+
+    /**
      * @brief 攻撃範囲の位置情報を作成
      * 位置がプレイヤーの前方のときに使用
      * @return 攻撃範囲の位置
@@ -86,6 +91,11 @@ private:
      * @brief 攻撃に関する毎フレームの処理
     */
     void AttackUpdate();
+
+    /**
+     * @brief 攻撃を始めるまでのディレイの処理
+    */
+    void DelayAttack();
 
     /**
      * @brief 攻撃が当たった際の処理
@@ -110,11 +120,6 @@ private:
      * @brief ダッシュに関する毎フレームの処理
     */
     void DashUpdate();
-
-    /**
-     * @brief ダッシュが終わったときの処理
-    */
-    void EndDash();
 
     /**
      * @brief ダッシュの残り回数の回復の処理
@@ -203,6 +208,7 @@ private: // enum
     {
         enNotAttacking, // 攻撃していない
         enNormal, // 通常攻撃
+        enSub // サブ攻撃,
     };
 
 
@@ -213,14 +219,22 @@ private: // struct
     */
     struct StAttackData
     {
+        // status
         int power = 0; // 攻撃力
-        int time = 0; // 攻撃時間
-        int timeLimit = 0; // 攻撃の制限時間
+        int attackType = EnAttackType::enNotAttacking; // 攻撃の種類
+        // attack time
+        int attackTime = 0; // 攻撃時間
+        int attackTimeLimit = 0; // 攻撃時間の上限
+        // delay time
+        int delayTime = 0; // 攻撃までのディレイ
+        int delayTimeLimit = 0; // 攻撃までのディレイの上限
+        bool flagFinishDelay = true; // 攻撃開始までのディレイが終わったか（ディレイがない場合[true]に設定）
+        // attack range
         Vector3 Range = Vector3::Zero; //攻撃範囲
-        float positionUpY = 0.0f; // 上昇させるY座標の量
+        float positionUpY = 0.0f; // 上昇させる攻撃範囲のY座標の量
+        // flag
         bool flagAlreadyAttacked = false; // 攻撃がもう当たっているか
         bool flagAttackNow = false; // 現在攻撃中か
-        int attackType = EnAttackType::enNotAttacking; // 攻撃の種類
     };
 
     StAttackData m_attackData;
