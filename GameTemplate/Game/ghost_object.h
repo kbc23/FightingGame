@@ -67,7 +67,7 @@ private:
 
 
 
-private: // data menber
+private: // data member
 
 
 

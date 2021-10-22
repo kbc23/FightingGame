@@ -46,7 +46,7 @@ public: // Get関数
 	}
 
 
-private: // data menber
+private: // data member
     static ShadowMap* m_instance;		//唯一のインスタンスのアドレスを記録する変数
 
 	RenderTarget m_shadowMap;

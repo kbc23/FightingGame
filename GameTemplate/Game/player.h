@@ -61,18 +61,20 @@ private:
     */
     const Vector3& Move();
 
+    /**
+     * @brief ダッシュ時のプレイヤーの移動量を計算する
+     * @return 移動量
+    */
     const Vector3& DashMove();
 
     ////////////////////////////////////////////////////////////
     // 攻撃関連
     ////////////////////////////////////////////////////////////
-public:
     /**
      * @brief 攻撃情報を作成
     */
     void AttackCreate(const int attackType);
 
-private:
     /**
      * @brief 攻撃範囲の位置情報を作成
      * 位置がプレイヤーの前方のときに使用
@@ -80,6 +82,9 @@ private:
     */
     const Vector3& CreateAttackPosition();
 
+    /**
+     * @brief 攻撃に関する毎フレームの処理
+    */
     void AttackUpdate();
 
     /**
@@ -92,6 +97,30 @@ private:
     */
     void ResetAttackData();
 
+    ////////////////////////////////////////////////////////////
+    // ダッシュ関連
+    ////////////////////////////////////////////////////////////
+
+    /**
+     * @brief ダッシュを始めるときの処理
+    */
+    void StartDash();
+
+    /**
+     * @brief ダッシュに関する毎フレームの処理
+    */
+    void DashUpdate();
+
+    /**
+     * @brief ダッシュが終わったときの処理
+    */
+    void EndDash();
+
+    /**
+     * @brief ダッシュの残り回数の回復の処理
+    */
+    void DashRecoveryTime();
+    
 
 public: // Get function
     const Vector3& GetPosition()
@@ -163,7 +192,7 @@ private: // Used in the Set function
 
 
 private: // constant
-    const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
+    static const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
 
 
 private: // enum
@@ -196,8 +225,24 @@ private: // struct
 
     StAttackData m_attackData;
 
+    struct StDashStatus
+    {
+        // constant
+        const int MAX_COUNT_DASH = 5; // ダッシュしている時間の上限
+        const int MAX_RECOVERY_TIME = 50; // 残り回数の回復時間の上限
+        const int MAX_REMAINING_NUMBER_OF_TIMES = 3; // ダッシュの残り回数の上限
 
-private: // data menber
+        // data member
+        bool flagDash = false; // ダッシュ中か
+        int countDash = 0; // ダッシュしている時間
+        int remainingNumberOfTimes = MAX_REMAINING_NUMBER_OF_TIMES; // ダッシュの残り回数
+        int countRecoveryTime = 0; // 残り回数の回復時間
+    };
+
+    StDashStatus m_dashStatus;
+
+
+private: // data member
     ////////////////////////////////////////////////////////////
     // クラスのインスタンス
     ////////////////////////////////////////////////////////////
@@ -233,13 +278,10 @@ private: // data menber
     bool m_flagHp_0 = false; // HPが０になったか
     bool m_flagGameEndStopOperation = false; // ゲームが終了して操作ができなくなっているか
     bool m_flagDefense = false; // 防御中か
-    bool m_flagDash = false; // ダッシュ中か
 
     ////////////////////////////////////////////////////////////
     // その他
     ////////////////////////////////////////////////////////////
 
     int m_playerNum = -1; // 自分か相手のどちらかを区別する番号
-
-    int m_countDash = 0;
 };

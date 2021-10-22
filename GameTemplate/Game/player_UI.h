@@ -21,25 +21,32 @@ public: // Update data
         m_hpUI->SetText(hp);
         SetPosition(playerNum);
     }
+    void UpdateDashUI(const int dash, const int playerNum) {
+        m_dashUI->SetText(dash);
+        SetPosition(playerNum);
+    }
 
     void SetPosition(const int playerNum)
     {
         if (playerNum == m_findGameData->GetPlayerNum()) {
             m_hpUI->SetPositionX(-200.0f);
+            m_dashUI->SetPosition({ -200.0f,-50.0f });
         }
         else if (playerNum == m_findGameData->GetOtherPlayerNum()) {
             m_hpUI->SetPositionX(200.0f);
+            m_dashUI->SetPosition({ 200.0f,-50.0f });
         }
     }
 
 
 
-private: // data menber
+private: // data member
     ////////////////////////////////////////////////////////////
     // クラスのインスタンス
     ////////////////////////////////////////////////////////////
 
     FontRender* m_hpUI = nullptr;
+    FontRender* m_dashUI = nullptr;
 
     GameData* m_findGameData = nullptr;
 

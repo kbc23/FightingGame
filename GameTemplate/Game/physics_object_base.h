@@ -63,6 +63,6 @@ public:
 	//void CreateMesh(Vector3 pos, Quaternion rot, Vector3 scale, SkinModelRender* skinModelRender);
 
 
-protected: // data menber
+protected: // data member
 	std::unique_ptr<ICollider> m_collider;	//!<コライダー
 };

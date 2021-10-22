@@ -42,7 +42,7 @@ public: //GetŠÖ”
     }
 
 
-private: // data menber
+private: // data member
     Model m_shadowModel;
 
     bool m_finishInit = false; // ‰Šú‰»‚ªI‚í‚Á‚½‚©

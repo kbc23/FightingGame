@@ -99,7 +99,7 @@ public: //Set関数
 private: //constant
     static const int m_MAX_TEXT_SIZE = 256;
 
-private: // data menber
+private: // data member
     Font m_font;
     wchar_t m_text[m_MAX_TEXT_SIZE] = L""; //表示するテキスト
     Vector2 m_position = { 0.0f,0.0f }; //表示する場所

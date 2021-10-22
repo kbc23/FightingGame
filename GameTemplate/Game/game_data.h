@@ -48,7 +48,7 @@ public: // Set function
     }
 
 
-private: // data menber
+private: // data member
     int m_playerNum = 0; // プレイヤーの番号
     int m_otherPlayerNum = 0; // 相手プレイヤーの番号
 

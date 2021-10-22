@@ -283,7 +283,7 @@ public: // Set関数
 
 
 
-private: // data menber
+private: // data member
     Model m_model;
 	Shadow* m_shadowModel = nullptr; // 影の描画処理
 	std::unique_ptr<Skeleton> m_skeletonPointer; // スケルトンのポインター

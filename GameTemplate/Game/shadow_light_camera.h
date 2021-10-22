@@ -38,7 +38,7 @@ public:
 
 
 
-private: //data menber
+private: //data member
 	static ShadowLightCamera* m_instance;		// 唯一のインスタンスのアドレスを記録する変数
 
 	Camera m_shadowLightCamera;

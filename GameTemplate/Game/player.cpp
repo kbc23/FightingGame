@@ -102,20 +102,18 @@ void Player::Update()
     // 操作
     Controller();
 
-    // Debug start
-    //if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
-    //    AttackCreate(EnAttackType::enNormal);
-    //}
-    // Debug end
-
     // 攻撃関連のUpdate
     AttackUpdate();
+
+    // ダッシュ関連のUpdate
+    DashUpdate();
 
     //////////////////////////////
     // UIのUpdate
     //////////////////////////////
 
     m_playerUI->UpdateHpUI(m_hp, m_playerNum);
+    m_playerUI->UpdateDashUI(m_dashStatus.remainingNumberOfTimes, m_playerNum);
 }
 
 ////////////////////////////////////////////////////////////
@@ -133,7 +131,7 @@ void Player::Controller()
     }
 
     // Aボタン: 通常攻撃
-    if (false == m_flagDefense && false == m_flagDash && true == m_gamePad->IsTrigger(enButtonA)) {
+    if (false == m_flagDefense && false == m_dashStatus.flagDash && true == m_gamePad->IsTrigger(enButtonA)) {
         // 攻撃判定のエリアを作成
         AttackCreate(EnAttackType::enNormal);
     }
@@ -146,7 +144,7 @@ void Player::Controller()
     }
     // Xボタン（仮）: ダッシュ
     if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonX)) {
-        m_flagDash = true;
+        StartDash();
     }
     // Bボタン（仮）: ガード
     if (true == m_gamePad->IsPress(enButtonB)) {
@@ -163,19 +161,12 @@ void Player::Controller()
     // プレイヤーの移動
     Vector3 moveAmount = Vector3::Zero;
 
-    if (false == m_flagDash) {
+    if (false == m_dashStatus.flagDash) {
         moveAmount = Move();
     }
     // ダッシュ
     else {
         moveAmount = DashMove();
-
-        ++m_countDash;
-
-        if (5 <= m_countDash) {
-            m_flagDash = false;
-            m_countDash = 0;
-        }
     }
 
     // プレイヤーのモデルに位置情報などのステータス情報を渡す
@@ -336,4 +327,56 @@ void Player::ResetAttackData()
     m_attackData.positionUpY = 0.0f;
     m_attackData.flagAlreadyAttacked = false;
     m_attackData.flagAttackNow = false;
+}
+
+////////////////////////////////////////////////////////////
+// ダッシュ関連
+////////////////////////////////////////////////////////////
+
+void Player::StartDash()
+{
+    if (true == m_dashStatus.flagDash || 0 >= m_dashStatus.remainingNumberOfTimes) {
+        return;
+    }
+
+    int i = 10;
+
+    --m_dashStatus.remainingNumberOfTimes; // 残り回数を１減少
+
+    m_dashStatus.flagDash = true;
+}
+
+void Player::DashUpdate()
+{
+    DashRecoveryTime();
+
+    if (false == m_dashStatus.flagDash) {
+        return;
+    }
+
+    ++m_dashStatus.countDash;
+
+    if (m_dashStatus.MAX_COUNT_DASH <= m_dashStatus.countDash) {
+        EndDash();
+    }
+}
+
+void Player::EndDash()
+{
+    m_dashStatus.flagDash = false;
+    m_dashStatus.countDash = 0;
+}
+
+void Player::DashRecoveryTime()
+{
+    if (m_dashStatus.MAX_REMAINING_NUMBER_OF_TIMES <= m_dashStatus.remainingNumberOfTimes) {
+        return;
+    }
+
+    ++m_dashStatus.countRecoveryTime;
+
+    if (m_dashStatus.MAX_RECOVERY_TIME <= m_dashStatus.countRecoveryTime) {
+        ++m_dashStatus.remainingNumberOfTimes; // 残り回数を１増加
+        m_dashStatus.countRecoveryTime = 0;
+    }
 }

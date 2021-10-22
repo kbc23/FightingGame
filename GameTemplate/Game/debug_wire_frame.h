@@ -82,7 +82,7 @@ private:
 
 
 
-private: // data menber
+private: // data member
 	struct Vertex
 	{
 		Vector3 pos;

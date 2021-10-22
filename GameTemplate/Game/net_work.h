@@ -335,7 +335,7 @@ private: //enum
 	EnOtherPlayerState m_otherPlayerState = enOtherPlayerNetWorkState_undef; // 他プレイヤーの状態。
 
 
-private: //data menber
+private: //data member
     static NetWork* m_instance;		//唯一のインスタンスのアドレスを記録する変数。
 
 	////////////////////////////////////////////////////////////
