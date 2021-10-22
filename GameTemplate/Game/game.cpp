@@ -158,9 +158,13 @@ const bool Game::CheckHp_0()
 
 void Game::OnAllPlayerJoined(void* pData, int size)
 {
+	// 自分と相手のプレイヤー番号を取得
+	m_playerNum = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
+	m_otherPlayerNum = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
+
 	// すべてのプレイヤーが揃った
-	m_player[0] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
-	m_player[1] = NewGO<Player>(igo::EnPriority::normal, igo::className::OTHER_PLAYER);
+	m_player[m_playerNum] = NewGO<Player>(igo::EnPriority::normal, igo::className::PLAYER);
+	m_player[m_otherPlayerNum] = NewGO<Player>(igo::EnPriority::normal, igo::className::OTHER_PLAYER);
 
 	m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal, igo::className::PLAYER_CAMERA);
 
@@ -172,9 +176,6 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 		-90.0f,
 		90.0f
 	};
-	// 自分と相手のプレイヤー番号を取得
-	m_playerNum = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
-	m_otherPlayerNum = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
 
 	m_gameData = NewGO<GameData>(igo::EnPriority::normal, igo::className::GAME_DATA);
 	m_gameData->SetPlayerNumAndOtherPlayerNum(m_playerNum, m_otherPlayerNum);
