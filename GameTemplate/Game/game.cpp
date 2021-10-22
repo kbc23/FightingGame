@@ -59,26 +59,8 @@ void Game::Update()
 		// 全てのプレイヤーがゲーム開始可能になるのを待っている。
 		break;
 	case EnStep::enStep_InGame: {
-		// インゲーム
-		//for (int i = 0; i < 2; i++) {
-		//	const Vector3& actorPos = m_actor[i]->GetPosition();
-		//	wchar_t text[256];
-		//	swprintf_s(text, L"1P x : %f, y : %f, z : %f\n", actorPos.x, actorPos.y, actorPos.z);
-		//	m_positionRender[i].SetText(text);
-		//}
-		int playerNo = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
-		int otherPlayerNo = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
-		//if (m_actor[playerNo]->IsDowned()) {
-		//	MessageBoxA(nullptr, "あなたの負け", "結果", MB_OK);
-		//	ReturnCharacterSelect();
-		//}
-		//if (m_actor[otherPlayerNo]->IsDowned()) {
-		//	MessageBoxA(nullptr, "あなたの勝ち", "結果", MB_OK);
-		//	ReturnCharacterSelect();
-		//}
+		UpdateGame();
 
-		m_playerCamera->SetPlayerPosition(m_player[m_playerNum]->GetPosition());
-		m_playerCamera->SetEnemyPosition(m_player[m_otherPlayerNum]->GetPosition());
 	}break;
 	case EnStep::enStep_Error:
 		//ReturnCharacterSelect();
@@ -87,7 +69,88 @@ void Game::Update()
 	}
 }
 
+////////////////////////////////////////////////////////////
+// ゲーム中の処理
+////////////////////////////////////////////////////////////
 
+void Game::UpdateGame()
+{
+	switch (m_gameStatus) {
+	case EnGameStatus::enInGame:
+		InGame();
+		break;
+	case EnGameStatus::enFinishGame:
+		FinishGame();
+		break;
+	default:
+
+		break;
+	}
+}
+
+void Game::InGame()
+{
+	m_playerCamera->SetPlayerPosition(m_player[m_playerNum]->GetPosition());
+	m_playerCamera->SetEnemyPosition(m_player[m_otherPlayerNum]->GetPosition());
+
+	CheckGameEnd();
+}
+
+void Game::FinishGame()
+{
+	// Debug start
+	// ゲームの終了処理のテスト
+	++m_debugCountGameEnd;
+
+	if (30 == m_debugCountGameEnd) {
+		if (EnWinOrLose::enWin == m_winOrLose[m_playerNum]) {
+			m_fontWinOrLose->Init(L"WIN!");
+		}
+		else if (EnWinOrLose::enLose == m_winOrLose[m_playerNum]) {
+			m_fontWinOrLose->Init(L"LOSE...");
+		}
+	}
+
+	if (120 <= m_debugCountGameEnd) {
+		//ゲームを終了
+		exit(EXIT_SUCCESS);
+	}
+	// Debug end
+}
+
+//////////////////////////////
+// ゲーム終了判定
+//////////////////////////////
+
+void Game::CheckGameEnd()
+{
+	if (false == CheckHp_0()) {
+		return;
+	}
+
+	m_gameStatus = EnGameStatus::enFinishGame;
+
+	m_player[m_playerNum]->SetmFlagGameEndStopOperation(true);
+	m_player[m_otherPlayerNum]->SetmFlagGameEndStopOperation(true);
+}
+
+const bool Game::CheckHp_0()
+{
+	if (true == m_player[m_playerNum]->CheckHp_0()) {
+		m_winOrLose[m_playerNum] = EnWinOrLose::enLose;
+		m_winOrLose[m_otherPlayerNum] = EnWinOrLose::enWin;
+
+		return true;
+	}
+	else if (true == m_player[m_otherPlayerNum]->CheckHp_0()) {
+		m_winOrLose[m_playerNum] = EnWinOrLose::enWin;
+		m_winOrLose[m_otherPlayerNum] = EnWinOrLose::enLose;
+
+		return true;
+	}
+
+	return false;
+}
 
 ////////////////////////////////////////////////////////////
 // ネットワーク関連の関数
@@ -134,6 +197,16 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 		m_otherPlayerNum,
 		m_player[m_playerNum]
 	);
+
+	m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
+	m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
+
+	m_modelStage->SetPosition({ 0.0f,0.0f,0.0f });
+
+
+	m_fontWinOrLose = NewGO<FontRender>(igo::EnPriority::font);
+
+	// ネットワークの処理
 
 	// ロードが終わってゲーム開始可能になったことを通知する。
 	m_onlineTwoPlayerMatchEngine->NotifyPossibleStartPlayGame();

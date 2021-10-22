@@ -172,8 +172,8 @@ private: // enum
     */
     enum EnAttackType
     {
-        notAttacking, // UŒ‚‚µ‚Ä‚¢‚È‚¢
-        normal, // ’ÊíUŒ‚
+        enNotAttacking, // UŒ‚‚µ‚Ä‚¢‚È‚¢
+        enNormal, // ’ÊíUŒ‚
     };
 
 
@@ -191,7 +191,7 @@ private: // struct
         float positionUpY = 0.0f; // ã¸‚³‚¹‚éYÀ•W‚Ì—Ê
         bool flagAlreadyAttacked = false; // UŒ‚‚ª‚à‚¤“–‚½‚Á‚Ä‚¢‚é‚©
         bool flagAttackNow = false; // Œ»İUŒ‚’†‚©
-        int attackType = EnAttackType::notAttacking; // UŒ‚‚Ìí—Ş
+        int attackType = EnAttackType::enNotAttacking; // UŒ‚‚Ìí—Ş
     };
 
     StAttackData m_attackData;

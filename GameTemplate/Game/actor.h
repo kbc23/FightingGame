@@ -22,8 +22,7 @@ public:
     void Init(
         const char* filePath,
         const Vector3& initPos,
-        float initRotAngle,
-        Actor* pOtherActor
+        float initRotAngle
     );
 
     /**
@@ -33,7 +32,7 @@ public:
      * @param initPos 初期位置
      * @param initRot 初期向き
     */
-    void DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot);
+    void DebugInit(const char* filePath, const Vector3& initPos, const float initRot);
 
     /**
      * @brief 引数を元にステータスを更新する
@@ -84,9 +83,7 @@ private: // data menber
     ////////////////////////////////////////////////////////////
 
     ModelRender* m_modelCharacter = { nullptr }; // プレイヤーキャラクターのモデル
-    Actor* m_otherActor = nullptr; // 対戦相手
     CharacterController m_charaCon; // キャラコン
-
 
     ////////////////////////////////////////////////////////////
     // キャラクターのステータス
@@ -96,9 +93,6 @@ private: // data menber
     Quaternion m_rotation = g_quatIdentity; // 回転
     float m_rotY = 0.0f; // 回転量
     Vector3 m_scale = g_vec3One; // 拡大
-
-
-
 
     ////////////////////////////////////////////////////////////
     // フラグ

@@ -30,24 +30,23 @@ bool Actor::Start()
 void Actor::Init(
     const char* filePath,
     const Vector3& initPos,
-    float initRotAngle,
-    Actor* pOtherActor
+    float initRotAngle
 )
 {
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true);
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
-    m_otherActor = pOtherActor;
+    m_rotY = initRotAngle;
+    m_rotation.SetRotationY(m_rotY);
+    m_modelCharacter->SetRotation(m_rotation);
 
     //ÉLÉÉÉâÉRÉìÇÃèâä˙âª
     m_charaCon.Init(PLAYER_COLLIDER_RADIUS, PLAYER_COLLIDER_HEIGHT, m_position);
 }
 
-void Actor::DebugInit(const char* filePath, const int playerNum, const Vector3& initPos, const float initRot)
+void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float initRot)
 {
-    //m_gamePad = g_pad[playerNum];
-
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true);
 

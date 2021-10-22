@@ -35,6 +35,7 @@ Player::~Player()
 {
     DeleteGO(m_actor);
     DeleteGO(m_attackJudgment);
+    DeleteGO(m_playerUI);
 }
 
 bool Player::Start()
@@ -58,8 +59,7 @@ void Player::Init(
     m_actor->Init(
         "Assets/modelData/unityChan.tkm",
         initPos,
-        initRotAngle,
-        &pOtherPlayer->GetActor()
+        initRotAngle
     );
 
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
@@ -68,6 +68,8 @@ void Player::Init(
     m_attackJudgment->Init(playerNum);
 
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
+
+    m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
 }
 
 void Player::DebugInit(
@@ -83,7 +85,7 @@ void Player::DebugInit(
     m_otherPlayer = pOtherPlayer;
     
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-    m_actor->DebugInit(filePath, playerNum, initPos, initRot);
+    m_actor->DebugInit(filePath, initPos, initRot);
 
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
@@ -102,7 +104,7 @@ void Player::Update()
 
     // Debug start
     if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
-        AttackCreate(EnAttackType::normal);
+        AttackCreate(EnAttackType::enNormal);
     }
     // Debug end
 
@@ -133,7 +135,7 @@ void Player::Controller()
     // Aボタン: 通常攻撃
     if (true == m_gamePad->IsTrigger(enButtonA)) {
         // 攻撃判定のエリアを作成
-        AttackCreate(EnAttackType::normal);
+        AttackCreate(EnAttackType::enNormal);
     }
     // ?: 特殊攻撃
     if (true) {
@@ -196,10 +198,10 @@ const Vector3& Player::Move()
     Vector3 pospos = Vector3::Zero;
 
     if (m_gamePad->GetLStickXF() != 0.0f) {
-        pospos.x -= m_gamePad->GetLStickXF() * characterSpeed;
+        pospos.x += m_gamePad->GetLStickXF() * characterSpeed;
     }
     if (m_gamePad->GetLStickYF() != 0.0f) {
-        pospos.z -= m_gamePad->GetLStickYF() * characterSpeed;
+        pospos.z += m_gamePad->GetLStickYF() * characterSpeed;
     }
 
     //キャラクターの移動量を計算
@@ -242,13 +244,13 @@ const Vector3& Player::DashMove()
 void Player::AttackCreate(const int attackType)
 {
     // 通常攻撃
-    if (EnAttackType::normal == attackType) {
+    if (EnAttackType::enNormal == attackType) {
         m_attackData.power = nsAttackData::nsNormalAttack::POWER;
         m_attackData.timeLimit = nsAttackData::nsNormalAttack::TIME_LIMIT;
         m_attackData.Range = nsAttackData::nsNormalAttack::RANGE;
         m_attackData.positionUpY = nsAttackData::nsNormalAttack::POSITION_UP_Y;
         m_attackData.flagAttackNow = true;
-        m_attackData.attackType = EnAttackType::normal;
+        m_attackData.attackType = EnAttackType::enNormal;
     }
 
     // キャラクターの前方を攻撃範囲にする

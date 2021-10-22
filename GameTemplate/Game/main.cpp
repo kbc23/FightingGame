@@ -11,8 +11,7 @@
 namespace debugModeStetus
 {
 	// ここの変数の初期値でデバッグモードの設定をする
-	bool flagDebugMode = true; // デバッグモードか
-	bool flagSoloMode = true; // ソロモードのデバッグモードか
+	bool flagDebugMode = false; // デバッグモードか
 
 	MyDebug* myDebug = nullptr;
 
@@ -28,14 +27,6 @@ namespace debugModeStetus
 
 		// デバッグモードのインスタンスを作成
 		myDebug = NewGO<MyDebug>(igo::EnPriority::normal);
-
-		//// デバッグモードにする
-		//myDebug->OnDebugMode();
-
-		//if (true == flagSoloMode) {
-		//	// ソロモードにする（デバッグモード）
-		//	myDebug->OnDebugSoloMode();
-		//}
 
 		myDebug->Init();
 

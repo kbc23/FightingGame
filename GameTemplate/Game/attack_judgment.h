@@ -12,10 +12,18 @@ public:
     bool Start() override final;
     void Update() override final;
 
+    /**
+     * @brief 初期化（呼ばないと動かせないので必ず呼ぶこと）
+     * @param playerNum プレイヤー番号
+    */
     void Init(const int playerNum);
 
 
 public:
+    /**
+     * @brief 攻撃判定が相手プレイヤーの当たり判定に当たったかの確認
+     * @return 当たったか
+    */
     const bool CheckHit();
 
 

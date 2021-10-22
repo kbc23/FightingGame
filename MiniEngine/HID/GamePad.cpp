@@ -396,16 +396,16 @@ void GamePad::Update()
 
 		// Change: キーボード入力による左スティックの入力値の設定の正負を反転
 		if (GetAsyncKeyState('A')) {
-			m_lStickX = 1.0f;
-		}
-		else if (GetAsyncKeyState('D')) {
 			m_lStickX = -1.0f;
 		}
+		else if (GetAsyncKeyState('D')) {
+			m_lStickX = 1.0f;
+		}
 		if (GetAsyncKeyState('W')) {
-			m_lStickY = -1.0f;
+			m_lStickY = 1.0f;
 		}
 		else if (GetAsyncKeyState('S')) {
-			m_lStickY = 1.0f;
+			m_lStickY = -1.0f;
 		}
 		//スティックの入力量を正規化。
 		t = fabsf(m_lStickX) + fabsf(m_lStickY);

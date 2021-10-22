@@ -2,6 +2,7 @@
 #include "model_render.h"
 #include "shadow.h"
 #include "net_work.h"
+#include "font_render.h"
 
 class PlayerCamera;
 class Player;
@@ -16,10 +17,28 @@ public:
     void Update() override final;
 
 
+private:
+	////////////////////////////////////////////////////////////
+	// ゲーム中の処理
+	////////////////////////////////////////////////////////////
+
+	void UpdateGame();
+
+	void InGame();
+
+	void FinishGame();
+
+	//////////////////////////////
+	// ゲーム終了判定
+	//////////////////////////////
+
+	void CheckGameEnd();
+
+	const bool CheckHp_0();
+
 	////////////////////////////////////////////////////////////
 	// ネットワーク関連の関数
 	////////////////////////////////////////////////////////////
-private:
 	/// <summary>
     /// すべてのプレイヤーがルームにジョインしたときに呼ばれる処理。
     /// </summary>
@@ -35,6 +54,9 @@ private:
 	/// </summary>
 	void OnError();
 
+	
+
+
 
 private: //enum
 	enum class EnStep {
@@ -47,9 +69,25 @@ private: //enum
 
 	EnStep m_step = EnStep::enStep_InitNetWork;
 
-	
+	enum class EnGameStatus
+	{
+		enInGame, // ゲーム中
+		enFinishGame // ゲーム終了
+	};
 
+	EnGameStatus m_gameStatus = EnGameStatus::enInGame;
 
+	/**
+	 * @brief 勝敗
+	*/
+	enum EnWinOrLose
+	{
+		enWin, // 勝利
+		enLose, // 負け
+		enInTheGame // 試合中
+	};
+
+	EnWinOrLose m_winOrLose[2] = { enInTheGame,enInTheGame };
 
 
 private: //data menber
@@ -61,6 +99,8 @@ private: //data menber
 	NetWork* m_onlineTwoPlayerMatchEngine = nullptr; // 完全同期二人対戦用エンジン
 	PlayerCamera* m_playerCamera = nullptr;
 	GameData* m_gameData = nullptr;
+	FontRender* m_fontWinOrLose = nullptr;
+	ModelRender* m_modelStage = nullptr; // ステージのモデル
 
 	////////////////////////////////////////////////////////////
 	// その他
@@ -75,4 +115,7 @@ private: //data menber
 	int m_playerNum = -1;
 	int m_otherPlayerNum = -1;
 
+
+
+	int m_debugCountGameEnd = 0;
 };
