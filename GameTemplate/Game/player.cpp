@@ -103,9 +103,9 @@ void Player::Update()
     Controller();
 
     // Debug start
-    if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
-        AttackCreate(EnAttackType::enNormal);
-    }
+    //if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
+    //    AttackCreate(EnAttackType::enNormal);
+    //}
     // Debug end
 
     // UŒ‚ŠÖ˜A‚ÌUpdate
