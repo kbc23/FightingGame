@@ -147,7 +147,7 @@ void Player::Controller()
         StartDash();
     }
     // Bボタン（仮）: ガード
-    if (true == m_gamePad->IsPress(enButtonB)) {
+    if (false == m_dashStatus.flagDash && true == m_gamePad->IsPress(enButtonB)) {
         m_flagDefense = true;
     }
     else {
