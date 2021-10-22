@@ -133,7 +133,7 @@ void Player::Controller()
     }
 
     // Aボタン: 通常攻撃
-    if (true == m_gamePad->IsTrigger(enButtonA)) {
+    if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonA)) {
         // 攻撃判定のエリアを作成
         AttackCreate(EnAttackType::enNormal);
     }
@@ -197,7 +197,11 @@ const Vector3& Player::Move()
     Vector3 cameraRight = Cross(g_vec3AxisY, cameraFront);
 
     // キャラクターの移動速度
-    float characterSpeed = 6.0f;
+    float characterSpeed = 9.0f;
+
+    if (true == m_flagDefense) {
+        characterSpeed = 3.0f;
+    }
 
     Vector3 pospos = Vector3::Zero;
 
