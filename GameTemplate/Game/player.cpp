@@ -133,7 +133,7 @@ void Player::Controller()
     }
 
     // Aボタン: 通常攻撃
-    if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonA)) {
+    if (false == m_flagDefense && false == m_flagDash && true == m_gamePad->IsTrigger(enButtonA)) {
         // 攻撃判定のエリアを作成
         AttackCreate(EnAttackType::enNormal);
     }
@@ -145,7 +145,7 @@ void Player::Controller()
 
     }
     // Xボタン（仮）: ダッシュ
-    if (true == m_gamePad->IsTrigger(enButtonX)) {
+    if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonX)) {
         m_flagDash = true;
     }
     // Bボタン（仮）: ガード
