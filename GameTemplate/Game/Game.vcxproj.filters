@@ -81,6 +81,9 @@
     <Filter Include="MyCode\Engine\Font">
       <UniqueIdentifier>{243d6f5d-eac1-44e5-b5cd-567b51b236ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCode\MainProcessing\Player\Status">
+      <UniqueIdentifier>{98e2f577-f3ec-46c0-8856-c2c80d77c70a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -298,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="game_data.cpp">
       <Filter>MyCode\MainProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="st_attack_data.cpp">
+      <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -543,6 +549,9 @@
     </ClInclude>
     <ClInclude Include="game_data.h">
       <Filter>MyCode\MainProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="st_attack_data.h">
+      <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

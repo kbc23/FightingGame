@@ -1,5 +1,6 @@
 #pragma once
 #include "actor.h"
+#include "st_attack_data.h"
 
 class PlayerCamera;
 class AttackJudgment;
@@ -73,29 +74,12 @@ private:
     /**
      * @brief 攻撃情報を作成
     */
-    void AttackCreate(const int attackType);
-
-    /**
-     * @brief 攻撃範囲を作成
-    */
-    void CreateAttackRange();
-
-    /**
-     * @brief 攻撃範囲の位置情報を作成
-     * 位置がプレイヤーの前方のときに使用
-     * @return 攻撃範囲の位置
-    */
-    const Vector3& CreateAttackPosition();
+    const bool AttackCreate();
 
     /**
      * @brief 攻撃に関する毎フレームの処理
     */
     void AttackUpdate();
-
-    /**
-     * @brief 攻撃を始めるまでのディレイの処理
-    */
-    void DelayAttack();
 
     /**
      * @brief 攻撃が当たった際の処理
@@ -105,7 +89,7 @@ private:
     /**
      * @brief 攻撃情報をリセット
     */
-    void ResetAttackData();
+    void FinishAttack();
 
     ////////////////////////////////////////////////////////////
     // ダッシュ関連
@@ -213,42 +197,11 @@ private: // constant
 
 
 private: // enum
-    /**
-     * @brief 攻撃の種類
-    */
-    enum EnAttackType
-    {
-        enNotAttacking, // 攻撃していない
-        enNormal, // 通常攻撃
-        enSub // サブ攻撃,
-    };
+
 
 
 
 private: // struct
-    /**
-     * @brief 攻撃情報に関する構造体
-    */
-    struct StAttackData
-    {
-        // status
-        int power = 0; // 攻撃力
-        int attackType = EnAttackType::enNotAttacking; // 攻撃の種類
-        // attack time
-        int attackTime = 0; // 攻撃時間
-        int attackTimeLimit = 0; // 攻撃時間の上限
-        // delay time
-        int delayTime = 0; // 攻撃までのディレイ
-        int delayTimeLimit = 0; // 攻撃までのディレイの上限
-        bool flagFinishDelay = true; // 攻撃開始までのディレイが終わったか（ディレイがない場合[true]に設定）
-        // attack range
-        Vector3 Range = Vector3::Zero; //攻撃範囲
-        float positionUpY = 0.0f; // 上昇させる攻撃範囲のY座標の量
-        // flag
-        bool flagAlreadyAttacked = false; // 攻撃がもう当たっているか
-        bool flagAttackNow = false; // 現在攻撃中か
-    };
-
     StAttackData m_attackData;
 
     /**
@@ -276,11 +229,24 @@ private: // struct
     struct StKnockBackStatus
     {
         int knockBackTime = 0; // ノックバックしている時間
-        int knockBackTimeLimit = 60; // ノックバックしている時間の上限
+        int knockBackTimeLimit = 30; // ノックバックしている時間の上限
         bool flagKnockBack = false; // ノックバックしているか（ノックバック中は操作不可）
     };
 
     StKnockBackStatus m_knockBackStatus;
+
+    /**
+     * @brief ダウンに関する構造体
+    */
+    struct StDownStatus
+    {
+        int downTime = 0; // ダウンしている時間
+        int downTimeLimit = 60; // ダウンしている時間の上限
+        bool flagDown = false; // ダウンしているか（ダウン中は操作不可、無敵）
+        // 起き上がった後も少し無敵時間が欲しい（無敵時間さん！？）
+    };
+
+    StDownStatus m_downStatus;
 
 
 private: // data member
