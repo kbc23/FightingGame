@@ -134,8 +134,8 @@ public: // Set function
             return false;
         }
 
-        // ダウン中の時、ダメージを与えない
-        if (true == m_downStatus.GetFlagDown()) {
+        // ダウン時の無敵の時、ダメージを与えない
+        if (true == m_downStatus.GetFlagInvincible()) {
             return false;
         }
 

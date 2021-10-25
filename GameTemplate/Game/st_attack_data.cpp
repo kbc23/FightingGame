@@ -12,7 +12,7 @@ namespace nsAttackData
     namespace nsNormalAttack
     {
         const int POWER = 50; // UŒ‚—Í
-        const int ATTACK_TIME_LIMIT = 15; // UŒ‚ŠÔ
+        const int ATTACK_TIME_LIMIT = 20; // UŒ‚ŠÔ
         const Vector3 RANGE = { 100.0f,50.0f,50.0f }; // UŒ‚”ÍˆÍ
         const float POSITION_UP_Y = 50.0f; // UŒ‚”ÍˆÍ‚ÌYÀ•W‚Ì’²®
     }
