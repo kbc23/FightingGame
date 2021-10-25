@@ -96,7 +96,10 @@ void Player::Update()
     m_dashStatus.DashUpdate();
 
     // ノックバック関連のUpdate
-    KnockBackUpdate();
+    m_knockBackStatus.KnockBackUpdate();
+
+    // ダウン関連のUpdate
+    m_downStatus.DownUpdate();
 
     //////////////////////////////
     // UIのUpdate
@@ -104,7 +107,8 @@ void Player::Update()
 
     m_playerUI->UpdateHpUI(m_hp, m_playerNum);
     m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
-    m_playerUI->UpdateKnockBackUI(m_knockBackStatus.flagKnockBack, m_playerNum);
+    m_playerUI->UpdateKnockBackUI(m_knockBackStatus.GetFlagKnockBack(), m_playerNum);
+    m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
 }
 
 ////////////////////////////////////////////////////////////
@@ -124,7 +128,12 @@ void Player::Controller()
     }
 
     // ノックバック時、処理をしない
-    if (true == m_knockBackStatus.flagKnockBack) {
+    if (true == m_knockBackStatus.GetFlagKnockBack()) {
+        return;
+    }
+
+    // ダウン時、処理をしない
+    if (true == m_downStatus.GetFlagDown()) {
         return;
     }
 
@@ -302,27 +311,4 @@ void Player::FinishAttack()
 
     // 攻撃時のステータスの初期化
     m_attackData.ResetAttackData();
-}
-
-////////////////////////////////////////////////////////////
-// ノックバック関連
-////////////////////////////////////////////////////////////
-
-void Player::StartKnockBack()
-{
-    m_knockBackStatus.flagKnockBack = true;
-}
-
-void Player::KnockBackUpdate()
-{
-    if (false == m_knockBackStatus.flagKnockBack) {
-        return;
-    }
-
-    ++m_knockBackStatus.knockBackTime;
-
-    if (m_knockBackStatus.knockBackTimeLimit <= m_knockBackStatus.knockBackTime) {
-        m_knockBackStatus.knockBackTime = 0;
-        m_knockBackStatus.flagKnockBack = false;
-    }
 }

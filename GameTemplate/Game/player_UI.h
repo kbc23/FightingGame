@@ -40,17 +40,31 @@ public: // Update data
         SetPosition(playerNum);
     }
 
+    void UpdateDownUI(const bool knockBack, const int playerNum)
+    {
+        if (true == knockBack) {
+            m_downUI->Activate();
+        }
+        else {
+            m_downUI->Deactivate();
+        }
+
+        SetPosition(playerNum);
+    }
+
     void SetPosition(const int playerNum)
     {
         if (playerNum == m_findGameData->GetPlayerNum()) {
             m_hpUI->SetPositionX(-200.0f);
             m_dashUI->SetPosition({ -200.0f,-50.0f });
             m_knockBackUI->SetPosition({ -200.0f,-100.0f });
+            m_downUI->SetPosition({ -200.0f,-150.0f });
         }
         else if (playerNum == m_findGameData->GetOtherPlayerNum()) {
             m_hpUI->SetPositionX(200.0f);
             m_dashUI->SetPosition({ 200.0f,-50.0f });
             m_knockBackUI->SetPosition({ 200.0f,-100.0f });
+            m_downUI->SetPosition({ 200.0f,-150.0f });
         }
     }
 
@@ -64,6 +78,7 @@ private: // data member
     FontRender* m_hpUI = nullptr;
     FontRender* m_dashUI = nullptr;
     FontRender* m_knockBackUI = nullptr;
+    FontRender* m_downUI = nullptr;
 
     GameData* m_findGameData = nullptr;
 

@@ -66,7 +66,7 @@ public: // Set function
     }
 
 
-public:
+public: // enum
     /**
      * @brief UŒ‚‚Ìí—Ş
     */

@@ -2,6 +2,8 @@
 #include "actor.h"
 #include "st_attack_data.h"
 #include "st_dash_status.h"
+#include "st_knock_back_status.h"
+#include "st_down_status.h"
 
 class PlayerCamera;
 class AttackJudgment;
@@ -92,15 +94,6 @@ private:
     */
     void FinishAttack();
 
-    ////////////////////////////////////////////////////////////
-    // ノックバック関連
-    ////////////////////////////////////////////////////////////
-
-    void StartKnockBack();
-
-    void KnockBackUpdate();
-
-
 
 public: // Get function
     const Vector3& GetPosition()
@@ -148,8 +141,10 @@ public: // Set function
 
         m_hp = m_hp - damage;
 
-        //ノックバックの処理
-        StartKnockBack();
+        // ノックバックの処理
+        m_knockBackStatus.StartKnockBack();
+        // ダウンの処理
+        m_downStatus.StartDown();
 
         // HPの確認
         CheckHp();
@@ -188,28 +183,7 @@ private: // struct
 
     StDashStatus m_dashStatus;
 
-    /**
-     * @brief ノックバックに関する構造体
-    */
-    struct StKnockBackStatus
-    {
-        int knockBackTime = 0; // ノックバックしている時間
-        int knockBackTimeLimit = 30; // ノックバックしている時間の上限
-        bool flagKnockBack = false; // ノックバックしているか（ノックバック中は操作不可）
-    };
-
     StKnockBackStatus m_knockBackStatus;
-
-    /**
-     * @brief ダウンに関する構造体
-    */
-    struct StDownStatus
-    {
-        int downTime = 0; // ダウンしている時間
-        int downTimeLimit = 60; // ダウンしている時間の上限
-        bool flagDown = false; // ダウンしているか（ダウン中は操作不可、無敵）
-        // 起き上がった後も少し無敵時間が欲しい（無敵時間さん！？）
-    };
 
     StDownStatus m_downStatus;
 
