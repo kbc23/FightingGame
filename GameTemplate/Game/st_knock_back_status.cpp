@@ -4,6 +4,7 @@
 void StKnockBackStatus::StartKnockBack()
 {
     m_flagKnockBack = true;
+    m_knockBackTime = 0;
 }
 
 void StKnockBackStatus::KnockBackUpdate()

@@ -5,6 +5,8 @@
 
 namespace nsAttackData
 {
+    const float POSITION_UP_Y = 50.0f; // UŒ‚”ÍˆÍ‚ÌYÀ•W‚Ì’²®
+
     ////////////////////////////////////////////////////////////
     // ’ÊíUŒ‚
     ////////////////////////////////////////////////////////////
@@ -14,7 +16,13 @@ namespace nsAttackData
         const int POWER = 50; // UŒ‚—Í
         const int ATTACK_TIME_LIMIT = 20; // UŒ‚ŠÔ
         const Vector3 RANGE = { 100.0f,50.0f,50.0f }; // UŒ‚”ÍˆÍ
-        const float POSITION_UP_Y = 50.0f; // UŒ‚”ÍˆÍ‚ÌYÀ•W‚Ì’²®
+        const int MAX_CONTINUOUS_ATTACK_COUNT = 3; // ˜A‘±UŒ‚‚ÌÅ‘å”
+        const int IMPACT_TYPE[MAX_CONTINUOUS_ATTACK_COUNT] =
+        {
+            StAttackData::EnImpactType::enKnockBack,
+            StAttackData::EnImpactType::enKnockBack,
+            StAttackData::EnImpactType::enDown
+        };
     }
 
     ////////////////////////////////////////////////////////////
@@ -27,7 +35,7 @@ namespace nsAttackData
         const int ATTACK_TIME_LIMIT = 30; // UŒ‚ŠÔ
         const int DELAY_TIME_LIMIT = 20; // UŒ‚‚Ü‚Å‚ÌƒfƒBƒŒƒC
         const Vector3 RANGE = { 50.0f,50.0f,500.0f }; // UŒ‚”ÍˆÍ
-        const float POSITION_UP_Y = 50.0f; // UŒ‚”ÍˆÍ‚ÌYÀ•W‚Ì’²®
+        const int IMPACT_TYPE = StAttackData::EnImpactType::enDown;
     }
 }
 
@@ -40,9 +48,12 @@ void StAttackData::SetAttackData(const int attackType)
         m_power = nsAttackData::nsNormalAttack::POWER;
         m_attackTimeLimit = nsAttackData::nsNormalAttack::ATTACK_TIME_LIMIT;
         m_range = nsAttackData::nsNormalAttack::RANGE;
-        m_positionUpY = nsAttackData::nsNormalAttack::POSITION_UP_Y;
         m_flagAttackNow = true;
         m_attackType = EnAttackType::enNormal;
+        m_flagContinuousAttack = true;
+        m_continuousAttackGraceTime = 0;
+        m_continuousAttackGraceTimeLimit = nsAttackData::nsNormalAttack::ATTACK_TIME_LIMIT + 10;
+        m_impactType = nsAttackData::nsNormalAttack::IMPACT_TYPE[m_countContinuousAttack];
     }
     // ƒTƒuUŒ‚
     else if (EnAttackType::enSub == attackType) {
@@ -51,9 +62,9 @@ void StAttackData::SetAttackData(const int attackType)
         m_delayTimeLimit = nsAttackData::nsSubAttack::DELAY_TIME_LIMIT;
         m_flagFinishDelay = false;
         m_range = nsAttackData::nsSubAttack::RANGE;
-        m_positionUpY = nsAttackData::nsSubAttack::POSITION_UP_Y;
         m_flagAttackNow = true;
         m_attackType = EnAttackType::enSub;
+        m_impactType = nsAttackData::nsSubAttack::IMPACT_TYPE;
     }
 }
 
@@ -79,7 +90,7 @@ const Vector3& StAttackData::CreateAttackPosition(const Vector3& playerPosition,
     local_playerPosition = local_playerPosition - toPos;
 
     // w’è‚µ‚½’l‚¾‚¯YÀ•W‚ğã¸‚·‚é
-    local_playerPosition.y = m_positionUpY;
+    local_playerPosition.y = nsAttackData::POSITION_UP_Y;
 
     // UŒ‚”»’è‚ğì¬‚µ‚½”»’è‚É‚·‚é
     m_flagCreateAttackRange = true;
@@ -96,6 +107,21 @@ const bool StAttackData::UpdateFinish()
     }
 
     return false;
+}
+
+void StAttackData::UpdateContinuousAttack()
+{
+    if (false == m_flagContinuousAttack) {
+        return;
+    }
+
+    ++m_continuousAttackGraceTime;
+
+    if (m_continuousAttackGraceTimeLimit <= m_continuousAttackGraceTime) {
+        m_continuousAttackGraceTime = 0;
+        m_countContinuousAttack = 0;
+        m_flagContinuousAttack = false;
+    }
 }
 
 const bool StAttackData::DelayAttack()
@@ -125,8 +151,21 @@ void StAttackData::ResetAttackData()
     m_delayTimeLimit = 0;
     m_flagFinishDelay = true;
     m_range = Vector3::Zero;
-    m_positionUpY = 0.0f;
     m_flagAlreadyAttacked = false;
     m_flagAttackNow = false;
     m_flagCreateAttackRange = false;
+    m_impactType = EnImpactType::enNotImpact;
+
+    if (true == m_flagContinuousAttack) {
+        if (nsAttackData::nsNormalAttack::MAX_CONTINUOUS_ATTACK_COUNT - 1 <= m_countContinuousAttack) {
+            m_countContinuousAttack = 0; // ˜A‘±UŒ‚‚Ì‰ñ”
+            m_maxCountContinuousAttack = 0; // ˜A‘±UŒ‚‚ÌÅ‘å”
+            m_continuousAttackGraceTime = 0; // ˜A‘±UŒ‚‚Ì—P—\ŠÔ
+            m_continuousAttackGraceTimeLimit = 0; // ˜A‘±UŒ‚‚Ì—P—\ŠÔ‚ÌãŒÀ
+            m_flagContinuousAttack = false; // ˜A‘±UŒ‚’†‚©
+            return;
+        }
+
+        ++m_countContinuousAttack;
+    }
 }

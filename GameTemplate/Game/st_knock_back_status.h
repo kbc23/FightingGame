@@ -21,6 +21,6 @@ public: // Get function
 
 private: // data member
     int m_knockBackTime = 0; // ノックバックしている時間
-    int m_knockBackTimeLimit = 30; // ノックバックしている時間の上限
+    int m_knockBackTimeLimit = 25; // ノックバックしている時間の上限
     bool m_flagKnockBack = false; // ノックバックしているか（ノックバック中は操作不可）
 };

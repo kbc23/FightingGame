@@ -86,6 +86,8 @@ void Player::Update()
     // 攻撃関連のUpdate
     AttackUpdate();
 
+    m_attackData.UpdateContinuousAttack();
+
     // ダッシュ関連のUpdate
     m_dashStatus.DashUpdate();
 
@@ -132,6 +134,8 @@ void Player::Controller()
         return;
     }
 
+
+
     // Aボタン: 通常攻撃
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonA)) {
         m_attackData.SetAttackData(m_attackData.EnAttackType::enNormal);
@@ -160,6 +164,8 @@ void Player::Controller()
         //ゲームを終了
         exit(EXIT_SUCCESS);
     }
+
+
 
     // プレイヤーの移動
     Vector3 moveAmount = Vector3::Zero;
@@ -286,7 +292,7 @@ void Player::AttackUpdate()
 void Player::HitAttack()
 {    
     // ダメージ処理
-    if (false == m_otherPlayer->ReceiveDamage(m_attackData.GetPower())) {
+    if (false == m_otherPlayer->ReceiveDamage(m_attackData.GetPower(), m_attackData.GetImpactType())) {
         // ダメージを与えられてない
         return;
     }

@@ -127,7 +127,7 @@ public: // Set function
      * @param damage ダメージ量
      * @return ダメージを与えられたか
     */
-    const bool ReceiveDamage(const int damage)
+    const bool ReceiveDamage(const int damage, const int impactType)
     {
         // HPが０なら処理をしない
         if (true == m_flagHp_0) {
@@ -147,9 +147,13 @@ public: // Set function
         m_hp = m_hp - damage;
 
         // ノックバックの処理
-        m_knockBackStatus.StartKnockBack();
+        if (StAttackData::EnImpactType::enKnockBack == impactType) {
+            m_knockBackStatus.StartKnockBack();
+        }
         // ダウンの処理
-        m_downStatus.StartDown();
+        else if (StAttackData::EnImpactType::enDown == impactType) {
+            m_downStatus.StartDown();
+        }
 
         // HPの確認
         CheckHp();

@@ -20,6 +20,9 @@ public: // function
 
     const bool UpdateFinish();
 
+
+    void UpdateContinuousAttack();
+
     /**
      * @brief UŒ‚‚ğn‚ß‚é‚Ü‚Å‚ÌƒfƒBƒŒƒC‚Ìˆ—
     */
@@ -58,6 +61,11 @@ public: // Get function
         return m_flagAlreadyAttacked;
     }
 
+    const int GetImpactType()
+    {
+        return m_impactType;
+    }
+
 
 public: // Set function
     void SetFlagAlreadyAttacked(const bool flag)
@@ -77,11 +85,22 @@ public: // enum
         enSub, // ƒTƒuUŒ‚
     };
 
+    /**
+     * @brief UŒ‚‚É‚æ‚é‰e‹¿
+    */
+    enum EnImpactType
+    {
+        enNotImpact, // ‚È‚É‚à‚È‚¢
+        enKnockBack, // ƒmƒbƒNƒoƒbƒN
+        enDown // ƒ_ƒEƒ“
+    };
+
 
 private: // data member
     // status
     int m_power = 0; // UŒ‚—Í
     int m_attackType = EnAttackType::enNotAttacking; // UŒ‚‚Ìí—Ş
+    int m_impactType = EnImpactType::enNotImpact; // UŒ‚‚É‚æ‚é‰e‹¿
     // attack time
     int m_attackTime = 0; // UŒ‚ŠÔ
     int m_attackTimeLimit = 0; // UŒ‚ŠÔ‚ÌãŒÀ
@@ -91,7 +110,12 @@ private: // data member
     bool m_flagFinishDelay = true; // UŒ‚ŠJn‚Ü‚Å‚ÌƒfƒBƒŒƒC‚ªI‚í‚Á‚½‚©iƒfƒBƒŒƒC‚ª‚È‚¢ê‡[true]‚Éİ’èj
     // attack range
     Vector3 m_range = Vector3::Zero; //UŒ‚”ÍˆÍ
-    float m_positionUpY = 0.0f; // ã¸‚³‚¹‚éUŒ‚”ÍˆÍ‚ÌYÀ•W‚Ì—Ê
+    // continuous attack
+    int m_countContinuousAttack = 0; // ˜A‘±UŒ‚‚Ì‰ñ”
+    int m_maxCountContinuousAttack = 0; // ˜A‘±UŒ‚‚ÌÅ‘å”
+    int m_continuousAttackGraceTime = 0; // ˜A‘±UŒ‚‚Ì—P—\ŠÔ
+    int m_continuousAttackGraceTimeLimit = 0; // ˜A‘±UŒ‚‚Ì—P—\ŠÔ‚ÌãŒÀ
+    bool m_flagContinuousAttack = false; // ˜A‘±UŒ‚’†‚©
     // flag
     bool m_flagAlreadyAttacked = false; // UŒ‚‚ª‚à‚¤“–‚½‚Á‚Ä‚¢‚é‚©
     bool m_flagAttackNow = false; // Œ»İUŒ‚’†‚©
