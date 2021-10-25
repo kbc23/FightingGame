@@ -1,6 +1,7 @@
 #pragma once
 #include "actor.h"
 #include "st_attack_data.h"
+#include "st_dash_status.h"
 
 class PlayerCamera;
 class AttackJudgment;
@@ -90,25 +91,6 @@ private:
      * @brief 攻撃情報をリセット
     */
     void FinishAttack();
-
-    ////////////////////////////////////////////////////////////
-    // ダッシュ関連
-    ////////////////////////////////////////////////////////////
-
-    /**
-     * @brief ダッシュを始めるときの処理
-    */
-    void StartDash();
-
-    /**
-     * @brief ダッシュに関する毎フレームの処理
-    */
-    void DashUpdate();
-
-    /**
-     * @brief ダッシュの残り回数の回復の処理
-    */
-    void DashRecoveryTime();
 
     ////////////////////////////////////////////////////////////
     // ノックバック関連
@@ -203,23 +185,6 @@ private: // enum
 
 private: // struct
     StAttackData m_attackData;
-
-    /**
-     * @brief ダッシュに関する構造体
-    */
-    struct StDashStatus
-    {
-        // constant
-        const int MAX_COUNT_DASH = 5; // ダッシュしている時間の上限
-        const int MAX_RECOVERY_TIME = 50; // 残り回数の回復時間の上限
-        const int MAX_REMAINING_NUMBER_OF_TIMES = 3; // ダッシュの残り回数の上限
-
-        // data member
-        bool flagDash = false; // ダッシュ中か
-        int countDash = 0; // ダッシュしている時間
-        int remainingNumberOfTimes = MAX_REMAINING_NUMBER_OF_TIMES; // ダッシュの残り回数
-        int countRecoveryTime = 0; // 残り回数の回復時間
-    };
 
     StDashStatus m_dashStatus;
 

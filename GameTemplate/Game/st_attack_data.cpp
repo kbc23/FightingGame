@@ -53,7 +53,7 @@ void StAttackData::SetAttackData(const int attackType)
         m_range = nsAttackData::nsSubAttack::RANGE;
         m_positionUpY = nsAttackData::nsSubAttack::POSITION_UP_Y;
         m_flagAttackNow = true;
-        m_attackType = EnAttackType::enNormal;
+        m_attackType = EnAttackType::enSub;
     }
 }
 

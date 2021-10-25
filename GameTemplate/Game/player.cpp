@@ -93,7 +93,7 @@ void Player::Update()
     AttackUpdate();
 
     // ダッシュ関連のUpdate
-    DashUpdate();
+    m_dashStatus.DashUpdate();
 
     // ノックバック関連のUpdate
     KnockBackUpdate();
@@ -103,7 +103,7 @@ void Player::Update()
     //////////////////////////////
 
     m_playerUI->UpdateHpUI(m_hp, m_playerNum);
-    m_playerUI->UpdateDashUI(m_dashStatus.remainingNumberOfTimes, m_playerNum);
+    m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
     m_playerUI->UpdateKnockBackUI(m_knockBackStatus.flagKnockBack, m_playerNum);
 }
 
@@ -129,13 +129,13 @@ void Player::Controller()
     }
 
     // Aボタン: 通常攻撃
-    if (false == m_flagDefense && false == m_dashStatus.flagDash && true == m_gamePad->IsTrigger(enButtonA)) {
+    if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonA)) {
         // 攻撃判定のエリアを作成
         //AttackCreate(m_attackData.EnAttackType::enNormal);
         m_attackData.SetAttackData(m_attackData.EnAttackType::enNormal);
     }
-    // B: サブ攻撃
-    if (false == m_flagDefense && false == m_dashStatus.flagDash && true == m_gamePad->IsTrigger(enButtonB)) {
+    // Bボタン: サブ攻撃
+    if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonB)) {
         // 攻撃判定のエリアを作成
         //AttackCreate(m_attackData.EnAttackType::enSub);
         m_attackData.SetAttackData(m_attackData.EnAttackType::enSub);
@@ -146,10 +146,10 @@ void Player::Controller()
     }
     // R1ボタン: ダッシュ
     if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonRB1)) {
-        StartDash();
+        m_dashStatus.StartDash();
     }
     // L1ボタン: ガード
-    if (false == m_dashStatus.flagDash && true == m_gamePad->IsPress(enButtonLB1)) {
+    if (false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsPress(enButtonLB1)) {
         m_flagDefense = true;
     }
     else {
@@ -164,7 +164,7 @@ void Player::Controller()
     // プレイヤーの移動
     Vector3 moveAmount = Vector3::Zero;
 
-    if (false == m_dashStatus.flagDash) {
+    if (false == m_dashStatus.GetFlagDash()) {
         moveAmount = Move();
     }
     // ダッシュ
@@ -302,53 +302,6 @@ void Player::FinishAttack()
 
     // 攻撃時のステータスの初期化
     m_attackData.ResetAttackData();
-}
-
-////////////////////////////////////////////////////////////
-// ダッシュ関連
-////////////////////////////////////////////////////////////
-
-void Player::StartDash()
-{
-    // ダッシュ中か残り回数が０のときは処理をしない
-    if (true == m_dashStatus.flagDash || 0 >= m_dashStatus.remainingNumberOfTimes) {
-        return;
-    }
-
-    --m_dashStatus.remainingNumberOfTimes; // 残り回数を１減少
-
-    m_dashStatus.flagDash = true;
-}
-
-void Player::DashUpdate()
-{
-    DashRecoveryTime();
-
-    if (false == m_dashStatus.flagDash) {
-        return;
-    }
-
-    ++m_dashStatus.countDash;
-
-    if (m_dashStatus.MAX_COUNT_DASH <= m_dashStatus.countDash) {
-        m_dashStatus.flagDash = false;
-        m_dashStatus.countDash = 0;
-    }
-}
-
-void Player::DashRecoveryTime()
-{
-    // 残り回数が最大なら処理をしない
-    if (m_dashStatus.MAX_REMAINING_NUMBER_OF_TIMES <= m_dashStatus.remainingNumberOfTimes) {
-        return;
-    }
-
-    ++m_dashStatus.countRecoveryTime;
-
-    if (m_dashStatus.MAX_RECOVERY_TIME <= m_dashStatus.countRecoveryTime) {
-        ++m_dashStatus.remainingNumberOfTimes; // 残り回数を１増加
-        m_dashStatus.countRecoveryTime = 0;
-    }
 }
 
 ////////////////////////////////////////////////////////////
