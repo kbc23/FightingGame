@@ -125,7 +125,16 @@ private:
      * @brief ダッシュの残り回数の回復の処理
     */
     void DashRecoveryTime();
-    
+
+    ////////////////////////////////////////////////////////////
+    // ノックバック関連
+    ////////////////////////////////////////////////////////////
+
+    void StartKnockBack();
+
+    void KnockBackUpdate();
+
+
 
 public: // Get function
     const Vector3& GetPosition()
@@ -161,7 +170,7 @@ public: // Set function
     */
     const bool ReceiveDamage(const int damage)
     {
-        // HPが０になら処理をしない
+        // HPが０なら処理をしない
         if (true == m_flagHp_0) {
             return false;
         }
@@ -172,6 +181,9 @@ public: // Set function
         }
 
         m_hp = m_hp - damage;
+
+        //ノックバックの処理
+        StartKnockBack();
 
         // HPの確認
         CheckHp();
@@ -215,7 +227,7 @@ private: // enum
 
 private: // struct
     /**
-     * @brief 攻撃情報に関するデータの構造体
+     * @brief 攻撃情報に関する構造体
     */
     struct StAttackData
     {
@@ -239,6 +251,9 @@ private: // struct
 
     StAttackData m_attackData;
 
+    /**
+     * @brief ダッシュに関する構造体
+    */
     struct StDashStatus
     {
         // constant
@@ -254,6 +269,18 @@ private: // struct
     };
 
     StDashStatus m_dashStatus;
+
+    /**
+     * @brief ノックバックに関する構造体
+    */
+    struct StKnockBackStatus
+    {
+        int knockBackTime = 0; // ノックバックしている時間
+        int knockBackTimeLimit = 60; // ノックバックしている時間の上限
+        bool flagKnockBack = false; // ノックバックしているか（ノックバック中は操作不可）
+    };
+
+    StKnockBackStatus m_knockBackStatus;
 
 
 private: // data member

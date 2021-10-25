@@ -121,12 +121,16 @@ void Player::Update()
     // ダッシュ関連のUpdate
     DashUpdate();
 
+    // ノックバック関連のUpdate
+    KnockBackUpdate();
+
     //////////////////////////////
     // UIのUpdate
     //////////////////////////////
 
     m_playerUI->UpdateHpUI(m_hp, m_playerNum);
     m_playerUI->UpdateDashUI(m_dashStatus.remainingNumberOfTimes, m_playerNum);
+    m_playerUI->UpdateKnockBackUI(m_knockBackStatus.flagKnockBack, m_playerNum);
 }
 
 ////////////////////////////////////////////////////////////
@@ -135,11 +139,18 @@ void Player::Update()
 
 void Player::Controller()
 {
+    // ゲーム終了時、処理をしない
     if (true == m_flagGameEndStopOperation) {
         return;
     }
 
+    // 攻撃時、処理をしない
     if (false == m_flagOperation || true == m_attackData.flagAttackNow) {
+        return;
+    }
+
+    // ノックバック時、処理をしない
+    if (true == m_knockBackStatus.flagKnockBack) {
         return;
     }
 
@@ -362,6 +373,7 @@ void Player::HitAttack()
     // ここでは、相手プレイヤーが自分の攻撃判定に触れた際の処理を記載する
     // ダメージ処理
     if (false == m_otherPlayer->ReceiveDamage(m_attackData.power)) {
+        // ダメージを与えられてない
         return;
     }
 
@@ -430,5 +442,28 @@ void Player::DashRecoveryTime()
     if (m_dashStatus.MAX_RECOVERY_TIME <= m_dashStatus.countRecoveryTime) {
         ++m_dashStatus.remainingNumberOfTimes; // 残り回数を１増加
         m_dashStatus.countRecoveryTime = 0;
+    }
+}
+
+////////////////////////////////////////////////////////////
+// ノックバック関連
+////////////////////////////////////////////////////////////
+
+void Player::StartKnockBack()
+{
+    m_knockBackStatus.flagKnockBack = true;
+}
+
+void Player::KnockBackUpdate()
+{
+    if (false == m_knockBackStatus.flagKnockBack) {
+        return;
+    }
+
+    ++m_knockBackStatus.knockBackTime;
+
+    if (m_knockBackStatus.knockBackTimeLimit <= m_knockBackStatus.knockBackTime) {
+        m_knockBackStatus.knockBackTime = 0;
+        m_knockBackStatus.flagKnockBack = false;
     }
 }
