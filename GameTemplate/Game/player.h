@@ -134,6 +134,11 @@ public: // Set function
             return false;
         }
 
+        // ダウン中の時、ダメージを与えない
+        if (true == m_downStatus.GetFlagDown()) {
+            return false;
+        }
+
         //防御中
         if (true == m_flagDefense) {
             return false;
@@ -173,21 +178,6 @@ private: // constant
     static const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
 
 
-private: // enum
-
-
-
-
-private: // struct
-    StAttackData m_attackData;
-
-    StDashStatus m_dashStatus;
-
-    StKnockBackStatus m_knockBackStatus;
-
-    StDownStatus m_downStatus;
-
-
 private: // data member
     ////////////////////////////////////////////////////////////
     // クラスのインスタンス
@@ -215,6 +205,10 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     int m_hp = m_MAX_HP; // プレイヤーの体力
+    StAttackData m_attackData; // 攻撃関連のデータ
+    StDashStatus m_dashStatus; // ダッシュ関連のデータ
+    StKnockBackStatus m_knockBackStatus; // ノックバック関連のデータ
+    StDownStatus m_downStatus; // ダウン関連のデータ
 
     ////////////////////////////////////////////////////////////
     // フラグ

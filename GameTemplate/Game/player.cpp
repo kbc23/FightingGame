@@ -109,6 +109,7 @@ void Player::Update()
     m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
     m_playerUI->UpdateKnockBackUI(m_knockBackStatus.GetFlagKnockBack(), m_playerNum);
     m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
+    m_playerUI->UpdatemDefenseUI(m_flagDefense, m_playerNum);
 }
 
 ////////////////////////////////////////////////////////////
@@ -139,14 +140,10 @@ void Player::Controller()
 
     // Aボタン: 通常攻撃
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonA)) {
-        // 攻撃判定のエリアを作成
-        //AttackCreate(m_attackData.EnAttackType::enNormal);
         m_attackData.SetAttackData(m_attackData.EnAttackType::enNormal);
     }
     // Bボタン: サブ攻撃
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonB)) {
-        // 攻撃判定のエリアを作成
-        //AttackCreate(m_attackData.EnAttackType::enSub);
         m_attackData.SetAttackData(m_attackData.EnAttackType::enSub);
     }
     // ?: 必殺技
@@ -293,8 +290,7 @@ void Player::AttackUpdate()
 }
 
 void Player::HitAttack()
-{
-    // ここでは、相手プレイヤーが自分の攻撃判定に触れた際の処理を記載する
+{    
     // ダメージ処理
     if (false == m_otherPlayer->ReceiveDamage(m_attackData.GetPower())) {
         // ダメージを与えられてない

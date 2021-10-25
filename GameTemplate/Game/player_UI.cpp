@@ -16,6 +16,10 @@ PlayerUI::PlayerUI()
     m_downUI = NewGO<FontRender>(igo::EnPriority::font);
     m_downUI->Init(L"ダウン！");
     m_downUI->Deactivate();
+
+    m_defenseUI = NewGO<FontRender>(igo::EnPriority::font);
+    m_defenseUI->Init(L"ガード！");
+    m_defenseUI->Deactivate();
 }
 
 PlayerUI::~PlayerUI()
@@ -24,6 +28,7 @@ PlayerUI::~PlayerUI()
     DeleteGO(m_dashUI);
     DeleteGO(m_knockBackUI);
     DeleteGO(m_downUI);
+    DeleteGO(m_defenseUI);
 }
 
 bool PlayerUI::Start()
