@@ -170,12 +170,15 @@ void Player::Controller()
     // プレイヤーの移動
     Vector3 moveAmount = Vector3::Zero;
 
-    if (false == m_dashStatus.GetFlagDash()) {
-        moveAmount = Move();
-    }
-    // ダッシュ
-    else {
-        moveAmount = DashMove();
+    // ガード中は処理をしない
+    if (false == m_flagDefense) {
+        if (false == m_dashStatus.GetFlagDash()) {
+            moveAmount = Move();
+        }
+        // ダッシュ
+        else {
+            moveAmount = DashMove();
+        }
     }
 
     // プレイヤーのモデルに位置情報などのステータス情報を渡す
@@ -199,9 +202,9 @@ const Vector3& Player::Move()
     // キャラクターの移動速度
     float characterSpeed = 9.0f;
 
-    if (true == m_flagDefense) {
-        characterSpeed = 3.0f;
-    }
+    //if (true == m_flagDefense) {
+    //    characterSpeed = 3.0f;
+    //}
 
     Vector3 pospos = Vector3::Zero;
 

@@ -36,6 +36,6 @@ private: // data member
     bool m_flagDown = false; // ダウンしているか（ダウン中は操作不可、無敵）
     // 無敵時間関連
     int m_invincibleTime = 0; // 無敵時間
-    int m_invincibleTimeLimit = 90; // 無敵時間の上限
+    int m_invincibleTimeLimit = 120; // 無敵時間の上限
     bool m_flagInvincible = false; // 無敵状態か
 };
