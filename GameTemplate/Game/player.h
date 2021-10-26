@@ -158,6 +158,12 @@ public: // Set function
         // HPの確認
         CheckHp();
 
+        m_mp += 0.5;
+
+        if (m_MAX_MP <= m_mp) {
+            m_mp = m_MAX_MP;
+        }
+
         return true;
     }
 
@@ -180,6 +186,7 @@ private: // Used in the Set function
 
 private: // constant
     static const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
+    static const int m_MAX_MP = 4;
 
 
 private: // data member
@@ -209,6 +216,7 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     int m_hp = m_MAX_HP; // プレイヤーの体力
+    double m_mp = 0;
     StAttackData m_attackData; // 攻撃関連のデータ
     StDashStatus m_dashStatus; // ダッシュ関連のデータ
     StKnockBackStatus m_knockBackStatus; // ノックバック関連のデータ

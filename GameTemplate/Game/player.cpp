@@ -102,6 +102,7 @@ void Player::Update()
     //////////////////////////////
 
     m_playerUI->UpdateHpUI(m_hp, m_playerNum);
+    m_playerUI->UpdateMpUI(m_mp, m_playerNum);
     m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
     m_playerUI->UpdateKnockBackUI(m_knockBackStatus.GetFlagKnockBack(), m_playerNum);
     m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
@@ -142,7 +143,11 @@ void Player::Controller()
     }
     // Bƒ{ƒ^ƒ“: ƒTƒuUŒ‚
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonB)) {
-        m_attackData.SetAttackData(m_attackData.EnAttackType::enSub);
+        if (1 <= m_mp) {
+            m_attackData.SetAttackData(m_attackData.EnAttackType::enSub);
+
+            --m_mp;
+        }
     }
     // ?: •KŽE‹Z
     if (true) {
@@ -301,6 +306,12 @@ void Player::HitAttack()
     }
 
     m_attackData.SetFlagAlreadyAttacked(true);
+
+    m_mp += 0.5;
+
+    if (m_MAX_MP <= m_mp) {
+        m_mp = m_MAX_MP;
+    }
 }
 
 void Player::FinishAttack()

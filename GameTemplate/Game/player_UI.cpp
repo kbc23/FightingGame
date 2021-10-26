@@ -6,6 +6,9 @@ PlayerUI::PlayerUI()
     m_hpUI = NewGO<FontRender>(igo::EnPriority::font);
     m_hpUI->Init(L"1000");
 
+    m_mpUI = NewGO<FontRender>(igo::EnPriority::font);
+    m_mpUI->Init(L"4");
+    
     m_dashUI = NewGO<FontRender>(igo::EnPriority::font);
     m_dashUI->Init(L"3");
 

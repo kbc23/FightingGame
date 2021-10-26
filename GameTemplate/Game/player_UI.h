@@ -22,6 +22,12 @@ public: // Update data
         SetPosition(playerNum);
     }
 
+    void UpdateMpUI(const double mp, const int playerNum)
+    {
+        m_mpUI->SetText(mp);
+        SetPosition(playerNum);
+    }
+
     void UpdateDashUI(const int dash, const int playerNum)
     {
         m_dashUI->SetText(dash);
@@ -68,17 +74,19 @@ public: // Update data
     {
         if (playerNum == m_findGameData->GetPlayerNum()) {
             m_hpUI->SetPositionX(-200.0f);
-            m_dashUI->SetPosition({ -200.0f,-50.0f });
-            m_knockBackUI->SetPosition({ -200.0f,-100.0f });
-            m_downUI->SetPosition({ -200.0f,-150.0f });
-            m_defenseUI->SetPosition({ -200.0f,-200.0f });
+            m_mpUI->SetPosition({ -200.0f,-50.0f });
+            m_dashUI->SetPosition({ -200.0f,-100.0f });
+            m_knockBackUI->SetPosition({ -200.0f,-150.0f });
+            m_downUI->SetPosition({ -200.0f,-200.0f });
+            m_defenseUI->SetPosition({ -200.0f,-250.0f });
         }
         else if (playerNum == m_findGameData->GetOtherPlayerNum()) {
             m_hpUI->SetPositionX(200.0f);
-            m_dashUI->SetPosition({ 200.0f,-50.0f });
-            m_knockBackUI->SetPosition({ 200.0f,-100.0f });
-            m_downUI->SetPosition({ 200.0f,-150.0f });
-            m_defenseUI->SetPosition({ 200.0f,-200.0f });
+            m_mpUI->SetPosition({ 200.0f, -50.0f });
+            m_dashUI->SetPosition({ 200.0f,-100.0f });
+            m_knockBackUI->SetPosition({ 200.0f,-150.0f });
+            m_downUI->SetPosition({ 200.0f,-200.0f });
+            m_defenseUI->SetPosition({ 200.0f,-250.0f });
         }
     }
 
@@ -90,6 +98,7 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     FontRender* m_hpUI = nullptr;
+    FontRender* m_mpUI = nullptr;
     FontRender* m_dashUI = nullptr;
     FontRender* m_knockBackUI = nullptr;
     FontRender* m_downUI = nullptr;

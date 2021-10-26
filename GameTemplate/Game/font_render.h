@@ -50,6 +50,11 @@ public: //Set関数
         swprintf_s(m_text, L"%d", num);
     }
 
+    void SetText(const double num)
+    {
+        swprintf_s(m_text, L"%lf", num);
+    }
+
     /**
      * @brief 表示するテキストの位置を設定
      * @param vec 表示する位置
