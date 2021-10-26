@@ -30,8 +30,8 @@ void TkEngine::BeginFrame()
 	m_graphicsEngine->BeginRender();
 
 	//デバッグで追加（後で消すこと）
-	m_pad[0].Update();
-	return;
+	//m_pad[0].Update();
+	//return;
 	//ここまで
 
 	for (auto& pad : m_pad) {
