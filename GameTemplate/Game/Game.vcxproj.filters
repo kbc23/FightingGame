@@ -308,7 +308,7 @@
     <ClCompile Include="st_dash_status.cpp">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClCompile>
-    <ClCompile Include="st_knock_back_status.cpp">
+    <ClCompile Include="st_squeeze_status.cpp">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClCompile>
     <ClCompile Include="st_down_status.cpp">
@@ -565,7 +565,7 @@
     <ClInclude Include="st_dash_status.h">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClInclude>
-    <ClInclude Include="st_knock_back_status.h">
+    <ClInclude Include="st_squeeze_status.h">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClInclude>
     <ClInclude Include="st_down_status.h">

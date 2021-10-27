@@ -2,7 +2,7 @@
 #include "actor.h"
 #include "st_attack_data.h"
 #include "st_dash_status.h"
-#include "st_knock_back_status.h"
+#include "st_squeeze_status.h"
 #include "st_down_status.h"
 
 class PlayerCamera;
@@ -148,7 +148,7 @@ public: // Set function
 
         // ノックバックの処理
         if (StAttackData::EnImpactType::enKnockBack == impactType) {
-            m_knockBackStatus.StartKnockBack();
+            m_squeezeStatus.StartSqueeze();
         }
         // ダウンの処理
         else if (StAttackData::EnImpactType::enDown == impactType) {
@@ -219,7 +219,7 @@ private: // data member
     double m_mp = 0;
     StAttackData m_attackData; // 攻撃関連のデータ
     StDashStatus m_dashStatus; // ダッシュ関連のデータ
-    StKnockBackStatus m_knockBackStatus; // ノックバック関連のデータ
+    StSqueezeStatus m_squeezeStatus; // のけぞり関連のデータ
     StDownStatus m_downStatus; // ダウン関連のデータ
 
     ////////////////////////////////////////////////////////////

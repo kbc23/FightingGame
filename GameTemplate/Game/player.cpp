@@ -92,7 +92,7 @@ void Player::Update()
     m_dashStatus.DashUpdate();
 
     // ノックバック関連のUpdate
-    m_knockBackStatus.KnockBackUpdate();
+    m_squeezeStatus.SqueezeUpdate();
 
     // ダウン関連のUpdate
     m_downStatus.DownUpdate();
@@ -104,7 +104,7 @@ void Player::Update()
     m_playerUI->UpdateHpUI(m_hp, m_playerNum);
     m_playerUI->UpdateMpUI(m_mp, m_playerNum);
     m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
-    m_playerUI->UpdateKnockBackUI(m_knockBackStatus.GetFlagKnockBack(), m_playerNum);
+    m_playerUI->UpdateKnockBackUI(m_squeezeStatus.GetFlagSqueeze(), m_playerNum);
     m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
     m_playerUI->UpdatemDefenseUI(m_flagDefense, m_playerNum);
 }
@@ -126,7 +126,7 @@ void Player::Controller()
     }
 
     // ノックバック時、処理をしない
-    if (true == m_knockBackStatus.GetFlagKnockBack()) {
+    if (true == m_squeezeStatus.GetFlagSqueeze()) {
         return;
     }
 

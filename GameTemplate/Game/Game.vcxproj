@@ -322,7 +322,7 @@
     <ClCompile Include="st_attack_data.cpp" />
     <ClCompile Include="st_dash_status.cpp" />
     <ClCompile Include="st_down_status.cpp" />
-    <ClCompile Include="st_knock_back_status.cpp" />
+    <ClCompile Include="st_squeeze_status.cpp" />
     <ClCompile Include="system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -409,7 +409,7 @@
     <ClInclude Include="st_attack_data.h" />
     <ClInclude Include="st_dash_status.h" />
     <ClInclude Include="st_down_status.h" />
-    <ClInclude Include="st_knock_back_status.h" />
+    <ClInclude Include="st_squeeze_status.h" />
     <ClInclude Include="system\system.h" />
   </ItemGroup>
   <ItemGroup>
