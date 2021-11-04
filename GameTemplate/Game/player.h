@@ -158,11 +158,11 @@ public: // Set function
         // HPの確認
         CheckHp();
 
-        m_mp += 0.5;
+        //m_mp += 0.5;
 
-        if (m_MAX_MP <= m_mp) {
-            m_mp = m_MAX_MP;
-        }
+        //if (m_MAX_MP <= m_mp) {
+        //    m_mp = m_MAX_MP;
+        //}
 
         return true;
     }
@@ -216,7 +216,7 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     int m_hp = m_MAX_HP; // プレイヤーの体力
-    double m_mp = 0;
+    //double m_mp = 0;
     StAttackData m_attackData; // 攻撃関連のデータ
     StDashStatus m_dashStatus; // ダッシュ関連のデータ
     StSqueezeStatus m_squeezeStatus; // のけぞり関連のデータ
