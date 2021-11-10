@@ -33,6 +33,11 @@ public: // function
     */
     void ResetAttackData();
 
+    /**
+     * @brief 攻撃が当たったときの攻撃データの確認
+    */
+    void HitCheckAttackData();
+
 
 
 public: // Get function
@@ -66,11 +71,26 @@ public: // Get function
         return m_impactType;
     }
 
+    const int GetAttackType()
+    {
+        return m_attackType;
+    }
+
+    const bool GetFlagNextAttackPossible()
+    {
+        return m_flagNextAttackPossible;
+    }
+
 
 public: // Set function
     void SetFlagAlreadyAttacked(const bool flag)
     {
         m_flagAlreadyAttacked = flag;
+    }
+
+    void SetFlagNextAttackPossible(const bool flag)
+    {
+        m_flagNextAttackPossible = flag;
     }
 
 
@@ -81,8 +101,11 @@ public: // enum
     enum EnAttackType
     {
         enNotAttacking, // 攻撃していない
-        enNormal, // 通常攻撃
-        enSub, // サブ攻撃
+        enJub, // ジャブ
+        enHook,
+        enBodyBlow,
+        enStraight,
+        enUppercut, // アッパーカット
     };
 
     /**
@@ -101,6 +124,7 @@ private: // data member
     int m_power = 0; // 攻撃力
     int m_attackType = EnAttackType::enNotAttacking; // 攻撃の種類
     int m_impactType = EnImpactType::enNotImpact; // 攻撃による影響
+    int m_nextNGAttackType = EnAttackType::enNotAttacking; // 攻撃の情報がリセットされるまで、次に使用できない攻撃
     // attack time
     int m_attackTime = 0; // 攻撃時間
     int m_attackTimeLimit = 0; // 攻撃時間の上限
@@ -110,6 +134,8 @@ private: // data member
     bool m_flagFinishDelay = true; // 攻撃開始までのディレイが終わったか（ディレイがない場合[true]に設定）
     // attack range
     Vector3 m_range = Vector3::Zero; //攻撃範囲
+    float m_positionUpY = 0.0f;
+    float m_positionUpZ = 0.0f;
     // continuous attack
     int m_countContinuousAttack = 0; // 連続攻撃の回数
     int m_maxCountContinuousAttack = 0; // 連続攻撃の最大数
@@ -117,7 +143,9 @@ private: // data member
     int m_continuousAttackGraceTimeLimit = 0; // 連続攻撃の猶予時間の上限
     bool m_flagContinuousAttack = false; // 連続攻撃中か
     // flag
+    bool m_flagStartAttack = false; // 攻撃を開始したか
     bool m_flagAlreadyAttacked = false; // 攻撃がもう当たっているか
     bool m_flagAttackNow = false; // 現在攻撃中か
     bool m_flagCreateAttackRange = false; // 攻撃判定を作成したか
+    bool m_flagNextAttackPossible = true; // 次の攻撃ができるか
 };

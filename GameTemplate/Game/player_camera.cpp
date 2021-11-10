@@ -27,17 +27,17 @@ void PlayerCamera::UpdatePlayerCamera()
     //注視点はエネミーの座標にします
     m_cameraTarget = m_enemyPosition;
     //エネミーからプレイヤーに伸びるベクトルを求めます
-    Vector3 pos = m_playerPosition - m_enemyPosition;
+    Vector3 pos = playerPos - m_enemyPosition;
     //カメラの高さは一定にしたいので、y成分を0にします
     pos.y = 0.0f;
     //ベクトルを正規化します
     pos.Normalize();
     //スカラーを掛けます
-    pos *= 500.0f;
+    pos *= 400.0f;
     //カメラがどれだけプレイヤーの座標より高いかを設定します
-    pos.y = 300.0f;
+    pos.y = 200.0f;
     //プレイヤーの座標に求めたベクトルを足して、カメラの座標とします
-    m_cameraPosition = m_playerPosition + pos;
+    m_cameraPosition = playerPos + pos;
 
     g_camera3D->SetTarget(m_cameraTarget); // カメラに注視点の情報を渡す
     g_camera3D->SetPosition(m_cameraPosition); // カメラに位置情報を渡す
@@ -54,9 +54,9 @@ void PlayerCamera::UpdateOtherPlayerCamera()
     //ベクトルを正規化します
     pos.Normalize();
     //スカラーを掛けます
-    pos *= 500.0f;
+    pos *= 400.0f;
     //カメラがどれだけプレイヤーの座標より高いかを設定します
-    pos.y = 300.0f;
+    pos.y = 200.0f;
     //プレイヤーの座標に求めたベクトルを足して、カメラの座標とします
     m_otherCameraPosition = m_enemyPosition + pos;
 

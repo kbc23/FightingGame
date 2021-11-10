@@ -94,6 +94,16 @@ private:
     */
     void FinishAttack();
 
+    /**
+     * @brief 攻撃時のアニメーションの開始
+    */
+    void AttackAnimationStart();
+
+    /**
+     * @brief 連続攻撃の確認
+    */
+    void CheckContinuousAttack();
+
 
 public: // Get function
     const Vector3& GetPosition()
@@ -144,6 +154,7 @@ public: // Set function
             return false;
         }
 
+        // ダメージ処理
         m_hp = m_hp - damage;
 
         // ノックバックの処理
@@ -157,12 +168,6 @@ public: // Set function
 
         // HPの確認
         CheckHp();
-
-        //m_mp += 0.5;
-
-        //if (m_MAX_MP <= m_mp) {
-        //    m_mp = m_MAX_MP;
-        //}
 
         return true;
     }
@@ -216,7 +221,6 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     int m_hp = m_MAX_HP; // プレイヤーの体力
-    //double m_mp = 0;
     StAttackData m_attackData; // 攻撃関連のデータ
     StDashStatus m_dashStatus; // ダッシュ関連のデータ
     StSqueezeStatus m_squeezeStatus; // のけぞり関連のデータ

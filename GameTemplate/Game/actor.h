@@ -48,6 +48,8 @@ public:
     void Turn(Vector3& addMoveAmount);
 
 private:
+    void AttackAnimation();
+
     /**
      * @brief キャラクターモデルに必要なステータス情報を渡す
     */
@@ -71,7 +73,34 @@ public: // Get function
         return m_charaCon.GetRigidBody();
     }
 
+    const bool GetFlagAttackAnimation()
+    {
+        return m_flagAttackAnimation;
+    }
 
+
+
+public: // Set function
+    void SetAttackAnimation(const int animation)
+    {
+        m_flagAttackAnimation = true;
+
+        m_modelCharacter->PlayAnimation(idle);
+        m_modelCharacter->PlayAnimation(animation); //アニメーションの再生
+    }
+
+
+public: //enum
+    enum AnimationEnum
+    {
+        idle,
+        jub,
+        uppercut,
+        hook,
+        bodyBlow,
+        straight,
+        AnimationMax
+    };
 
 
 private: // constant
@@ -89,15 +118,17 @@ private: // data member
     // キャラクターのステータス
     ////////////////////////////////////////////////////////////
 
-    Vector3 m_position = { 0.0f,0.0f,0.0f }; // 位置
+    Vector3 m_position = g_vec3Zero; // 位置
     Quaternion m_rotation = g_quatIdentity; // 回転
     float m_rotY = 0.0f; // 回転量
     Vector3 m_scale = g_vec3One; // 拡大
+
+    AnimationClip m_animationPlayer[AnimationMax]; // アニメーション
 
     ////////////////////////////////////////////////////////////
     // フラグ
     ////////////////////////////////////////////////////////////
 
     bool m_flagOperation = true; // 操作可能か
-
+    bool m_flagAttackAnimation = false; // 攻撃時のアニメーションをしているか
 };

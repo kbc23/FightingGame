@@ -33,13 +33,20 @@ void Actor::Init(
     float initRotAngle
 )
 {
+    //アニメーションの設定
+    m_animationPlayer[idle].Load("Assets/modelData/model/Lead_Jab.tkm");
+    //ループ再生をtrueにする
+    m_animationPlayer[idle].SetLoopFlag(true);
+
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelCharacter->Init(filePath, false, true);
+    m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
     m_rotY = initRotAngle;
     m_rotation.SetRotationY(m_rotY);
     m_modelCharacter->SetRotation(m_rotation);
+
+    m_modelCharacter->PlayAnimation(idle); //アニメーション
 
     //キャラコンの初期化
     m_charaCon.Init(PLAYER_COLLIDER_RADIUS, PLAYER_COLLIDER_HEIGHT, m_position);
@@ -47,8 +54,18 @@ void Actor::Init(
 
 void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float initRot)
 {
+    //アニメーションの設定
+    m_animationPlayer[idle].Load("Assets/modelData/model/idle.tka");
+    m_animationPlayer[jub].Load("Assets/modelData/model/Lead_Jab.tka");
+    m_animationPlayer[uppercut].Load("Assets/modelData/model/Uppercut.tka");
+    m_animationPlayer[hook].Load("Assets/modelData/model/hook.tka");
+    m_animationPlayer[bodyBlow].Load("Assets/modelData/model/Body_blow.tka");
+    m_animationPlayer[straight].Load("Assets/modelData/model/straight.tka");
+    //ループ再生をtrueにする
+    m_animationPlayer[idle].SetLoopFlag(true);
+
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelCharacter->Init(filePath, false, true);
+    m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
 
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
@@ -56,12 +73,19 @@ void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float 
     m_rotation.SetRotationY(m_rotY);
     m_modelCharacter->SetRotation(m_rotation);
 
+    m_scale = { 2.0f,2.0f,2.0f };
+    m_modelCharacter->SetScale(m_scale);
+
+    m_modelCharacter->PlayAnimation(idle); //アニメーションの再生
+
     //キャラコンの初期化
     m_charaCon.Init(PLAYER_COLLIDER_RADIUS, PLAYER_COLLIDER_HEIGHT, m_position);
 }
 
 void Actor::Update()
 {
+    AttackAnimation();
+
     SetModelStatus();
 }
 
@@ -90,6 +114,20 @@ void Actor::Turn(Vector3& addMoveAmount)
     // SetRotationDegではなくSetRotationを使用する
     m_rotation.SetRotation(Vector3::AxisY, angle);
 
+}
+
+void Actor::AttackAnimation()
+{
+    // 攻撃のアニメーション中ではない場合
+    if (false == m_flagAttackAnimation) {
+        return;
+    }
+
+    // アニメーションが再生されていない（攻撃のアニメーションの再生が終わった）
+    if (false == m_modelCharacter->IsPlayingAnimation()) {
+        m_modelCharacter->PlayAnimation(idle);
+        m_flagAttackAnimation = false;
+    }
 }
 
 void Actor::SetModelStatus()

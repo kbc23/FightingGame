@@ -57,13 +57,15 @@ private: // data member
     // ステータス
     ////////////////////////////////////////////////////////////
 
-    Vector3 m_cameraPosition = { 0.0f,0.0f,0.0f }; // 位置
-    Vector3 m_cameraTarget = { 0.0f,0.0f,0.0f }; // 注視点
-    Vector3 m_playerPosition = { 0.0f,0.0f,0.0f }; // プレイヤーの位置
-    Vector3 m_enemyPosition = { 0.0f,0.0f,0.0f }; // 相手プレイヤーの位置
+    Vector3 m_cameraPosition = g_vec3Zero; // 位置
+    Vector3 m_cameraTarget = g_vec3Zero; // 注視点
+    Vector3 m_playerPosition = g_vec3Zero; // プレイヤーの位置
+    Vector3 m_enemyPosition = g_vec3Zero; // 相手プレイヤーの位置
 
-    Vector3 m_otherCameraPosition = { 0.0f,0.0f,0.0f }; // 位置
-    Vector3 m_otherCameraTarget = { 0.0f,0.0f,0.0f }; // 注視点
+    Quaternion m_playerRotation = g_quatIdentity;
+
+    Vector3 m_otherCameraPosition = g_vec3Zero; // 位置
+    Vector3 m_otherCameraTarget = g_vec3Zero; // 注視点
 
 
     ////////////////////////////////////////////////////////////

@@ -102,7 +102,6 @@ void Player::Update()
     //////////////////////////////
 
     m_playerUI->UpdateHpUI(m_hp, m_playerNum);
-    //m_playerUI->UpdateMpUI(m_mp, m_playerNum);
     m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
     m_playerUI->UpdateKnockBackUI(m_squeezeStatus.GetFlagSqueeze(), m_playerNum);
     m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
@@ -135,30 +134,37 @@ void Player::Controller()
         return;
     }
 
+    // 次の攻撃ができる状態でない場合、処理をしない
+    if (false == m_attackData.GetFlagNextAttackPossible()) {
+        // 攻撃アニメーション中、処理をしない
+        if (false == m_actor->GetFlagAttackAnimation()) {
+            m_attackData.SetFlagNextAttackPossible(true);
+        }
+        else {
+            return;
+        }
+    }
+
 
 
     // Aボタン: 通常攻撃
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonA)) {
-        m_attackData.SetAttackData(m_attackData.EnAttackType::enNormal);
+        CheckContinuousAttack();
+        m_attackData.SetAttackData(m_attackData.EnAttackType::enJub);
+        AttackAnimationStart();
     }
     // Bボタン: サブ攻撃
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonB)) {
-        m_attackData.SetAttackData(m_attackData.EnAttackType::enSub);
-
- /*       if (1 <= m_mp) {
-            m_attackData.SetAttackData(m_attackData.EnAttackType::enSub);
-
-            --m_mp;
-        }*/
+        CheckContinuousAttack();
+        m_attackData.SetAttackData(m_attackData.EnAttackType::enUppercut);
+        AttackAnimationStart();
     }
-    // ?: 必殺技
-    if (true) {
 
-    }
     // R1ボタン: ダッシュ
     if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonRB1)) {
         m_dashStatus.StartDash();
     }
+
     // L1ボタン: ガード
     if (false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsPress(enButtonLB1)) {
         m_flagDefense = true;
@@ -166,6 +172,7 @@ void Player::Controller()
     else {
         m_flagDefense = false;
     }
+
     // Debug: Startボタン: ゲーム終了
     if (true == m_gamePad->IsTrigger(enButtonStart)) {
         //ゲームを終了
@@ -208,10 +215,6 @@ const Vector3& Player::Move()
 
     // キャラクターの移動速度
     float characterSpeed = 9.0f;
-
-    //if (true == m_flagDefense) {
-    //    characterSpeed = 3.0f;
-    //}
 
     Vector3 pospos = Vector3::Zero;
 
@@ -308,12 +311,7 @@ void Player::HitAttack()
     }
 
     m_attackData.SetFlagAlreadyAttacked(true);
-
-    //m_mp += 0.5;
-
-    //if (m_MAX_MP <= m_mp) {
-    //    m_mp = m_MAX_MP;
-    //}
+    m_attackData.HitCheckAttackData();
 }
 
 void Player::FinishAttack()
@@ -323,4 +321,37 @@ void Player::FinishAttack()
 
     // 攻撃時のステータスの初期化
     m_attackData.ResetAttackData();
+}
+
+void Player::AttackAnimationStart()
+{
+    if (m_attackData.EnAttackType::enJub == m_attackData.GetAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::jub);
+        return;
+    }
+    if (m_attackData.EnAttackType::enUppercut == m_attackData.GetAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::uppercut);
+        return;
+    }
+    if (m_attackData.EnAttackType::enHook == m_attackData.GetAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::hook);
+        return;
+    }
+    if (m_attackData.EnAttackType::enBodyBlow == m_attackData.GetAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::bodyBlow);
+        return;
+    }
+    if (m_attackData.EnAttackType::enStraight == m_attackData.GetAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::straight);
+        return;
+    }
+}
+
+void Player::CheckContinuousAttack()
+{
+    if (false == m_attackData.GetFlagAttackNow()) {
+        return;
+    }
+
+    FinishAttack();
 }
