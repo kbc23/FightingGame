@@ -111,6 +111,11 @@ public: // Get function
         return m_actor->GetPosition();
     }
 
+    const Quaternion& GetRotation()
+    {
+        return m_actor->GetRotation();
+    }
+
     Actor& GetActor()
     {
         return *m_actor;

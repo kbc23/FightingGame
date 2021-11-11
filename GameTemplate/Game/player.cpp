@@ -197,6 +197,8 @@ void Player::Controller()
 
     // プレイヤーのモデルに位置情報などのステータス情報を渡す
     m_actor->AddStatus(moveAmount);
+
+    //m_actor->TestTurn(m_otherPlayer->GetPosition(), g_camera3D->GetForward());
 }
 
 const Vector3& Player::Move()

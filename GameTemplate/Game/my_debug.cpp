@@ -66,6 +66,7 @@ void MyDebug::Update()
     case EnStatus::game:
         m_playerCamera->SetPlayerPosition(m_player[enPlayer]->GetPosition());
         m_playerCamera->SetEnemyPosition(m_player[enOtherPlayer]->GetPosition());
+        m_playerCamera->SetPlayerRotation(m_player[enPlayer]->GetRotation());
 
         // ƒQ[ƒ€I—¹”»’è
         GameEndUpdate();

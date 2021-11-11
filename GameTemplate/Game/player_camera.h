@@ -17,7 +17,7 @@ public: // Get function
     const Vector3& GetPosition(const int playerNum)
     {
         if (playerNum == m_playerNum) {
-            return m_cameraPosition;
+            return m_onelineCameraPosition;
         }
         else if (playerNum == m_otherPlayerNum) {
             return m_otherCameraPosition;
@@ -25,7 +25,6 @@ public: // Get function
 
         return { 0.0f,0.0f,0.0f };
     }
-
 
 
 public: // Set function
@@ -43,6 +42,11 @@ public: // Set function
     {
         m_playerNum = playerNum;
         m_otherPlayerNum = otherPlayerNum;
+    }
+
+    void SetPlayerRotation(const Quaternion playerRot)
+    {
+        m_playerRotation = playerRot;
     }
 
 
@@ -66,6 +70,9 @@ private: // data member
 
     Vector3 m_otherCameraPosition = g_vec3Zero; // à íu
     Vector3 m_otherCameraTarget = g_vec3Zero; // íçéãì_
+
+    Vector3 m_onelineCameraPosition = g_vec3Zero;
+    Vector3 m_onelineCameraTarget = g_vec3Zero;
 
 
     ////////////////////////////////////////////////////////////

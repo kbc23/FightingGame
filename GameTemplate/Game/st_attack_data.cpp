@@ -150,7 +150,7 @@ const Vector3& StAttackData::CreateAttackPosition(const Vector3& playerPosition,
     {
         playerPosition.x,
         playerPosition.y,
-        // カメラの前方向に攻撃範囲の前方向の半分の値と指定した値だけZ座標をずらす
+        // 攻撃範囲の前方向の半分の値と指定した値だけZ座標をずらす
         playerPosition.z - m_range.z / 2 - 20.0f - m_positionUpZ
     };
     // キャラクターのポジション
@@ -162,15 +162,15 @@ const Vector3& StAttackData::CreateAttackPosition(const Vector3& playerPosition,
     playerRotation.Apply(toPos);
 
     // 上記で取得した情報から、攻撃範囲を生成するポジションを取得
-    local_playerPosition = local_playerPosition - toPos;
+    attackRangePosition = local_playerPosition - toPos;
 
     // 指定した値だけY座標を上昇する
-    local_playerPosition.y = m_positionUpY;
+    attackRangePosition.y = m_positionUpY;
 
     // 攻撃判定を作成した判定にする
     m_flagCreateAttackRange = true;
 
-    return local_playerPosition;
+    return attackRangePosition;
 }
 
 const bool StAttackData::UpdateFinish()
