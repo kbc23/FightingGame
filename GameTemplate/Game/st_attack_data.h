@@ -6,7 +6,7 @@
 struct StAttackData
 {
 public: // function
-    void SetAttackData(const int attackType);
+    const bool SetAttackData(const int attackType);
 
     /**
      * @brief UŒ‚”ÍˆÍ‚ÌˆÊ’uî•ñ‚ğì¬

@@ -150,32 +150,37 @@ void Player::Controller()
     // Aボタン
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonA)) {
         CheckContinuousAttack();
-        m_attackData.SetAttackData(m_attackData.EnAttackType::enJub);
-        AttackAnimationStart();
+        if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enJub)) {
+            AttackAnimationStart();
+        }
     }
     // Bボタン
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonB)) {
         CheckContinuousAttack();
-        m_attackData.SetAttackData(m_attackData.EnAttackType::enHook);
-        AttackAnimationStart();
+        if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enHook)) {
+            AttackAnimationStart();
+        }
     }
     // Xボタン
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonX)) {
         CheckContinuousAttack();
-        m_attackData.SetAttackData(m_attackData.EnAttackType::enUppercut);
-        AttackAnimationStart();
+        if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enUppercut)) {
+            AttackAnimationStart();
+        }
     }
     // Yボタン
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonY)) {
         CheckContinuousAttack();
-        m_attackData.SetAttackData(m_attackData.EnAttackType::enStraight);
-        AttackAnimationStart();
+        if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enStraight)) {
+            AttackAnimationStart();
+        }
     }
     // R2ボタン
     if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonRB2)) {
         CheckContinuousAttack();
-        m_attackData.SetAttackData(m_attackData.EnAttackType::enBodyBlow);
-        AttackAnimationStart();
+        if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enBodyBlow)) {
+            AttackAnimationStart();
+        }
     }
 
     // R1ボタン: ダッシュ

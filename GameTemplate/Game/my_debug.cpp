@@ -23,13 +23,14 @@ void MyDebug::Init()
 
     m_playerCamera = NewGO<PlayerCamera>(igo::EnPriority::normal, igo::className::PLAYER_CAMERA);
 
-    const Vector3 pos[] = {
-    {100.0f, 0.0f, 0.0f},		// 1Pの初期座標
-    {-100.0f, 0.0f, 0.0f},		// 2Pの初期座標
+    const Vector3 pos[] =
+    {
+        {100.0f, 0.0f, 0.0f},   // 1Pの初期座標
+        {-100.0f, 0.0f, 0.0f},  // 2Pの初期座標
     };
     float rotAngle[] = {
-    -90.0f,
-    0.0f
+        -90.0f,
+        0.0f
     };
 
     m_gameData = NewGO<GameData>(igo::EnPriority::normal, igo::className::GAME_DATA);
@@ -50,21 +51,6 @@ void MyDebug::Init()
     m_modelStage->SetScale({ 5.0f,1.0f,5.0f });
 
     m_fontWinOrLose = NewGO<FontRender>(igo::EnPriority::font);
-
-
-    //////////////////////////////
-    // テスト
-    //////////////////////////////
-
-    //m_bgmTitle = NewGO<SoundBGM>(igo::EnPriority::normal);
-    //m_bgmTitle->Init(L"Assets/Sound/BGM/Title.wav");
-    //m_bgmTitle->SetVolume(0.5f); //音量調整
-    //m_bgmTitle->Play(true); //再生
-    ////BGM全体の音量を設定
-    //m_bgmTitle->SetBGMVolume(0.5f);
-
-    //m_spriteTitle = NewGO<SpriteRender>(igo::EnPriority::ui);
-    //m_spriteTitle->Init("Assets/Image/Title.dds");
 }
 
 void MyDebug::Finish()

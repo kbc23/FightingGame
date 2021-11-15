@@ -69,8 +69,12 @@ namespace nsAttackData
 
 
 
-void StAttackData::SetAttackData(const int attackType)
+const bool StAttackData::SetAttackData(const int attackType)
 {
+    if (m_nextNGAttackType == attackType) {
+        return false;
+    }
+
     // ÉWÉÉÉu
     if (EnAttackType::enJub == attackType) {
         m_power = nsAttackData::nsJub::POWER; // çUåÇóÕ
@@ -141,6 +145,10 @@ void StAttackData::SetAttackData(const int attackType)
     if (m_attackType == EnAttackType::enJub && m_MAX_CONTINUE_JUB_ATTACK <= m_continueJubAttack) {
         m_impactType = EnImpactType::enDown;
     }
+
+    m_nextNGAttackType = EnAttackType::enNotAttacking;
+
+    return true;
 }
 
 const Vector3& StAttackData::CreateAttackPosition(const Vector3& playerPosition, const Quaternion& playerRotation)
@@ -198,6 +206,7 @@ void StAttackData::UpdateContinuousAttack()
         m_countContinuousAttack = 0;
         m_flagContinuousAttack = false;
         m_continueJubAttack = 0;
+        m_nextNGAttackType = EnAttackType::enNotAttacking;
     }
 }
 
@@ -243,14 +252,17 @@ void StAttackData::HitCheckAttackData()
 
     if (EnAttackType::enHook == m_attackType) {
         m_flagNextAttackPossible = true;
+        m_nextNGAttackType = EnAttackType::enHook;
     }
 
     if (EnAttackType::enUppercut == m_attackType) {
         m_flagNextAttackPossible = true;
+        m_nextNGAttackType = EnAttackType::enUppercut;
     }
 
     if (EnAttackType::enBodyBlow == m_attackType) {
         m_flagNextAttackPossible = true;
+        m_nextNGAttackType = EnAttackType::enBodyBlow;
     }
 
     // òAë±çUåÇÇ…ä÷Ç∑ÇÈèàóù
