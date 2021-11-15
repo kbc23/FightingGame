@@ -49,10 +49,4 @@ private: // data member
     int m_invincibleTime = 0; // 無敵時間
     int m_invincibleTimeLimit = 120; // 無敵時間の上限
     bool m_flagInvincible = false; // 無敵状態か
-    
-    ////////////////////////////////////////////////////////////
-    // 相手の連続攻撃中のジャブに関係するデータ
-    ////////////////////////////////////////////////////////////
-
-    int m_continueJubAttack = 0; // 相手の連続攻撃で当たったジャブの数
 };

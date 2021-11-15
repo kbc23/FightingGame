@@ -15,12 +15,7 @@ namespace nsAttackData
         const float POSITION_UP_Y = 100.0f; // 攻撃範囲のY座標の調整
         const float POSITION_UP_Z = 0.0f; // 攻撃範囲のZ座標の調整
         const int MAX_CONTINUOUS_ATTACK_COUNT = 3; // 連続攻撃の最大数
-        const int IMPACT_TYPE[MAX_CONTINUOUS_ATTACK_COUNT] = // 攻撃による影響
-        {
-            StAttackData::EnImpactType::enKnockBack,
-            StAttackData::EnImpactType::enKnockBack,
-            StAttackData::EnImpactType::enDown
-        };
+        const int IMPACT_TYPE = StAttackData::EnImpactType::enSqueeze; // 攻撃による影響
     }
     
     // アッパーカット
@@ -32,7 +27,7 @@ namespace nsAttackData
         const Vector3 RANGE = { 25.0f,40.0f,35.0f }; // 攻撃範囲
         const float POSITION_UP_Y = 90.0f; // 攻撃範囲のY座標の調整
         const float POSITION_UP_Z = 25.0f; // 攻撃範囲のZ座標の調整
-        const int IMPACT_TYPE = StAttackData::EnImpactType::enKnockBack; // 攻撃による影響
+        const int IMPACT_TYPE = StAttackData::EnImpactType::enSqueeze; // 攻撃による影響
     }
 
     // フック
@@ -44,7 +39,7 @@ namespace nsAttackData
         const Vector3 RANGE = { 50.0f,20.0f,30.0f }; // 攻撃範囲
         const float POSITION_UP_Y = 100.0f; // 攻撃範囲のY座標の調整
         const float POSITION_UP_Z = 25.0f; // 攻撃範囲のZ座標の調整
-        const int IMPACT_TYPE = StAttackData::EnImpactType::enKnockBack; // 攻撃による影響
+        const int IMPACT_TYPE = StAttackData::EnImpactType::enSqueeze; // 攻撃による影響
     }
 
     // ボディブロー
@@ -56,7 +51,7 @@ namespace nsAttackData
         const Vector3 RANGE = { 20.0f,20.0f,35.0f }; // 攻撃範囲
         const float POSITION_UP_Y = 75.0f; // 攻撃範囲のY座標の調整
         const float POSITION_UP_Z = 30.0f; // 攻撃範囲のZ座標の調整
-        const int IMPACT_TYPE = StAttackData::EnImpactType::enKnockBack; // 攻撃による影響
+        const int IMPACT_TYPE = StAttackData::EnImpactType::enSqueeze; // 攻撃による影響
     }
 
     // ストレート
@@ -65,9 +60,9 @@ namespace nsAttackData
         const int POWER = 50; // 攻撃力
         const int ATTACK_TIME_LIMIT = 22; // 攻撃時間
         const int DELAY_TIME_LIMIT = 19; // 攻撃までのディレイ
-        const Vector3 RANGE = { 25.0f,20.0f,35.0f }; // 攻撃範囲
+        const Vector3 RANGE = { 25.0f,20.0f,85.0f }; // 攻撃範囲
         const float POSITION_UP_Y = 85.0f; // 攻撃範囲のY座標の調整
-        const float POSITION_UP_Z = 50.0f; // 攻撃範囲のZ座標の調整
+        const float POSITION_UP_Z = 0.0f; // 攻撃範囲のZ座標の調整
         const int IMPACT_TYPE = StAttackData::EnImpactType::enDown; // 攻撃による影響
     }
 }
@@ -85,11 +80,7 @@ void StAttackData::SetAttackData(const int attackType)
         m_positionUpY= nsAttackData::nsJub::POSITION_UP_Y; // 攻撃範囲のY座標の調整
         m_positionUpZ = nsAttackData::nsJub::POSITION_UP_Z; // 攻撃範囲のZ座標の調整
         m_attackType = EnAttackType::enJub; // 攻撃の種類
-        m_flagContinuousAttack = true;
-        m_continuousAttackGraceTime = 0;
-        m_continuousAttackGraceTimeLimit = nsAttackData::nsJub::ATTACK_TIME_LIMIT + 10;
-        m_impactType = nsAttackData::nsJub::IMPACT_TYPE[m_countContinuousAttack]; // 攻撃による影響
-        ++m_countContinuousAttack; // 連続攻撃の回数をカウント
+        m_impactType = nsAttackData::nsJub::IMPACT_TYPE; // 攻撃による影響
     }
     // アッパーカット
     else if (EnAttackType::enUppercut == attackType) {
@@ -141,8 +132,13 @@ void StAttackData::SetAttackData(const int attackType)
     m_flagNextAttackPossible = false; // 次の攻撃ができるか
     m_flagFinishDelay = false; // ディレイが終わったか
 
-    // 連続攻撃に関する処理
-    if (m_maxCountContinuousAttack <= m_countContinuousAttack) {
+    // 連続攻撃に関する処理（連続攻撃５回目のとき）
+    if (m_MAX_COUNT_CONTINUOUS_ATTACK <= m_countContinuousAttack) {
+        m_impactType = EnImpactType::enDown;
+    }
+
+    // 連続攻撃中のジャブが３回目のとき
+    if (m_attackType == EnAttackType::enJub && m_MAX_CONTINUE_JUB_ATTACK <= m_continueJubAttack) {
         m_impactType = EnImpactType::enDown;
     }
 }
@@ -197,10 +193,11 @@ void StAttackData::UpdateContinuousAttack()
 
     ++m_continuousAttackGraceTime;
 
-    if (m_continuousAttackGraceTimeLimit <= m_continuousAttackGraceTime) {
+    if (m_CONTINUOUS_ATTACK_GRACE_TIME_LIMIT <= m_continuousAttackGraceTime) {
         m_continuousAttackGraceTime = 0;
         m_countContinuousAttack = 0;
         m_flagContinuousAttack = false;
+        m_continueJubAttack = 0;
     }
 }
 
@@ -235,28 +232,29 @@ void StAttackData::ResetAttackData()
     m_flagAttackNow = false;
     m_flagCreateAttackRange = false;
     m_impactType = EnImpactType::enNotImpact;
-
-    // 連続攻撃のリセットの処理
-    //if (true == m_flagContinuousAttack) {
-    //    //もし連続攻撃回数が最大までいった場合
-    //    if (nsAttackData::nsJub::MAX_CONTINUOUS_ATTACK_COUNT <= m_countContinuousAttack) {
-    //        m_countContinuousAttack = 0; // 連続攻撃の回数
-    //        m_maxCountContinuousAttack = 0; // 連続攻撃の最大数
-    //        m_continuousAttackGraceTime = 0; // 連続攻撃の猶予時間
-    //        m_continuousAttackGraceTimeLimit = 0; // 連続攻撃の猶予時間の上限
-    //        m_flagContinuousAttack = false; // 連続攻撃中か
-    //        return;
-    //    }
-    //}
 }
 
 void StAttackData::HitCheckAttackData()
 {
     if (EnAttackType::enJub == m_attackType) {
         m_flagNextAttackPossible = true;
+        ++m_continueJubAttack;
+    }
+
+    if (EnAttackType::enHook == m_attackType) {
+        m_flagNextAttackPossible = true;
+    }
+
+    if (EnAttackType::enUppercut == m_attackType) {
+        m_flagNextAttackPossible = true;
+    }
+
+    if (EnAttackType::enBodyBlow == m_attackType) {
+        m_flagNextAttackPossible = true;
     }
 
     // 連続攻撃に関する処理
     ++m_countContinuousAttack;
     m_continuousAttackGraceTime = 0;
+    m_flagContinuousAttack = true;
 }

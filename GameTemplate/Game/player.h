@@ -162,8 +162,8 @@ public: // Set function
         // ダメージ処理
         m_hp = m_hp - damage;
 
-        // ノックバックの処理
-        if (StAttackData::EnImpactType::enKnockBack == impactType) {
+        // のけぞりの処理
+        if (StAttackData::EnImpactType::enSqueeze == impactType) {
             m_squeezeStatus.StartSqueeze();
         }
         // ダウンの処理

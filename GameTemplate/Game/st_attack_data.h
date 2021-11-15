@@ -114,7 +114,7 @@ public: // enum
     enum EnImpactType
     {
         enNotImpact, // なにもない
-        enKnockBack, // ノックバック
+        enSqueeze, // のけぞり
         enDown // ダウン
     };
 
@@ -161,10 +161,19 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     int m_countContinuousAttack = 0; // 連続攻撃の回数
-    int m_maxCountContinuousAttack = 10; // 連続攻撃の最大数
+    //int m_maxCountContinuousAttack = 10; // 連続攻撃の最大数
+    static const int m_MAX_COUNT_CONTINUOUS_ATTACK = 4; // 連続攻撃の最大数 - 1
     int m_continuousAttackGraceTime = 0; // 連続攻撃の猶予時間
-    int m_continuousAttackGraceTimeLimit = 0; // 連続攻撃の猶予時間の上限
+    //int m_continuousAttackGraceTimeLimit = 0; // 連続攻撃の猶予時間の上限
+    static const int m_CONTINUOUS_ATTACK_GRACE_TIME_LIMIT = 90; // 連続攻撃の猶予時間の上限
     bool m_flagContinuousAttack = false; // 連続攻撃中か
+
+    ////////////////////////////////////////////////////////////
+    // 連続攻撃中のジャブに関係するデータ
+    ////////////////////////////////////////////////////////////
+
+    int m_continueJubAttack = 0; // 連続攻撃で当たったジャブの数
+    static const int m_MAX_CONTINUE_JUB_ATTACK = 2; // 連続攻撃で使用できるジャブの最大数 - 1
 
     ////////////////////////////////////////////////////////////
     // フラグ
