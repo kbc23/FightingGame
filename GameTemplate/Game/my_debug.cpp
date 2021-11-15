@@ -43,9 +43,11 @@ void MyDebug::Init()
         pos[enOtherPlayer], rotAngle[enOtherPlayer], m_player[enPlayer]);
 
     m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelStage->Init("Assets/modelData/bg/bg.tkm", true);
+    m_modelStage->Init("Assets/modelData/stage/stage.tkm", true);
 
     m_modelStage->SetPosition({ 0.0f,0.0f,0.0f });
+
+    m_modelStage->SetScale({ 5.0f,1.0f,5.0f });
 
     m_fontWinOrLose = NewGO<FontRender>(igo::EnPriority::font);
 
