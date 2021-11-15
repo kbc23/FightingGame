@@ -272,3 +272,14 @@
 		renderContext.DrawIndexed(m_indexBuffer.GetCount());
 	}
 
+	////////////////////////////////////////////////////////////
+	// ’Ç‰Á
+	////////////////////////////////////////////////////////////
+
+	Sprite::Sprite()
+	{
+		m_constantBufferCPU.mulColor.x = 1.0f;
+		m_constantBufferCPU.mulColor.y = 1.0f;
+		m_constantBufferCPU.mulColor.z = 1.0f;
+		m_constantBufferCPU.mulColor.w = 1.0f;
+	}

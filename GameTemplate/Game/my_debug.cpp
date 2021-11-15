@@ -48,6 +48,21 @@ void MyDebug::Init()
     m_modelStage->SetPosition({ 0.0f,0.0f,0.0f });
 
     m_fontWinOrLose = NewGO<FontRender>(igo::EnPriority::font);
+
+
+    //////////////////////////////
+    // テスト
+    //////////////////////////////
+
+    //m_bgmTitle = NewGO<SoundBGM>(igo::EnPriority::normal);
+    //m_bgmTitle->Init(L"Assets/Sound/BGM/Title.wav");
+    //m_bgmTitle->SetVolume(0.5f); //音量調整
+    //m_bgmTitle->Play(true); //再生
+    ////BGM全体の音量を設定
+    //m_bgmTitle->SetBGMVolume(0.5f);
+
+    //m_spriteTitle = NewGO<SpriteRender>(igo::EnPriority::ui);
+    //m_spriteTitle->Init("Assets/Image/Title.dds");
 }
 
 void MyDebug::Finish()
@@ -66,7 +81,6 @@ void MyDebug::Update()
     case EnStatus::game:
         m_playerCamera->SetPlayerPosition(m_player[enPlayer]->GetPosition());
         m_playerCamera->SetEnemyPosition(m_player[enOtherPlayer]->GetPosition());
-        m_playerCamera->SetPlayerRotation(m_player[enPlayer]->GetRotation());
 
         // ゲーム終了判定
         GameEndUpdate();

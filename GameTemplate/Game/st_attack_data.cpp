@@ -47,7 +47,7 @@ namespace nsAttackData
         const int IMPACT_TYPE = StAttackData::EnImpactType::enKnockBack; // UŒ‚‚É‚æ‚é‰e‹¿
     }
 
-
+    // ƒ{ƒfƒBƒuƒ[
     namespace nsBodyBlow
     {
         const int POWER = 25; // UŒ‚—Í
@@ -59,7 +59,7 @@ namespace nsAttackData
         const int IMPACT_TYPE = StAttackData::EnImpactType::enKnockBack; // UŒ‚‚É‚æ‚é‰e‹¿
     }
 
-
+    // ƒXƒgƒŒ[ƒg
     namespace nsStraight
     {
         const int POWER = 50; // UŒ‚—Í
@@ -113,7 +113,7 @@ void StAttackData::SetAttackData(const int attackType)
         m_attackType = EnAttackType::enHook; // UŒ‚‚Ìí—Ş
         m_impactType = nsAttackData::nsHook::IMPACT_TYPE; // UŒ‚‚É‚æ‚é‰e‹¿
     }
-
+    // ƒ{ƒfƒBƒuƒ[
     else if (EnAttackType::enBodyBlow == attackType) {
         m_power = nsAttackData::nsBodyBlow::POWER; // UŒ‚—Í
         m_attackTimeLimit = nsAttackData::nsBodyBlow::ATTACK_TIME_LIMIT; // UŒ‚ŠÔ
@@ -124,7 +124,7 @@ void StAttackData::SetAttackData(const int attackType)
         m_attackType = EnAttackType::enBodyBlow; // UŒ‚‚Ìí—Ş
         m_impactType = nsAttackData::nsBodyBlow::IMPACT_TYPE; // UŒ‚‚É‚æ‚é‰e‹¿
     }
-
+    // ƒXƒgƒŒ[ƒg
     else if (EnAttackType::enStraight == attackType) {
         m_power = nsAttackData::nsStraight::POWER; // UŒ‚—Í
         m_attackTimeLimit = nsAttackData::nsStraight::ATTACK_TIME_LIMIT; // UŒ‚ŠÔ
@@ -140,6 +140,11 @@ void StAttackData::SetAttackData(const int attackType)
     m_flagStartAttack = true; // UŒ‚‚ğŠJn‚µ‚½‚©
     m_flagNextAttackPossible = false; // Ÿ‚ÌUŒ‚‚ª‚Å‚«‚é‚©
     m_flagFinishDelay = false; // ƒfƒBƒŒƒC‚ªI‚í‚Á‚½‚©
+
+    // ˜A‘±UŒ‚‚ÉŠÖ‚·‚éˆ—
+    if (m_maxCountContinuousAttack <= m_countContinuousAttack) {
+        m_impactType = EnImpactType::enDown;
+    }
 }
 
 const Vector3& StAttackData::CreateAttackPosition(const Vector3& playerPosition, const Quaternion& playerRotation)
@@ -232,17 +237,17 @@ void StAttackData::ResetAttackData()
     m_impactType = EnImpactType::enNotImpact;
 
     // ˜A‘±UŒ‚‚ÌƒŠƒZƒbƒg‚Ìˆ—
-    if (true == m_flagContinuousAttack) {
-        //‚à‚µ˜A‘±UŒ‚‰ñ”‚ªÅ‘å‚Ü‚Å‚¢‚Á‚½ê‡
-        if (nsAttackData::nsJub::MAX_CONTINUOUS_ATTACK_COUNT <= m_countContinuousAttack) {
-            m_countContinuousAttack = 0; // ˜A‘±UŒ‚‚Ì‰ñ”
-            m_maxCountContinuousAttack = 0; // ˜A‘±UŒ‚‚ÌÅ‘å”
-            m_continuousAttackGraceTime = 0; // ˜A‘±UŒ‚‚Ì—P—\ŠÔ
-            m_continuousAttackGraceTimeLimit = 0; // ˜A‘±UŒ‚‚Ì—P—\ŠÔ‚ÌãŒÀ
-            m_flagContinuousAttack = false; // ˜A‘±UŒ‚’†‚©
-            return;
-        }
-    }
+    //if (true == m_flagContinuousAttack) {
+    //    //‚à‚µ˜A‘±UŒ‚‰ñ”‚ªÅ‘å‚Ü‚Å‚¢‚Á‚½ê‡
+    //    if (nsAttackData::nsJub::MAX_CONTINUOUS_ATTACK_COUNT <= m_countContinuousAttack) {
+    //        m_countContinuousAttack = 0; // ˜A‘±UŒ‚‚Ì‰ñ”
+    //        m_maxCountContinuousAttack = 0; // ˜A‘±UŒ‚‚ÌÅ‘å”
+    //        m_continuousAttackGraceTime = 0; // ˜A‘±UŒ‚‚Ì—P—\ŠÔ
+    //        m_continuousAttackGraceTimeLimit = 0; // ˜A‘±UŒ‚‚Ì—P—\ŠÔ‚ÌãŒÀ
+    //        m_flagContinuousAttack = false; // ˜A‘±UŒ‚’†‚©
+    //        return;
+    //    }
+    //}
 }
 
 void StAttackData::HitCheckAttackData()
@@ -250,4 +255,8 @@ void StAttackData::HitCheckAttackData()
     if (EnAttackType::enJub == m_attackType) {
         m_flagNextAttackPossible = true;
     }
+
+    // ˜A‘±UŒ‚‚ÉŠÖ‚·‚éˆ—
+    ++m_countContinuousAttack;
+    m_continuousAttackGraceTime = 0;
 }

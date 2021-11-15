@@ -84,6 +84,18 @@
     <Filter Include="MyCode\MainProcessing\Player\Status">
       <UniqueIdentifier>{98e2f577-f3ec-46c0-8856-c2c80d77c70a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCode\Engine\Sound">
+      <UniqueIdentifier>{96c50ceb-d3cc-4f82-b60d-04c578737a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCode\Engine\Sound\Don%27t touch">
+      <UniqueIdentifier>{11fd8a1b-9d46-4efa-872c-f804f27f39a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCode\Engine\Sprite">
+      <UniqueIdentifier>{bc7bfcf7-e620-4fb8-8553-dec12cf69477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCode\Engine\Other">
+      <UniqueIdentifier>{7952a66d-ef55-4a88-b426-e0bd537f8e4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -313,6 +325,33 @@
     </ClCompile>
     <ClCompile Include="st_down_status.cpp">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="sound_source.cpp">
+      <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
+    </ClCompile>
+    <ClCompile Include="wav_file.cpp">
+      <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
+    </ClCompile>
+    <ClCompile Include="wav_file_bank.cpp">
+      <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
+    </ClCompile>
+    <ClCompile Include="sound_engine.cpp">
+      <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
+    </ClCompile>
+    <ClCompile Include="sound_SE.cpp">
+      <Filter>MyCode\Engine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound_BGM.cpp">
+      <Filter>MyCode\Engine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>MyCode\Engine\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite_render.cpp">
+      <Filter>MyCode\Engine\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>MyCode\Engine\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -570,6 +609,39 @@
     </ClInclude>
     <ClInclude Include="st_down_status.h">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_source.h">
+      <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
+    </ClInclude>
+    <ClInclude Include="wav_file.h">
+      <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
+    </ClInclude>
+    <ClInclude Include="wav_file_bank.h">
+      <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_engine.h">
+      <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_BGM.h">
+      <Filter>MyCode\Engine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_SE.h">
+      <Filter>MyCode\Engine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>MyCode\Engine\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>MyCode\Engine\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Noncopyable.h">
+      <Filter>MyCode\Engine\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite_render.h">
+      <Filter>MyCode\Engine\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>MyCode\Engine\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

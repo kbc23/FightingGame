@@ -102,9 +102,9 @@ public: // enum
     {
         enNotAttacking, // 攻撃していない
         enJub, // ジャブ
-        enHook,
-        enBodyBlow,
-        enStraight,
+        enHook, // フック
+        enBodyBlow, // ボディブロー
+        enStraight, // ストレート
         enUppercut, // アッパーカット
     };
 
@@ -120,29 +120,56 @@ public: // enum
 
 
 private: // data member
-    // status
+    ////////////////////////////////////////////////////////////
+    // ステータス
+    ////////////////////////////////////////////////////////////
+
     int m_power = 0; // 攻撃力
     int m_attackType = EnAttackType::enNotAttacking; // 攻撃の種類
     int m_impactType = EnImpactType::enNotImpact; // 攻撃による影響
-    int m_nextNGAttackType = EnAttackType::enNotAttacking; // 攻撃の情報がリセットされるまで、次に使用できない攻撃
-    // attack time
+    // 攻撃の情報がリセットされるまで、次に技キャンセルをして使用できない攻撃
+    int m_nextNGAttackType = EnAttackType::enNotAttacking;
+    // 攻撃の情報がリセットされるまで、次に唯一技キャンセルをして使用できる攻撃
+    int m_nextOnlyOKAttackType = EnAttackType::enNotAttacking;
+    // ※処理の優先度 ([m_nextOnlyOKAttackType] > [m_nextNGAttackType])
+
+    ////////////////////////////////////////////////////////////
+    // 攻撃時間
+    ////////////////////////////////////////////////////////////
+
     int m_attackTime = 0; // 攻撃時間
     int m_attackTimeLimit = 0; // 攻撃時間の上限
-    // delay time
+    
+    ////////////////////////////////////////////////////////////
+    // 攻撃のディレイ
+    ////////////////////////////////////////////////////////////
+
     int m_delayTime = 0; // 攻撃までのディレイ
     int m_delayTimeLimit = 0; // 攻撃までのディレイの上限
     bool m_flagFinishDelay = true; // 攻撃開始までのディレイが終わったか（ディレイがない場合[true]に設定）
-    // attack range
+    
+    ////////////////////////////////////////////////////////////
+    // 攻撃範囲
+    ////////////////////////////////////////////////////////////
+
     Vector3 m_range = Vector3::Zero; //攻撃範囲
     float m_positionUpY = 0.0f;
     float m_positionUpZ = 0.0f;
-    // continuous attack
+
+    ////////////////////////////////////////////////////////////
+    // 連続攻撃
+    ////////////////////////////////////////////////////////////
+
     int m_countContinuousAttack = 0; // 連続攻撃の回数
-    int m_maxCountContinuousAttack = 0; // 連続攻撃の最大数
+    int m_maxCountContinuousAttack = 10; // 連続攻撃の最大数
     int m_continuousAttackGraceTime = 0; // 連続攻撃の猶予時間
     int m_continuousAttackGraceTimeLimit = 0; // 連続攻撃の猶予時間の上限
     bool m_flagContinuousAttack = false; // 連続攻撃中か
-    // flag
+
+    ////////////////////////////////////////////////////////////
+    // フラグ
+    ////////////////////////////////////////////////////////////
+
     bool m_flagStartAttack = false; // 攻撃を開始したか
     bool m_flagAlreadyAttacked = false; // 攻撃がもう当たっているか
     bool m_flagAttackNow = false; // 現在攻撃中か

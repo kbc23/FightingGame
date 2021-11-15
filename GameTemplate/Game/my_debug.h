@@ -1,6 +1,8 @@
 #pragma once
 #include "model_render.h"
 #include "font_render.h"
+#include "sound_BGM.h"
+#include "sprite_render.h"
 
 class Player;
 class PlayerCamera;
@@ -59,6 +61,9 @@ private: // data member
 	ModelRender* m_modelStage = nullptr; // ステージのモデル
 	GameData* m_gameData = nullptr;
 	FontRender* m_fontWinOrLose = nullptr;
+
+	SoundBGM* m_bgmTitle = nullptr;
+	SpriteRender* m_spriteTitle = nullptr;
 
 	////////////////////////////////////////////////////////////
 	// フラグ

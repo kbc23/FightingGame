@@ -3,6 +3,7 @@
 #include "shadow.h"
 #include "shadow_map.h"
 #include "shadow_light_camera.h"
+#include "sound_engine.h"
 #include "game.h"
 #include "my_debug.h"
 
@@ -76,6 +77,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//ゲームオブジェクトマネージャーのインスタンスを作成する。
 	GameObjectManager::CreateInstance();
 	PhysicsWorld::CreateInstance();
+	SoundEngine::CreateInstance(); //サウンドエンジン
 
 	ShadowMap::CreateInstance();
 
@@ -139,6 +141,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		// ワイヤーフレームの描画（デバッグモード）
 		PhysicsWorld::GetInstance()->DebubDrawWorld(renderContext);
 		
+		//サウンドエンジンのアップデート
+		SoundEngine::GetInstance()->Update();
+
 		//////////////////////////////////////
 		//絵を描くコードを書くのはここまで！！！
 		//////////////////////////////////////
@@ -152,6 +157,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//ゲームオブジェクトマネージャーを削除。
 	GameObjectManager::DeleteInstance();
+	SoundEngine::DeleteInstance(); //サウンドエンジン
 
 	ShadowMap::DeleteInstance();
 

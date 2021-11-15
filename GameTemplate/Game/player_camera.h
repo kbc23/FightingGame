@@ -17,7 +17,7 @@ public: // Get function
     const Vector3& GetPosition(const int playerNum)
     {
         if (playerNum == m_playerNum) {
-            return m_onelineCameraPosition;
+            return m_cameraPosition;
         }
         else if (playerNum == m_otherPlayerNum) {
             return m_otherCameraPosition;
@@ -44,11 +44,6 @@ public: // Set function
         m_otherPlayerNum = otherPlayerNum;
     }
 
-    void SetPlayerRotation(const Quaternion playerRot)
-    {
-        m_playerRotation = playerRot;
-    }
-
 
 private: // data member
     ////////////////////////////////////////////////////////////
@@ -66,14 +61,8 @@ private: // data member
     Vector3 m_playerPosition = g_vec3Zero; // プレイヤーの位置
     Vector3 m_enemyPosition = g_vec3Zero; // 相手プレイヤーの位置
 
-    Quaternion m_playerRotation = g_quatIdentity;
-
     Vector3 m_otherCameraPosition = g_vec3Zero; // 位置
     Vector3 m_otherCameraTarget = g_vec3Zero; // 注視点
-
-    Vector3 m_onelineCameraPosition = g_vec3Zero;
-    Vector3 m_onelineCameraTarget = g_vec3Zero;
-
 
     ////////////////////////////////////////////////////////////
     // 仮置き

@@ -47,7 +47,6 @@ public:
     */
     void Turn(Vector3& addMoveAmount);
 
-    void TestTurn(Vector3 enemyPosition, Vector3 playerGaMuiteirudearouMuki);
 
 private:
     void AttackAnimation();

@@ -48,6 +48,21 @@ public:
 	{
 		(void)renderContext;
 	}
+
+	/// <summary>
+	/// ポーズ中でも呼ばれるUpdate（更新）
+	/// </summary>
+	virtual void AlwaysUpdate()
+	{
+
+	};
+	/// <summary>
+	/// ポーズ中にだけ呼ばれるUpdate（更新）
+	/// </summary>
+	virtual void UpdateOnlyPaused()
+	{
+
+	};
 	
 public:
 	/*!
@@ -172,7 +187,9 @@ namespace igo
 		normal,
 		background,
 		model,
+		ui,
 		font,
+		fade,
 	};
 
 	////////////////////////////////////////////////////////////

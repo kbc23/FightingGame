@@ -136,18 +136,3 @@ void Actor::SetModelStatus()
     m_modelCharacter->SetRotation(m_rotation);
     m_modelCharacter->SetScale(m_scale);
 }
-
-void Actor::TestTurn(Vector3 enemyPosition, Vector3 playerGaMuiteirudearouMuki)
-{
-    //Vector3 testPosition = m_position;
-    //testPosition.Normalize();
-    //enemyPosition.Normalize();
-    //m_rotation.SetRotation(m_position, enemyPosition);
-
-    // プレイヤーから現在プレイヤーが向いている方向に延びるベクトルを求める
-    Vector3 fromPos = playerGaMuiteirudearouMuki - m_position;
-    // プレイヤーからエネミーに伸びるベクトルを求める
-    Vector3 toPos = enemyPosition - m_position;
-
-    m_rotation.SetRotation(fromPos, toPos);
-}

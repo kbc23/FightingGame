@@ -132,4 +132,33 @@ private:
 	Shader				m_vs;					//頂点シェーダー。
 	Shader				m_ps;					//ピクセルシェーダー。
 	bool				m_isInited = false;		//初期化済み？
+
+	////////////////////////////////////////////////////////////
+	// 追加
+	////////////////////////////////////////////////////////////
+
+public: //自動で呼ばれるメンバ関数
+	//コンストラクタ追加
+	Sprite();
+
+public: //メンバ関数
+
+	/// <summary>
+	/// スプライトに色を乗算する
+	/// </summary>
+	/// <param name="mulColor">乗算する色</param>
+	void SetMulColor(const Vector4& mulColor)
+	{
+		m_constantBufferCPU.mulColor = mulColor;
+	}
+
+	void SetMulColorW(const float& mulColorW)
+	{
+		m_constantBufferCPU.mulColor.w = mulColorW;
+	}
+
+	float GetMulColorW()
+	{
+		return m_constantBufferCPU.mulColor.w;
+	}
 };
