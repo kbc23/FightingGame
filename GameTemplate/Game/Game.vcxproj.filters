@@ -353,6 +353,9 @@
     <ClCompile Include="fade.cpp">
       <Filter>MyCode\Engine\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="st_defense_data.cpp">
+      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -642,6 +645,9 @@
     </ClInclude>
     <ClInclude Include="fade.h">
       <Filter>MyCode\Engine\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="st_defense_data.h">
+      <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

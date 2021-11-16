@@ -56,9 +56,23 @@ public: // Get function
         return m_flagAttackNow;
     }
 
+    const bool CheckNextNGAttackType(const int attackType)
+    {
+        if (attackType == m_nextNGAttackType) {
+            return true;
+        }
+
+        return false;
+    }
+
     const int GetPower()
     {
         return m_power;
+    }
+
+    const int GetDefenseBreakPower()
+    {
+        return m_defenseBreakPower;
     }
 
     const bool GetFlagAlreadyAttacked()
@@ -93,6 +107,11 @@ public: // Set function
         m_flagNextAttackPossible = flag;
     }
 
+    void SetFalseFlagAttackNow()
+    {
+        m_flagAttackNow = false;
+    }
+
 
 public: // enum
     /**
@@ -125,6 +144,7 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     int m_power = 0; // UŒ‚—Í
+    int m_defenseBreakPower = 0; // –hŒä’l‚ğŒ¸‚ç‚·—Ê
     int m_attackType = EnAttackType::enNotAttacking; // UŒ‚‚Ìí—Ş
     int m_impactType = EnImpactType::enNotImpact; // UŒ‚‚É‚æ‚é‰e‹¿
     // UŒ‚‚Ìî•ñ‚ªƒŠƒZƒbƒg‚³‚ê‚é‚Ü‚ÅAŸ‚É‹ZƒLƒƒƒ“ƒZƒ‹‚ğ‚µ‚Äg—p‚Å‚«‚È‚¢UŒ‚

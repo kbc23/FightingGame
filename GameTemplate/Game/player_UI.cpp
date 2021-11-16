@@ -23,6 +23,9 @@ PlayerUI::PlayerUI()
     m_defenseUI = NewGO<FontRender>(igo::EnPriority::font);
     m_defenseUI->Init(L"ƒK[ƒh");
     m_defenseUI->Deactivate();
+
+    m_defenseValueUI = NewGO<FontRender>(igo::EnPriority::font);
+    m_defenseValueUI->Init(L"100");
 }
 
 PlayerUI::~PlayerUI()

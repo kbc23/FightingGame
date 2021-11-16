@@ -97,6 +97,9 @@ void Player::Update()
     // ダウン関連のUpdate
     m_downStatus.DownUpdate();
 
+    // ガード関連のUpdate
+    m_defenceData.Update();
+
     //////////////////////////////
     // UIのUpdate
     //////////////////////////////
@@ -105,7 +108,8 @@ void Player::Update()
     m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
     m_playerUI->UpdateKnockBackUI(m_squeezeStatus.GetFlagSqueeze(), m_playerNum);
     m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
-    m_playerUI->UpdatemDefenseUI(m_flagDefense, m_playerNum);
+    m_playerUI->UpdateDefenseUI(m_defenceData.GetFlagDefense(), m_playerNum);
+    m_playerUI->UpdateDefenseValueUI(m_defenceData.GetDefenseValue(), m_playerNum);
 }
 
 ////////////////////////////////////////////////////////////
@@ -134,6 +138,11 @@ void Player::Controller()
         return;
     }
 
+    // ガードブレイクでスタンしている間、処理をしない
+    if (true == m_defenceData.GetFlagGuardBreak()) {
+        return;
+    }
+
     // 次の攻撃ができる状態でない場合、処理をしない
     if (false == m_attackData.GetFlagNextAttackPossible()) {
         // 攻撃アニメーション中、処理をしない
@@ -145,55 +154,94 @@ void Player::Controller()
         }
     }
 
+    if (false == m_defenceData.GetFlagDefense()) {
+        m_defenceData.AddDefenseValue();
+    }
+
 
 
     // Aボタン
-    if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonA)) {
-        CheckContinuousAttack();
+    if (false == m_defenceData.GetFlagDefense() &&
+        false == m_dashStatus.GetFlagDash() &&
+        true == m_gamePad->IsTrigger(enButtonA)) {
+        if (false == CheckContinuousAttack(m_attackData.EnAttackType::enJub)) {
+            return;
+        }
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enJub)) {
             AttackAnimationStart();
         }
     }
     // Bボタン
-    if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonB)) {
-        CheckContinuousAttack();
+    if (false == m_defenceData.GetFlagDefense() &&
+        false == m_dashStatus.GetFlagDash() &&
+        true == m_gamePad->IsTrigger(enButtonB)) {
+        if (false == CheckContinuousAttack(m_attackData.EnAttackType::enHook)) {
+            return;
+        }
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enHook)) {
             AttackAnimationStart();
         }
     }
     // Xボタン
-    if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonX)) {
-        CheckContinuousAttack();
+    if (false == m_defenceData.GetFlagDefense() &&
+        false == m_dashStatus.GetFlagDash() &&
+        true == m_gamePad->IsTrigger(enButtonX)) {
+        if (false == CheckContinuousAttack(m_attackData.EnAttackType::enUppercut)) {
+            return;
+        }
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enUppercut)) {
             AttackAnimationStart();
         }
     }
     // Yボタン
-    if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonY)) {
-        CheckContinuousAttack();
+    if (false == m_defenceData.GetFlagDefense() &&
+        false == m_dashStatus.GetFlagDash() &&
+        true == m_gamePad->IsTrigger(enButtonY)) {
+        if (false == CheckContinuousAttack(m_attackData.EnAttackType::enStraight)) {
+            return;
+        }
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enStraight)) {
             AttackAnimationStart();
         }
     }
     // R2ボタン
-    if (false == m_flagDefense && false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsTrigger(enButtonRB2)) {
-        CheckContinuousAttack();
+    if (false == m_defenceData.GetFlagDefense() &&
+        false == m_dashStatus.GetFlagDash() &&
+        true == m_gamePad->IsTrigger(enButtonRB2)) {
+        if (false == CheckContinuousAttack(m_attackData.EnAttackType::enBodyBlow)) {
+            return;
+        }
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enBodyBlow)) {
             AttackAnimationStart();
         }
     }
 
     // R1ボタン: ダッシュ
-    if (false == m_flagDefense && true == m_gamePad->IsTrigger(enButtonRB1)) {
+    if (false == m_defenceData.GetFlagDefense() && true == m_gamePad->IsTrigger(enButtonRB1)) {
         m_dashStatus.StartDash();
     }
 
     // L1ボタン: ガード
     if (false == m_dashStatus.GetFlagDash() && true == m_gamePad->IsPress(enButtonLB1)) {
-        m_flagDefense = true;
+        m_defenceData.SetFlagDefense(true);
     }
     else {
-        m_flagDefense = false;
+        m_defenceData.SetFlagDefense(false);
+    }
+
+    if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
+        ++m_defenseTime;
+        
+        if (300 >= m_defenseTime) {
+            m_defenceData.SetFlagDefense(true);
+        }
+        else {
+            m_defenceData.SetFlagDefense(false);
+        }
+
+        if (600 <= m_defenseTime) {
+            m_defenseTime = 0;
+        }
     }
 
     // Debug: Startボタン: ゲーム終了
@@ -208,7 +256,7 @@ void Player::Controller()
     Vector3 moveAmount = Vector3::Zero;
 
     // ガード中は処理をしない
-    if (false == m_flagDefense) {
+    if (false == m_defenceData.GetFlagDefense()) {
         if (false == m_dashStatus.GetFlagDash()) {
             moveAmount = Move();
         }
@@ -328,7 +376,9 @@ void Player::AttackUpdate()
 void Player::HitAttack()
 {    
     // ダメージ処理
-    if (false == m_otherPlayer->ReceiveDamage(m_attackData.GetPower(), m_attackData.GetImpactType())) {
+    if (false == m_otherPlayer->ReceiveDamage(m_attackData.GetPower(),
+                                                m_attackData.GetDefenseBreakPower(),
+                                                m_attackData.GetImpactType())) {
         // ダメージを与えられてない
         return;
     }
@@ -370,11 +420,15 @@ void Player::AttackAnimationStart()
     }
 }
 
-void Player::CheckContinuousAttack()
+const bool Player::CheckContinuousAttack(const int attackType)
 {
-    if (false == m_attackData.GetFlagAttackNow()) {
-        return;
+    if (true == m_attackData.CheckNextNGAttackType(attackType)) {
+        if (true == m_actor->GetFlagAttackAnimation()) {
+            return false;
+       }
     }
 
     FinishAttack();
+
+    return true;
 }

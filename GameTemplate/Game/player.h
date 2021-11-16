@@ -4,6 +4,7 @@
 #include "st_dash_status.h"
 #include "st_squeeze_status.h"
 #include "st_down_status.h"
+#include "st_defense_data.h"    
 
 class PlayerCamera;
 class AttackJudgment;
@@ -102,7 +103,7 @@ private:
     /**
      * @brief 連続攻撃の確認
     */
-    void CheckContinuousAttack();
+    const bool CheckContinuousAttack(const int attackType);
 
 
 public: // Get function
@@ -142,7 +143,7 @@ public: // Set function
      * @param damage ダメージ量
      * @return ダメージを与えられたか
     */
-    const bool ReceiveDamage(const int damage, const int impactType)
+    const bool ReceiveDamage(const int damage, const int defenseBreakPower, const int impactType)
     {
         // HPが０なら処理をしない
         if (true == m_flagHp_0) {
@@ -155,12 +156,13 @@ public: // Set function
         }
 
         //防御中
-        if (true == m_flagDefense) {
-            return false;
+        if (true == m_defenceData.GetFlagDefense()) {
+            m_defenceData.DecreaseDefenseValue(defenseBreakPower);
+            return true;
         }
 
         // ダメージ処理
-        m_hp = m_hp - damage;
+        m_hp -= damage;
 
         // のけぞりの処理
         if (StAttackData::EnImpactType::enSqueeze == impactType) {
@@ -230,6 +232,7 @@ private: // data member
     StDashStatus m_dashStatus; // ダッシュ関連のデータ
     StSqueezeStatus m_squeezeStatus; // のけぞり関連のデータ
     StDownStatus m_downStatus; // ダウン関連のデータ
+    StDefenseData m_defenceData; // 防御関連のデータ
 
     ////////////////////////////////////////////////////////////
     // フラグ
@@ -238,11 +241,14 @@ private: // data member
     bool m_flagOperation = true; // 操作可能か
     bool m_flagHp_0 = false; // HPが０になったか
     bool m_flagGameEndStopOperation = false; // ゲームが終了して操作ができなくなっているか
-    bool m_flagDefense = false; // 防御中か
+    //bool m_flagDefense = false; // 防御中か
 
     ////////////////////////////////////////////////////////////
     // その他
     ////////////////////////////////////////////////////////////
 
     int m_playerNum = -1; // 自分か相手のどちらかを区別する番号
+
+    // Debug
+    int m_defenseTime = 0;
 };

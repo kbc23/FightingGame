@@ -51,7 +51,7 @@ public: // Update data
         SetPosition(playerNum);
     }
 
-    void UpdatemDefenseUI(const bool defense, const int playerNum)
+    void UpdateDefenseUI(const bool defense, const int playerNum)
     {
         if (true == defense) {
             m_defenseUI->Activate();
@@ -63,6 +63,12 @@ public: // Update data
         SetPosition(playerNum);
     }
 
+    void UpdateDefenseValueUI(const int defenseValue, const int playerNum)
+    {
+        m_defenseValueUI->SetText(defenseValue);
+        SetPosition(playerNum);
+    }
+
     void SetPosition(const int playerNum)
     {
         if (playerNum == m_findGameData->GetPlayerNum()) {
@@ -71,6 +77,7 @@ public: // Update data
             m_knockBackUI->SetPosition({ -200.0f,-150.0f });
             m_downUI->SetPosition({ -200.0f,-200.0f });
             m_defenseUI->SetPosition({ -200.0f,-250.0f });
+            m_defenseValueUI->SetPosition({ -200.0f,-300.0f });
         }
         else if (playerNum == m_findGameData->GetOtherPlayerNum()) {
             m_hpUI->SetPositionX(200.0f);
@@ -78,6 +85,7 @@ public: // Update data
             m_knockBackUI->SetPosition({ 200.0f,-150.0f });
             m_downUI->SetPosition({ 200.0f,-200.0f });
             m_defenseUI->SetPosition({ 200.0f,-250.0f });
+            m_defenseValueUI->SetPosition({ 200.0f,-300.0f });
         }
     }
 
@@ -93,6 +101,7 @@ private: // data member
     FontRender* m_knockBackUI = nullptr;
     FontRender* m_downUI = nullptr;
     FontRender* m_defenseUI = nullptr;
+    FontRender* m_defenseValueUI = nullptr;
 
     GameData* m_findGameData = nullptr;
 

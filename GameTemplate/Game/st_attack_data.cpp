@@ -8,7 +8,8 @@ namespace nsAttackData
     // ジャブ
     namespace nsJub
     {
-        const int POWER = 10; // 攻撃力
+        const int POWER = 8; // 攻撃力
+        const int DEFENSE_BREAK_POWER = 5; // 防御値を減らす値
         const int ATTACK_TIME_LIMIT = 16; // 攻撃時間
         const int DELAY_TIME_LIMIT = 4; // 攻撃までのディレイ
         const Vector3 RANGE = { 25.0f,25.0f,50.0f }; // 攻撃範囲
@@ -21,7 +22,8 @@ namespace nsAttackData
     // アッパーカット
     namespace nsUppercut
     {
-        const int POWER = 15; // 攻撃力
+        const int POWER = 16; // 攻撃力
+        const int DEFENSE_BREAK_POWER = 20; // 防御値を減らす値
         const int ATTACK_TIME_LIMIT = 15; // 攻撃時間
         const int DELAY_TIME_LIMIT = 7; // 攻撃までのディレイ
         const Vector3 RANGE = { 25.0f,40.0f,35.0f }; // 攻撃範囲
@@ -33,7 +35,8 @@ namespace nsAttackData
     // フック
     namespace nsHook
     {
-        const int POWER = 20; // 攻撃力
+        const int POWER = 13; // 攻撃力
+        const int DEFENSE_BREAK_POWER = 8; // 防御値を減らす値
         const int ATTACK_TIME_LIMIT = 15; // 攻撃時間
         const int DELAY_TIME_LIMIT = 8; // 攻撃までのディレイ
         const Vector3 RANGE = { 50.0f,20.0f,30.0f }; // 攻撃範囲
@@ -46,6 +49,7 @@ namespace nsAttackData
     namespace nsBodyBlow
     {
         const int POWER = 25; // 攻撃力
+        const int DEFENSE_BREAK_POWER = 100; // 防御値を減らす値
         const int ATTACK_TIME_LIMIT = 21; // 攻撃時間
         const int DELAY_TIME_LIMIT = 19; // 攻撃までのディレイ
         const Vector3 RANGE = { 20.0f,20.0f,35.0f }; // 攻撃範囲
@@ -57,7 +61,8 @@ namespace nsAttackData
     // ストレート
     namespace nsStraight
     {
-        const int POWER = 50; // 攻撃力
+        const int POWER = 30; // 攻撃力
+        const int DEFENSE_BREAK_POWER = 15; // 防御値を減らす値
         const int ATTACK_TIME_LIMIT = 22; // 攻撃時間
         const int DELAY_TIME_LIMIT = 19; // 攻撃までのディレイ
         const Vector3 RANGE = { 25.0f,20.0f,85.0f }; // 攻撃範囲
@@ -78,6 +83,7 @@ const bool StAttackData::SetAttackData(const int attackType)
     // ジャブ
     if (EnAttackType::enJub == attackType) {
         m_power = nsAttackData::nsJub::POWER; // 攻撃力
+        m_defenseBreakPower = nsAttackData::nsJub::DEFENSE_BREAK_POWER; // 防御値を減らす値
         m_attackTimeLimit = nsAttackData::nsJub::ATTACK_TIME_LIMIT; // 攻撃時間
         m_delayTimeLimit = nsAttackData::nsJub::DELAY_TIME_LIMIT; // 攻撃までのディレイ
         m_range = nsAttackData::nsJub::RANGE; // 攻撃範囲
@@ -89,6 +95,7 @@ const bool StAttackData::SetAttackData(const int attackType)
     // アッパーカット
     else if (EnAttackType::enUppercut == attackType) {
         m_power = nsAttackData::nsUppercut::POWER; // 攻撃力
+        m_defenseBreakPower = nsAttackData::nsUppercut::DEFENSE_BREAK_POWER; // 防御値を減らす値
         m_attackTimeLimit = nsAttackData::nsUppercut::ATTACK_TIME_LIMIT; // 攻撃時間
         m_delayTimeLimit = nsAttackData::nsUppercut::DELAY_TIME_LIMIT; // 攻撃までのディレイ
         m_range = nsAttackData::nsUppercut::RANGE; // 攻撃範囲
@@ -100,6 +107,7 @@ const bool StAttackData::SetAttackData(const int attackType)
     // フック
     else if (EnAttackType::enHook == attackType) {
         m_power = nsAttackData::nsHook::POWER; // 攻撃力
+        m_defenseBreakPower = nsAttackData::nsHook::DEFENSE_BREAK_POWER; // 防御値を減らす値
         m_attackTimeLimit = nsAttackData::nsHook::ATTACK_TIME_LIMIT; // 攻撃時間
         m_delayTimeLimit = nsAttackData::nsHook::DELAY_TIME_LIMIT; // 攻撃までのディレイ
         m_range = nsAttackData::nsHook::RANGE; // 攻撃範囲
@@ -111,6 +119,7 @@ const bool StAttackData::SetAttackData(const int attackType)
     // ボディブロー
     else if (EnAttackType::enBodyBlow == attackType) {
         m_power = nsAttackData::nsBodyBlow::POWER; // 攻撃力
+        m_defenseBreakPower = nsAttackData::nsBodyBlow::DEFENSE_BREAK_POWER; // 防御値を減らす値
         m_attackTimeLimit = nsAttackData::nsBodyBlow::ATTACK_TIME_LIMIT; // 攻撃時間
         m_delayTimeLimit = nsAttackData::nsBodyBlow::DELAY_TIME_LIMIT; // 攻撃までのディレイ
         m_range = nsAttackData::nsBodyBlow::RANGE; // 攻撃範囲
@@ -122,6 +131,7 @@ const bool StAttackData::SetAttackData(const int attackType)
     // ストレート
     else if (EnAttackType::enStraight == attackType) {
         m_power = nsAttackData::nsStraight::POWER; // 攻撃力
+        m_defenseBreakPower = nsAttackData::nsStraight::DEFENSE_BREAK_POWER; // 防御値を減らす値
         m_attackTimeLimit = nsAttackData::nsStraight::ATTACK_TIME_LIMIT; // 攻撃時間
         m_delayTimeLimit = nsAttackData::nsStraight::DELAY_TIME_LIMIT; // 攻撃までのディレイ
         m_range = nsAttackData::nsStraight::RANGE; // 攻撃範囲
@@ -132,6 +142,7 @@ const bool StAttackData::SetAttackData(const int attackType)
     }
 
     m_flagAttackNow = true; // 現在攻撃中か
+    m_flagCreateAttackRange = false;
     m_flagStartAttack = true; // 攻撃を開始したか
     m_flagNextAttackPossible = false; // 次の攻撃ができるか
     m_flagFinishDelay = false; // ディレイが終わったか
@@ -241,28 +252,31 @@ void StAttackData::ResetAttackData()
     m_flagAttackNow = false;
     m_flagCreateAttackRange = false;
     m_impactType = EnImpactType::enNotImpact;
+    m_nextNGAttackType = EnAttackType::enNotAttacking;
 }
 
 void StAttackData::HitCheckAttackData()
 {
-    if (EnAttackType::enJub == m_attackType) {
-        m_flagNextAttackPossible = true;
-        ++m_continueJubAttack;
-    }
+    if (EnImpactType::enSqueeze == m_impactType) {
+        if (EnAttackType::enJub == m_attackType) {
+            m_flagNextAttackPossible = true;
+            ++m_continueJubAttack;
+        }
 
-    if (EnAttackType::enHook == m_attackType) {
-        m_flagNextAttackPossible = true;
-        m_nextNGAttackType = EnAttackType::enHook;
-    }
+        if (EnAttackType::enHook == m_attackType) {
+            m_flagNextAttackPossible = true;
+            m_nextNGAttackType = EnAttackType::enHook;
+        }
 
-    if (EnAttackType::enUppercut == m_attackType) {
-        m_flagNextAttackPossible = true;
-        m_nextNGAttackType = EnAttackType::enUppercut;
-    }
+        if (EnAttackType::enUppercut == m_attackType) {
+            m_flagNextAttackPossible = true;
+            m_nextNGAttackType = EnAttackType::enUppercut;
+        }
 
-    if (EnAttackType::enBodyBlow == m_attackType) {
-        m_flagNextAttackPossible = true;
-        m_nextNGAttackType = EnAttackType::enBodyBlow;
+        if (EnAttackType::enBodyBlow == m_attackType) {
+            m_flagNextAttackPossible = true;
+            m_nextNGAttackType = EnAttackType::enBodyBlow;
+        }
     }
 
     // 連続攻撃に関する処理
