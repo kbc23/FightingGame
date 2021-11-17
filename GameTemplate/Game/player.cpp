@@ -7,6 +7,10 @@
 #include "player_UI.h"
 #include "game_data.h"
 
+// ※メモ
+// プレイヤーの回避で使用する腰の骨の名前は
+// "J_Bip_C_Chest"のはず
+
 Player::Player()
 {
 
@@ -232,14 +236,14 @@ void Player::Controller()
     if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
         ++m_defenseTime;
         
-        if (300 >= m_defenseTime) {
+        if (180 >= m_defenseTime) {
             m_defenceData.SetFlagDefense(true);
         }
         else {
             m_defenceData.SetFlagDefense(false);
         }
 
-        if (600 <= m_defenseTime) {
+        if (360 <= m_defenseTime) {
             m_defenseTime = 0;
         }
     }

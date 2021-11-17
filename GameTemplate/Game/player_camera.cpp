@@ -42,7 +42,7 @@ void PlayerCamera::UpdatePlayerCamera()
     m_cameraTarget.y = 75.0f;
 
     g_camera3D->SetPosition(m_cameraPosition); // カメラに位置の情報を渡す
-    g_camera3D->MoveRight(50.0f); // カメラの位置を右に少しずらす
+    g_camera3D->MoveRight(100.0f); // カメラの位置を右に少しずらす
     g_camera3D->SetTarget(m_cameraTarget); // カメラに注視点の情報を渡す
 }
 

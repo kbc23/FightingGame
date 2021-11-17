@@ -265,6 +265,8 @@ void ModelRender::Update()
 		return;
 	}
 
+	SwayCharacter();
+
 	// スケルトンを更新
 	if (m_skeletonPointer) {	// スケルトンが初期化されていたら
 		m_skeletonPointer->Update(m_model.GetWorldMatrix());
@@ -275,4 +277,67 @@ void ModelRender::Update()
 	}
 	// モデルの座標更新
 	m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+}
+
+void ModelRender::SwayCharacter()
+{
+	// スケルトンがない場合
+	if (!m_skeletonPointer) {
+		return;
+	}
+
+	// 骨の名前でボーンIDを検索
+	int boneId = m_skeletonPointer->FindBoneID(L"J_Bip_C_Spine");
+	// 検索したボーンIDを使用して、ボーンを取得
+	Bone* bone = m_skeletonPointer->GetBone(boneId);
+
+	// ボーンのローカル行列を取得
+	Matrix boneMatrix = bone->GetLocalMatrix();
+	// コントローラーを使用し、ローカル行列の平行移動成分を変化させる
+
+	float x = g_pad[0]->GetRStickXF();
+	float y = g_pad[0]->GetRStickYF();
+	//boneMatrix.m[1][0] += x * 5.0f;
+	//boneMatrix.m[1][2] += g_pad[0]->GetRStickYF() * 5.0f;
+
+	//glRotated(1.0f, 0, 0, 1);
+
+	//boneMatrix.m[0][0] = cos(x * 5.0f);
+	//boneMatrix.m[0][1] = sin(x * 5.0f);
+	//boneMatrix.m[1][0] = -sin(x * 5.0f);
+	//boneMatrix.m[1][1] = cos(x * 5.0f);
+
+	Quaternion m_RotX;
+	m_RotX.SetRotation(boneMatrix);
+	m_RotX.SetRotationX(y * 0.1f);
+
+	Quaternion m_RotZ;
+	m_RotZ.SetRotation(boneMatrix);
+	m_RotZ.SetRotationZ(-x * 0.1f);
+
+
+	Matrix rotMatrixX, rotMatrixZ;
+	rotMatrixX.MakeRotationFromQuaternion(m_RotX);
+	rotMatrixZ.MakeRotationFromQuaternion(m_RotZ);
+
+	rotMatrixX *= rotMatrixZ;
+
+	boneMatrix *= rotMatrixX;
+
+
+	//Matrix mTrans, mRot, mScale;
+	//mTrans.MakeTranslation({ boneMatrix.m[3][0], boneMatrix.m[3][1], boneMatrix.m[3][2] });
+	//mRot.MakeRotationFromQuaternion(m_Rot);
+	//mScale.MakeScaling({ boneMatrix.m[0][0], boneMatrix.m[1][1], boneMatrix.m[2][2] });
+
+	//boneMatrix = mScale * mRot * mTrans;
+
+	// 変更したボーン行列を設定
+	bone->SetLocalMatrix(boneMatrix);
+
+}
+
+void BoneRotatioZ(const float rot)
+{
+	
 }

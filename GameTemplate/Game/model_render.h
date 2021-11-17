@@ -68,7 +68,6 @@ public:
 	void Render(RenderContext& renderContext) override final;
 
 
-
 public:
 	/**
 
@@ -142,6 +141,12 @@ private:
 	 * @param maxAnimationClipNum アニメーションクリップの総数
 	*/
 	void InitAnimation(AnimationClip* animationClip, int maxAnimationClipNum);
+
+
+
+public:
+	void SwayCharacter();
+
 
 
 public:
