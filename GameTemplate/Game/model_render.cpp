@@ -3,7 +3,6 @@
 
 #include "shadow_map.h"
 #include "shadow_light_camera.h"
-#include "player_camera.h"
 
 ModelRender::ModelRender()
 {
@@ -17,8 +16,6 @@ ModelRender::~ModelRender()
 
 bool ModelRender::Start()
 {
-	m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
-
 	return true;
 }
 
@@ -291,41 +288,38 @@ void ModelRender::SwayCharacter()
 	int boneId = m_skeletonPointer->FindBoneID(L"J_Bip_C_Spine");
 	// 検索したボーンIDを使用して、ボーンを取得
 	Bone* bone = m_skeletonPointer->GetBone(boneId);
-
 	// ボーンのローカル行列を取得
 	Matrix boneMatrix = bone->GetLocalMatrix();
+
+
 
 	// コントローラーを使用し、ローカル行列の平行移動成分を変化させる
 	float controllerX = g_pad[0]->GetRStickXF();
 	float controllerY = g_pad[0]->GetRStickYF();
 
-	if (0.0f != g_pad[0]->GetRStickXF()) {
-		int test = 10;
-	}
-
-	// カメラの前方向を取得
-	// ※カメラの前方向を参照する技を使うときに[cameraFront]が使えるかも
-	Vector3 cameraFront = m_position - m_findPlayerCamera->GetPosition(m_playerNum);
-	cameraFront.y = 0.0f;
-	cameraFront.Normalize();
-
-	// カメラの右方向
-	Vector3 cameraRight = Cross(g_vec3AxisY, cameraFront);
 
 
-	// ボーンの回転
-	Quaternion m_RotX;
-	m_RotX.SetRotation(cameraFront, -controllerY);
+	// ボーンの回転の軸になる前方向のベクトルを作成
+	Vector3 vecFront = Vector3::Front;
+	// ボーンの回転の軸になる右方向のベクトルを作成
+	Vector3 vecRight = Vector3::Right;
+	// ボーンの回転の軸に使用するベクトルをY軸に回すためのクォータニオンを作成
+	Quaternion m_Rot;
+	m_Rot.SetRotationY(0.6f); // 回転量を設定
+	// ボーンお回転の軸になるベクトルをY軸で回転
+	m_Rot.Apply(vecFront);
+	m_Rot.Apply(vecRight);
 
-	Quaternion m_RotZ;
-	m_RotZ.SetRotation(cameraRight, -controllerX);
 
+
+	// ボーンの回転情報を作成する行列を作成
 	Matrix rotMatrixX, rotMatrixZ;
-	rotMatrixX.MakeRotationFromQuaternion(m_RotX);
-	rotMatrixZ.MakeRotationFromQuaternion(m_RotZ);
+	// 回転情報を作成
+	rotMatrixX.MakeRotationAxis(vecFront, -controllerX);
+	rotMatrixZ.MakeRotationAxis(vecRight, controllerY);
 
+	// 回転情報の行列を乗算し、ボーンを回転させる
 	rotMatrixX *= rotMatrixZ;
-
 	boneMatrix *= rotMatrixX;
 
 	// 変更したボーン行列を設定

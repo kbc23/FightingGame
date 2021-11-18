@@ -3,8 +3,6 @@
 
 #include "shadow.h"
 
-class PlayerCamera;
-
 ////////////////////////////////////////////////////////////
 // メモ
 // トゥーンレンダリングに使用する画像などのパスを読み込んでいるところ
@@ -294,9 +292,6 @@ private: // data member
 	std::unique_ptr<Skeleton> m_skeletonPointer; // スケルトンのポインター
 	std::unique_ptr<Animation> m_animationPointer; // アニメーションのポインター
 
-	PlayerCamera* m_findPlayerCamera = nullptr;
-
-
     const char* m_tkmFilePath = nullptr; // tkmファイルのファイルパス
 	Light m_light;
 
@@ -306,12 +301,4 @@ private: // data member
 
 	bool m_finishInit = false; // 初期化が終わったか
 	bool m_flagShadow = false; // 影が発生するか
-
-	int m_playerNum = -1;
-		
-public:
-	void SetPlayerNum(const int playerNum)
-	{
-		m_playerNum = playerNum;
-	}
 };
