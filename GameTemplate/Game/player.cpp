@@ -80,6 +80,8 @@ void Player::DebugInit(
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
     m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
+
+    m_actor->SetPlayerNum(playerNum);
 }
 
 void Player::Update()

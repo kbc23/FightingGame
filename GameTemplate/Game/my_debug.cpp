@@ -37,7 +37,6 @@ void MyDebug::Init()
     m_gameData->SetPlayerNumAndOtherPlayerNum(enPlayer, enOtherPlayer);
 
     m_playerCamera->SetPlayerNum(enPlayer, enOtherPlayer);
-
     m_player[enPlayer]->DebugInit("Assets/modelData/model/model.tkm", enPlayer,
         pos[enPlayer], rotAngle[enPlayer], m_player[enOtherPlayer]);
     m_player[enOtherPlayer]->DebugInit("Assets/modelData/model/model.tkm", enOtherPlayer,

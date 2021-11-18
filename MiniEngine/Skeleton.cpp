@@ -125,11 +125,23 @@ void Skeleton::Update(const Matrix& mWorld)
 	if (m_isPlayAnimation) {
 		//ボーン行列をルートボーンの空間からワールド空間を構築していく。
 		for (auto& bone : m_bones) {
+			// 追加 start
+			if (bone->GetParentBoneNo() != -1) {
+				continue;
+			}
+			// 追加 end
+
 			Matrix mBoneWorld;
 			Matrix localMatrix = bone->GetLocalMatrix();
 			//親の行列とローカル行列を乗算して、ワールド行列を計算する。
 			mBoneWorld = localMatrix * mWorld;
 			bone->SetWorldMatrix(mBoneWorld);
+
+			// 追加 start
+			for (auto childBone : bone->GetChildren()) {
+				UpdateBoneWorldMatrix(*childBone, mBoneWorld);
+			}
+			// 追加 end
 		}
 	}
 	else {

@@ -65,8 +65,9 @@ void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float 
     m_animationPlayer[idle].SetLoopFlag(true);
 
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
-    //m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
-    m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ);
+    m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
+    //m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ);
+    //m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, jub);
 
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);

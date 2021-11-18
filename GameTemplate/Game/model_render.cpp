@@ -3,6 +3,7 @@
 
 #include "shadow_map.h"
 #include "shadow_light_camera.h"
+#include "player_camera.h"
 
 ModelRender::ModelRender()
 {
@@ -16,7 +17,7 @@ ModelRender::~ModelRender()
 
 bool ModelRender::Start()
 {
-
+	m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
 	return true;
 }
@@ -293,28 +294,31 @@ void ModelRender::SwayCharacter()
 
 	// ボーンのローカル行列を取得
 	Matrix boneMatrix = bone->GetLocalMatrix();
+
 	// コントローラーを使用し、ローカル行列の平行移動成分を変化させる
+	float controllerX = g_pad[0]->GetRStickXF();
+	float controllerY = g_pad[0]->GetRStickYF();
 
-	float x = g_pad[0]->GetRStickXF();
-	float y = g_pad[0]->GetRStickYF();
-	//boneMatrix.m[1][0] += x * 5.0f;
-	//boneMatrix.m[1][2] += g_pad[0]->GetRStickYF() * 5.0f;
+	if (0.0f != g_pad[0]->GetRStickXF()) {
+		int test = 10;
+	}
 
-	//glRotated(1.0f, 0, 0, 1);
+	// カメラの前方向を取得
+	// ※カメラの前方向を参照する技を使うときに[cameraFront]が使えるかも
+	Vector3 cameraFront = m_position - m_findPlayerCamera->GetPosition(m_playerNum);
+	cameraFront.y = 0.0f;
+	cameraFront.Normalize();
 
-	//boneMatrix.m[0][0] = cos(x * 5.0f);
-	//boneMatrix.m[0][1] = sin(x * 5.0f);
-	//boneMatrix.m[1][0] = -sin(x * 5.0f);
-	//boneMatrix.m[1][1] = cos(x * 5.0f);
+	// カメラの右方向
+	Vector3 cameraRight = Cross(g_vec3AxisY, cameraFront);
 
+
+	// ボーンの回転
 	Quaternion m_RotX;
-	m_RotX.SetRotation(boneMatrix);
-	m_RotX.SetRotationX(y * 0.1f);
+	m_RotX.SetRotation(cameraFront, -controllerY);
 
 	Quaternion m_RotZ;
-	m_RotZ.SetRotation(boneMatrix);
-	m_RotZ.SetRotationZ(-x * 0.1f);
-
+	m_RotZ.SetRotation(cameraRight, -controllerX);
 
 	Matrix rotMatrixX, rotMatrixZ;
 	rotMatrixX.MakeRotationFromQuaternion(m_RotX);
@@ -324,17 +328,8 @@ void ModelRender::SwayCharacter()
 
 	boneMatrix *= rotMatrixX;
 
-
-	//Matrix mTrans, mRot, mScale;
-	//mTrans.MakeTranslation({ boneMatrix.m[3][0], boneMatrix.m[3][1], boneMatrix.m[3][2] });
-	//mRot.MakeRotationFromQuaternion(m_Rot);
-	//mScale.MakeScaling({ boneMatrix.m[0][0], boneMatrix.m[1][1], boneMatrix.m[2][2] });
-
-	//boneMatrix = mScale * mRot * mTrans;
-
 	// 変更したボーン行列を設定
 	bone->SetLocalMatrix(boneMatrix);
-
 }
 
 void BoneRotatioZ(const float rot)

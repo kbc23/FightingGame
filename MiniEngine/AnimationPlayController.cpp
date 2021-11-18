@@ -64,10 +64,12 @@ void AnimationPlayController::CalcBoneMatrixInRootBoneSpace(Bone& bone, Matrix p
 	//親の行列とローカル行列を乗算して、ワールド行列を計算する。
 	mBoneInRootSpace = localMatrix * parentMatrix;
 
+	// アニメーション中にボーンを動かす際、この処理があるとアニメーションがおかしくなるためコメントアウト (start)
 	//子供のワールド行列も計算する。
-	for (auto& childBone : bone.GetChildren()) {
-		CalcBoneMatrixInRootBoneSpace(*childBone, mBoneInRootSpace);
-	}
+	//for (auto& childBone : bone.GetChildren()) {
+	//	CalcBoneMatrixInRootBoneSpace(*childBone, mBoneInRootSpace);
+	//}
+	// (end)
 }
 void AnimationPlayController::SamplingBoneMatrixFromAnimationClip()
 {
@@ -78,6 +80,7 @@ void AnimationPlayController::SamplingBoneMatrixFromAnimationClip()
 		}
 		//現在再生中のキーフレームを取ってくる。
 		KeyFrame* keyframe = keyFrameList.at(m_currentKeyFrameNo);
+
 		m_boneMatrix[keyframe->boneIndex] = keyframe->transform;
 	}
 }
@@ -87,9 +90,11 @@ void AnimationPlayController::CalcBoneMatrixInRootBoneSpace()
 	for (int boneNo = 0; boneNo < numBone; boneNo++) {
 		//ルートの骨を検索する。
 		auto bone = m_skeleton->GetBone(boneNo);
-		if (bone->GetParentBoneNo() != -1) {
-			continue;
-		}
+		// アニメーション中にボーンを動かす際、この処理があるとアニメーションがおかしくなるためコメントアウト (start)
+		//if (bone->GetParentBoneNo() != -1) {
+		//	continue;
+		//}
+		// (end)
 		CalcBoneMatrixInRootBoneSpace(*bone, g_matIdentity);
 	}
 }
@@ -180,13 +185,13 @@ void AnimationPlayController::Update(float deltaTime, Animation* animation)
 		
 	//ボーン行列をアニメーションクリップからサンプリングしていく。
 	SamplingBoneMatrixFromAnimationClip();
-		
+
 	//親の骨座標系になっているボーン行列をルートのボーンの空間に変換していく。
 	CalcBoneMatrixInRootBoneSpace();
-		
+
 	//footstepボーンの移動量を取得する。
 	SamplingDeltaValueFootstepBone();
-		
+
 	//footstepボーンの移動量を全体の骨から減算する。
 	SubtractFootstepbonePosFromAllBone();
 

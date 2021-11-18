@@ -90,6 +90,11 @@ public: // Set function
         m_modelCharacter->PlayAnimation(animation); //アニメーションの再生
     }
 
+    void SetPlayerNum(const int playerNum)
+    {
+        m_modelCharacter->SetPlayerNum(playerNum);
+    }
+
 
 public: //enum
     enum AnimationEnum

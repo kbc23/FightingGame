@@ -143,6 +143,14 @@ void Animation::UpdateGlobalPose()
 			//回転の補完
 			Quaternion qBone;
 			qBone.SetRotation(m);
+
+			// 追加 start
+			//Quaternion testRot;
+			//testRot.SetRotation(m_skeleton->GetBone(boneNo)->GetLocalMatrix());
+
+			//qBone.Multiply(testRot);
+			// 追加 end
+
 			qGlobalPose[boneNo].Slerp(intepolateRate, qGlobalPose[boneNo], qBone);		
 		}
 	}
@@ -158,6 +166,15 @@ void Animation::UpdateGlobalPose()
 		//平行移動行列を作成。
 		Matrix transMat;
 		transMat.MakeTranslation(vGlobalPose[boneNo]);
+
+		// 追加 start
+		//Quaternion testRot;
+		//testRot.SetRotation(m_skeleton->GetBone(boneNo)->GetLocalMatrix());
+		//Matrix testRotMatrix;
+		//testRotMatrix.MakeRotationFromQuaternion(testRot);
+
+		//rotMatrix *= testRotMatrix;
+		// 追加 end
 
 		//全部を合成して、ボーン行列を作成。
 		Matrix boneMatrix;
