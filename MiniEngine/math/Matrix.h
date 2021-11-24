@@ -306,7 +306,30 @@ public:
 			DirectX::XMMatrixTranspose(*this)
 		);
 	}
-		
+
+	////////////////////////////////////////////////////////////
+	// ’Ç‰Á
+	////////////////////////////////////////////////////////////
+	/**
+	 * @brief s—ñ‚©‚çˆÊ’uî•ñ‚ğæ“¾
+	 * @return ˆÊ’uî•ñ
+	*/
+	Vector3 GetTranslation()
+	{
+		Vector3 returnTranslation = { m[3][0],m[3][1],m[3][2] };
+
+		return returnTranslation;
+	}
+
+	/**
+	 * @brief s—ñ‚©‚çŠg‘åî•ñ‚ğæ“¾
+	 * @return Šg‘åî•ñ
+	*/
+	Vector3 GetScaling()
+	{
+		Vector3 returnScaling = { m[0][0],m[1][1],m[2][2] };
+		return returnScaling;
+	}
 };
 /// <summary>
 /// s—ñ“¯m‚ÌæZ

@@ -285,7 +285,7 @@ void ModelRender::SwayCharacter()
 	}
 
 	// 骨の名前でボーンIDを検索
-	int boneId = m_skeletonPointer->FindBoneID(L"J_Bip_C_Spine");
+	int boneId = m_skeletonPointer->FindBoneID(L"J_Bip_C_UpperChest");
 	// 検索したボーンIDを使用して、ボーンを取得
 	Bone* bone = m_skeletonPointer->GetBone(boneId);
 	// ボーンのローカル行列を取得
@@ -324,9 +324,4 @@ void ModelRender::SwayCharacter()
 
 	// 変更したボーン行列を設定
 	bone->SetLocalMatrix(boneMatrix);
-}
-
-void BoneRotatioZ(const float rot)
-{
-	
 }

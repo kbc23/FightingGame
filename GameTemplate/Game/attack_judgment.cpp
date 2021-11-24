@@ -49,13 +49,13 @@ const bool AttackJudgment::CheckHit()
     bool checkHit = false; // “–‚½‚è”»’è‚ÆUŒ‚”»’è‚ªG‚ê‚Ä‚¢‚é‚©
 
     //ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è‚ÆUŒ‚”»’è‚ªG‚ê‚½‚©‚Ì”»’è‚¾‚ÆŽv‚¤
-    PhysicsWorld::GetInstance()->ContactTest(*m_findPlayer->GetRigidBody(),
-        [&](const btCollisionObject& contactObject)
-        {
-            if (m_ghostBox->IsSelf(contactObject)) {
-                checkHit = true;
-            }
-        });
+    //PhysicsWorld::GetInstance()->ContactTest(*m_findPlayer->GetRigidBody(),
+    //    [&](const btCollisionObject& contactObject)
+    //    {
+    //        if (m_ghostBox->IsSelf(contactObject)) {
+    //            checkHit = true;
+    //        }
+    //    });
 
     return checkHit;
 }

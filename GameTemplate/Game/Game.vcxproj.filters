@@ -356,6 +356,9 @@
     <ClCompile Include="st_defense_data.cpp">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClCompile>
+    <ClCompile Include="hitbox.cpp">
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -648,6 +651,9 @@
     </ClInclude>
     <ClInclude Include="st_defense_data.h">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="hitbox.h">
+      <Filter>MyCode\MainProcessing\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

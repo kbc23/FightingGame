@@ -68,11 +68,6 @@ public:
 
 public:
 	/**
-
-
-	*/
-
-	/**
 	 * @brief 初期化
 	 * @param filePath tkmファイルのファイルパス
 	 * @param flagShadowReceiver 影の影響を受けるか
@@ -206,6 +201,24 @@ public: // Get関数
 		return m_scale;
 	}
 
+	/**
+	 * @brief 指定したボーンを取得
+	 * @param boneName ボーンの名前
+	 * @return ボーン
+	*/
+	Bone& GetBone(const wchar_t boneName)
+	{
+		// ボーンの名前を指定してボーンIDを検索
+		int boneId = m_skeletonPointer->FindBoneID(&boneName);
+		// 検索したボーンIDを使用して、ボーンを取得
+		return *m_skeletonPointer->GetBone(boneId);
+	}
+
+	Skeleton& GetSkeleton()
+	{
+		return *m_skeletonPointer;
+	}
+
 
 
 public: // Set関数
@@ -281,9 +294,6 @@ public: // Set関数
 			m_shadowModel->SetScale(m_scale);
 		}
 	}
-
-
-
 
 
 private: // data member

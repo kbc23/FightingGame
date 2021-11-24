@@ -52,6 +52,17 @@ public:
 		return m_isRegistPhysicsWorld;
 	}
 
+	/**
+	 * @brief 毎フレームのゴーストオブジェクトの更新
+	 * @param pos 位置
+	 * @param rot 回転
+	*/
+	void UpdateGhostObject(const Vector3& pos, const Quaternion& rot)
+	{
+		SetPosition(pos);
+		SetRotation(rot);
+	}
+
 
 private:
 	/*!

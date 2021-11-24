@@ -69,14 +69,24 @@ public: // Get function
         return m_rotation;
     }
 
-    RigidBody* GetRigidBody()
-    {
-        return m_charaCon.GetRigidBody();
-    }
+    //RigidBody* GetRigidBody()
+    //{
+    //    return m_charaCon.GetRigidBody();
+    //}
 
     const bool GetFlagAttackAnimation()
     {
         return m_flagAttackAnimation;
+    }
+
+    Bone& GetBone(const wchar_t boneName)
+    {
+        return m_modelCharacter->GetBone(boneName);
+    }
+
+    Skeleton& GetSkeleton()
+    {
+        return m_modelCharacter->GetSkeleton();
     }
 
 
@@ -113,7 +123,7 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     ModelRender* m_modelCharacter = { nullptr }; // プレイヤーキャラクターのモデル
-    CharacterController m_charaCon; // キャラコン
+    //CharacterController m_charaCon; // キャラコン
 
     ////////////////////////////////////////////////////////////
     // キャラクターのステータス

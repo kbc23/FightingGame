@@ -299,6 +299,7 @@
     <ClCompile Include="font_render.cpp" />
     <ClCompile Include="game_data.cpp" />
     <ClCompile Include="ghost_object.cpp" />
+    <ClCompile Include="hitbox.cpp" />
     <ClCompile Include="my_debug.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -406,6 +407,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="game_data.h" />
     <ClInclude Include="ghost_object.h" />
+    <ClInclude Include="hitbox.h" />
     <ClInclude Include="my_debug.h" />
     <ClInclude Include="model_render.h" />
     <ClInclude Include="net_work.h" />

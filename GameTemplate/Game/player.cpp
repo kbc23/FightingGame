@@ -6,10 +6,7 @@
 #include "attack_judgment.h"
 #include "player_UI.h"
 #include "game_data.h"
-
-// ※メモ
-// プレイヤーの回避で使用する腰の骨の名前は
-// "J_Bip_C_Chest"のはず
+#include "hitbox.h"
 
 Player::Player()
 {
@@ -77,8 +74,11 @@ void Player::DebugInit(
     m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
     m_attackJudgment->Init(playerNum);
 
-    m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
+    //m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
+    m_Hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
+    m_Hitbox->Init(*m_actor);
+        
     m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
 }
 
@@ -108,12 +108,12 @@ void Player::Update()
     // UIのUpdate
     //////////////////////////////
 
-    m_playerUI->UpdateHpUI(m_hp, m_playerNum);
-    m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
-    m_playerUI->UpdateKnockBackUI(m_squeezeStatus.GetFlagSqueeze(), m_playerNum);
-    m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
-    m_playerUI->UpdateDefenseUI(m_defenceData.GetFlagDefense(), m_playerNum);
-    m_playerUI->UpdateDefenseValueUI(m_defenceData.GetDefenseValue(), m_playerNum);
+    //m_playerUI->UpdateHpUI(m_hp, m_playerNum);
+    //m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
+    //m_playerUI->UpdateKnockBackUI(m_squeezeStatus.GetFlagSqueeze(), m_playerNum);
+    //m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
+    //m_playerUI->UpdateDefenseUI(m_defenceData.GetFlagDefense(), m_playerNum);
+    //m_playerUI->UpdateDefenseValueUI(m_defenceData.GetDefenseValue(), m_playerNum);
 }
 
 ////////////////////////////////////////////////////////////

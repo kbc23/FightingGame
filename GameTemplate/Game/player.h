@@ -10,6 +10,7 @@ class PlayerCamera;
 class AttackJudgment;
 class PlayerUI;
 class GameData;
+class Hitbox;
 
 class Player : public IGameObject
 {
@@ -126,10 +127,10 @@ public: // Get function
      * @brief 剛体を取得する関数。
      * @return 剛体
     */
-    RigidBody* GetRigidBody()
-    {
-        return m_actor->GetRigidBody();
-    }
+    //RigidBody* GetRigidBody()
+    //{
+    //    return m_actor->GetRigidBody();
+    //}
 
     const bool CheckHp_0()
     {
@@ -215,6 +216,7 @@ private: // data member
     Player* m_otherPlayer = nullptr; // 対戦相手
     AttackJudgment* m_attackJudgment = nullptr; // 攻撃判定
     PlayerUI* m_playerUI = nullptr; // プレイヤーに関するUI
+    Hitbox* m_Hitbox = nullptr;
 
     //////////////////////////////
     // FindGO

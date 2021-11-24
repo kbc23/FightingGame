@@ -137,12 +137,6 @@ private:
 
 
 
-
-
-
-
-
-
 	/// <summary>
 	/// ゲーム開始可能になったことを他プレイヤーに通知。
 	/// </summary>
@@ -179,8 +173,6 @@ private: //override
 	void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override;
 	void leaveRoomReturn(int errorCode, const ExitGames::Common::JString& errorString) override {}
 	void disconnectReturn(void) override;
-
-
 
 
 public: //Get関数
@@ -227,8 +219,6 @@ public: //Get関数
 		m_isPossibleGameStart = true;
 		SendPossibleGameStart();
 	}
-
-
 
 
 public:
@@ -363,10 +353,6 @@ private: //data member
 	using LoadBalancingClientPtr = std::unique_ptr<ExitGames::LoadBalancing::Client>;
 
 	LoadBalancingClientPtr m_loadBalancingClient;
-
-
-
-
 	
 	////////////////////////////////////////////////////////////
 	// データを保存するポインタとデータのサイズ
@@ -375,8 +361,6 @@ private: //data member
 	std::unique_ptr<std::uint8_t[]> m_sendDataOnGameStart; // ゲーム開始時に転送するデータ。
 	int m_sendDataSizeOnGameStart; // ゲーム開始時に転送するデータのサイズ。
 
-
-
 	////////////////////////////////////////////////////////////
 	// タイマー
 	////////////////////////////////////////////////////////////
@@ -384,20 +368,15 @@ private: //data member
 	float m_timer = 0.0f; // タイマー
 	float m_waitLimitTime = 0.0f; // 待ちの最大秒数。
 
-
 	////////////////////////////////////////////////////////////
 	// フラグ
 	////////////////////////////////////////////////////////////
 
 	bool m_finishInit = false; // 初期化したか
 
-
 	bool m_isPossibleGameStart = false; // ゲーム開始可能フラグ
 
-
 	bool m_isHoge = false;
-
-
 
 	////////////////////////////////////////////////////////////
 	// その他
@@ -412,7 +391,5 @@ private: //data member
 
 	std::unique_ptr<std::uint8_t[]> m_recieveDataOnGameStart; // ゲーム開始のために受け取ったデータ
 
-
-	TkEngine::FrameRateInfo m_frameRateInfoBackup;								// フレームレートに関する情報のバックアップ。
-
+	TkEngine::FrameRateInfo m_frameRateInfoBackup;	// フレームレートに関する情報のバックアップ。
 };
