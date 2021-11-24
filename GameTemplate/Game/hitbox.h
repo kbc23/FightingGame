@@ -83,7 +83,11 @@ private: // data member
     // NewGO
     //////////////////////////////
 
-    GhostObject* m_ghostBox[EnBodyParts::enMaxBodyParts] = { nullptr };
+    //GhostObject* m_ghostBox[EnBodyParts::enMaxBodyParts] = { nullptr };
+
+
+    using GhostObjectPtr = std::unique_ptr<GhostObject>;
+    std::vector<GhostObjectPtr> m_ghostBox;
 
     //////////////////////////////
     // ‚»‚Ì‘¼

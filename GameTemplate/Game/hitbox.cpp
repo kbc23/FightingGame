@@ -32,44 +32,44 @@ namespace
 
     const Vector3 BONE_SIZE[Hitbox::m_MAX_EN_BODY_PARTS] =
     {
-        { 20.0f,20.0f,20.0f },
-        { 25.0f,30.0f,20.0f },
-        { 25.0f,10.0f,20.0f },
+        { 20.0f,20.0f,20.0f },  // “ª
+        { 25.0f,30.0f,20.0f },  // g‘Ì
+        { 25.0f,10.0f,20.0f },  // K
         // ¶
-        { 20.0f,6.0f,6.0f },
-        { 17.0f,6.0f,6.0f },
-        { 8.0f,8.0f,8.0f },
-        { 12.0f,30.0f,12.0f },
-        { 12.0f,30.0f,12.0f },
-        { 8.0f,8.0f,18.0f },
+        { 20.0f,6.0f,6.0f },    // ã˜r
+        { 17.0f,6.0f,6.0f },    // ‘O˜r
+        { 8.0f,8.0f,8.0f },     // Žè
+        { 12.0f,30.0f,12.0f },  // ‘¾‚à‚à
+        { 12.0f,30.0f,12.0f },  // ‰º‘Ú
+        { 8.0f,8.0f,18.0f },    // ‘«
         // ‰E
-        { 20.0f,6.0f,6.0f },
-        { 17.0f,6.0f,6.0f },
-        { 8.0f,8.0f,8.0f },
-        { 12.0f,30.0f,12.0f },
-        { 12.0f,30.0f,12.0f },
-        { 8.0f,8.0f,18.0f }
+        { 20.0f,6.0f,6.0f },    // ã˜r
+        { 17.0f,6.0f,6.0f },    // ‘O˜r
+        { 8.0f,8.0f,8.0f },     // Žè
+        { 12.0f,30.0f,12.0f },  // ‘¾‚à‚à
+        { 12.0f,30.0f,12.0f },  // ‰º‘Ú
+        { 8.0f,8.0f,18.0f }     // ‘«
     };
 
     const Vector3 POSITION_ADJUSTMENT[Hitbox::m_MAX_EN_BODY_PARTS] =
     {
-        { 0.0f,8.0f,0.0f },
-        { 0.0f,0.0f,0.0f },
-        { 0.0f,-5.0f,0.0f },
+        { 0.0f,8.0f,0.0f },     // “ª
+        { 0.0f,0.0f,0.0f },     // g‘Ì
+        { 0.0f,-5.0f,0.0f },    // K
         // ¶
-        { 10.0f,0.0f,0.0f },
-        { 12.0f,0.0f,0.0f },
-        { 5.0f,0.0f,0.0f },
-        { 0.0f,-15.0f,0.0f },
-        { 0.0f,-15.0f,0.0f },
-        { 0.0f,0.0f,5.0f },
+        { 10.0f,0.0f,0.0f },    // ã˜r
+        { 12.0f,0.0f,0.0f },    // ‘O˜r
+        { 5.0f,0.0f,0.0f },     // Žè
+        { 0.0f,-15.0f,0.0f },   // ‘¾‚à‚à
+        { 0.0f,-15.0f,0.0f },   // ‰º‘Ú
+        { 0.0f,0.0f,5.0f },     // ‘«
         // ‰E
-        { -10.0f,0.0f,0.0f },
-        { -12.0f,0.0f,0.0f },
-        { -5.0f,0.0f,0.0f },
-        { 0.0f,-15.0f,0.0f },
-        { 0.0f,-15.0f,0.0f },
-        { 0.0f,0.0f,5.0f }
+        { -10.0f,0.0f,0.0f },   // ã˜r
+        { -12.0f,0.0f,0.0f },   // ‘O˜r
+        { -5.0f,0.0f,0.0f },    // Žè
+        { 0.0f,-15.0f,0.0f },   // ‘¾‚à‚à
+        { 0.0f,-15.0f,0.0f },   // ‰º‘Ú
+        { 0.0f,0.0f,5.0f }      // ‘«
     };
 }
 
@@ -77,14 +77,18 @@ namespace
 
 Hitbox::Hitbox()
 {
+    m_ghostBox.resize(EnBodyParts::enMaxBodyParts);
+
     for (int bodyPartsNum = 0; EnBodyParts::enMaxBodyParts > bodyPartsNum; ++bodyPartsNum) {
-        m_ghostBox[bodyPartsNum] = new GhostObject;
+        m_ghostBox[bodyPartsNum].reset(new GhostObject);
     }
 }
 
 Hitbox::~Hitbox()
 {
-
+    for (int bodyPartsNum = 0; EnBodyParts::enMaxBodyParts > bodyPartsNum; ++bodyPartsNum) {
+        m_ghostBox[bodyPartsNum].reset();
+    }
 }
 
 bool Hitbox::Start()
