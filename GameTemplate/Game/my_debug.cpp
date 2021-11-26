@@ -113,8 +113,8 @@ void MyDebug::GameEndUpdate()
 
     m_status = EnStatus::finishGame;
 
-    m_player[enPlayer]->SetmFlagGameEndStopOperation(true);
-    m_player[enOtherPlayer]->SetmFlagGameEndStopOperation(true);
+    m_player[enPlayer]->SetFlagGameEndStopOperation(true);
+    m_player[enOtherPlayer]->SetFlagGameEndStopOperation(true);
 }
 
 bool MyDebug::CheckGameEnd()

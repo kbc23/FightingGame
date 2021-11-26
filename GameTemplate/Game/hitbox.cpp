@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "hitbox.h"
 
+#include "player.h"
 #include "actor.h"
+#include "st_attack_data.h"
 
 
 
@@ -96,10 +98,13 @@ bool Hitbox::Start()
     return true;
 }
 
-void Hitbox::Init(Actor& actor)
+void Hitbox::Init(Player& otherPlayer, Actor& actor, StAttackData& attackData)
 {
+    m_getOtherPlayer = &otherPlayer;
     m_getActor = &actor;
+    m_getStAttackData = &attackData;
 
+    // ボックスの作成
     Create();
 
     m_flagInit = true;
@@ -107,6 +112,7 @@ void Hitbox::Init(Actor& actor)
 
 void Hitbox::Update()
 {
+    // ボックスの更新
     UpdateHitbox();
 }
 
@@ -127,7 +133,7 @@ void Hitbox::Create()
         Quaternion boxRot = Quaternion::Identity;
         boxRot.SetRotation(boneMatrix);
 
-        // 位置を更新
+        // 位置の調整
         Vector3 boxPositionAdjustment = POSITION_ADJUSTMENT[bodyPartsNum];
         boxRot.Apply(boxPositionAdjustment);
         boxPos += boxPositionAdjustment;
@@ -155,7 +161,7 @@ void Hitbox::UpdateHitbox()
         Quaternion boxRot = Quaternion::Identity;
         boxRot.SetRotation(boneMatrix);
 
-        // 位置を更新
+        // 位置の調整
         Vector3 boxPositionAdjustment = POSITION_ADJUSTMENT[bodyPartsNum];
         boxRot.Apply(boxPositionAdjustment);
         boxPos += boxPositionAdjustment;
@@ -163,4 +169,51 @@ void Hitbox::UpdateHitbox()
         // 当たり判定の情報を更新
         m_ghostBox[bodyPartsNum]->UpdateGhostObject(boxPos, boxRot);
     }
+}
+
+const bool Hitbox::UpdateCheckAttack()
+{
+    // 攻撃中ではない
+    if (false == m_getStAttackData->GetFlagAttackNow()) {
+        return false;
+    }
+
+    if (true == m_getStAttackData->GetFlagAlreadyAttacked()) {
+        return false;
+    }
+
+    // 攻撃が当たったか
+    if (true == CheckHit()) {
+        HitAttack();
+
+        return true;
+    }
+
+    return false;
+}
+
+const bool Hitbox::CheckHit()
+{
+    bool checkHit = false; // 当たり判定と攻撃判定が触れているか
+
+    //プレイヤーの当たり判定と攻撃判定が触れたかの判定
+    for (int bodyPartsNum = 0; EnBodyParts::enMaxBodyParts > bodyPartsNum; ++bodyPartsNum) {
+        PhysicsWorld::GetInstance()->ContactTest(&m_getOtherPlayer->GetGhostObject(bodyPartsNum),
+            [&](const btCollisionObject& contactObject)
+            {
+                // 左手が当たったとき
+                if (m_ghostBox[enLeftHand]->IsSelf(contactObject)) {
+                    checkHit = true;
+
+                    return checkHit;
+                }
+            });
+    }
+
+    return checkHit;
+}
+
+void Hitbox::HitAttack()
+{
+    m_getStAttackData->SetFlagAlreadyAttacked(true);
 }

@@ -5,12 +5,12 @@
 #include "st_squeeze_status.h"
 #include "st_down_status.h"
 #include "st_defense_data.h"    
+#include "hitbox.h"
 
 class PlayerCamera;
 class AttackJudgment;
 class PlayerUI;
 class GameData;
-class Hitbox;
 
 class Player : public IGameObject
 {
@@ -76,6 +76,11 @@ private:
     ////////////////////////////////////////////////////////////
     // 攻撃関連
     ////////////////////////////////////////////////////////////
+
+    void UpdateAttack();
+
+
+
     /**
      * @brief 攻撃情報を作成
     */
@@ -104,7 +109,7 @@ private:
     /**
      * @brief 連続攻撃の確認
     */
-    const bool CheckContinuousAttack(const int attackType);
+    //const bool CheckContinuousAttack(const int attackType);
 
 
 public: // Get function
@@ -121,6 +126,11 @@ public: // Get function
     Actor& GetActor()
     {
         return *m_actor;
+    }
+
+    btGhostObject& GetGhostObject(const int bodyParts)
+    {
+        return m_hitbox->GetGhostObject(bodyParts);
     }
 
     /**
@@ -144,7 +154,10 @@ public: // Set function
      * @param damage ダメージ量
      * @return ダメージを与えられたか
     */
-    const bool ReceiveDamage(const int damage, const int defenseBreakPower, const int impactType)
+    const bool ReceiveDamage(const int damage//,
+                            //const int defenseBreakPower,
+                            //const int impactType
+    )
     {
         // HPが０なら処理をしない
         if (true == m_flagHp_0) {
@@ -152,27 +165,27 @@ public: // Set function
         }
 
         // ダウン時の無敵の時、ダメージを与えない
-        if (true == m_downStatus.GetFlagInvincible()) {
-            return false;
-        }
+        //if (true == m_downStatus.GetFlagInvincible()) {
+        //    return false;
+        //}
 
         //防御中
-        if (true == m_defenceData.GetFlagDefense()) {
-            m_defenceData.DecreaseDefenseValue(defenseBreakPower);
-            return true;
-        }
+        //if (true == m_defenceData.GetFlagDefense()) {
+        //    m_defenceData.DecreaseDefenseValue(defenseBreakPower);
+        //    return true;
+        //}
 
         // ダメージ処理
         m_hp -= damage;
 
         // のけぞりの処理
-        if (StAttackData::EnImpactType::enSqueeze == impactType) {
-            m_squeezeStatus.StartSqueeze();
-        }
-        // ダウンの処理
-        else if (StAttackData::EnImpactType::enDown == impactType) {
-            m_downStatus.StartDown();
-        }
+        //if (StAttackData::EnImpactType::enSqueeze == impactType) {
+        //    m_squeezeStatus.StartSqueeze();
+        //}
+        //// ダウンの処理
+        //else if (StAttackData::EnImpactType::enDown == impactType) {
+        //    m_downStatus.StartDown();
+        //}
 
         // HPの確認
         CheckHp();
@@ -180,7 +193,7 @@ public: // Set function
         return true;
     }
 
-    void SetmFlagGameEndStopOperation(const bool flag)
+    void SetFlagGameEndStopOperation(const bool flag)
     {
         m_flagGameEndStopOperation = flag;
     }
@@ -216,7 +229,7 @@ private: // data member
     Player* m_otherPlayer = nullptr; // 対戦相手
     AttackJudgment* m_attackJudgment = nullptr; // 攻撃判定
     PlayerUI* m_playerUI = nullptr; // プレイヤーに関するUI
-    Hitbox* m_Hitbox = nullptr;
+    Hitbox* m_hitbox = nullptr; // プレイヤーの当たり判定、攻撃判定
 
     //////////////////////////////
     // FindGO
@@ -243,7 +256,6 @@ private: // data member
     bool m_flagOperation = true; // 操作可能か
     bool m_flagHp_0 = false; // HPが０になったか
     bool m_flagGameEndStopOperation = false; // ゲームが終了して操作ができなくなっているか
-    //bool m_flagDefense = false; // 防御中か
 
     ////////////////////////////////////////////////////////////
     // その他

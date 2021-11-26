@@ -130,8 +130,8 @@ void Game::CheckGameEnd()
 
 	m_gameStatus = EnGameStatus::enFinishGame;
 
-	m_player[m_playerNum]->SetmFlagGameEndStopOperation(true);
-	m_player[m_otherPlayerNum]->SetmFlagGameEndStopOperation(true);
+	m_player[m_playerNum]->SetFlagGameEndStopOperation(true);
+	m_player[m_otherPlayerNum]->SetFlagGameEndStopOperation(true);
 }
 
 const bool Game::CheckHp_0()

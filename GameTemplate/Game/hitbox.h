@@ -1,10 +1,13 @@
 #pragma once
 #include "ghost_object.h"
 
+class Player;
 class Actor;
+class StAttackData;
 
 /**
  * @brief 当たり判定の処理
+ * ～攻撃判定もあるよ！～
 */
 class Hitbox : public IGameObject
 {
@@ -12,8 +15,11 @@ public:
     Hitbox();
     ~Hitbox();
     bool Start() override final;
-    void Init(Actor& actor);
+    void Init(Player& otherPlayer, Actor& actor, StAttackData& attackData);
     void Update() override final;
+
+
+    const bool UpdateCheckAttack();
 
 
 private:
@@ -21,6 +27,16 @@ private:
 
 
     void UpdateHitbox();
+
+
+
+    /**
+     * @brief 攻撃判定が相手プレイヤーの当たり判定に当たったかの確認
+     * @return 当たったか
+    */
+    const bool CheckHit();
+
+    void HitAttack();
 
 
 
@@ -40,11 +56,21 @@ private:
     }
 
 
+public: // get function
+    btGhostObject& GetGhostObject(const int bodyParts)
+    {
+        return *m_ghostBox[bodyParts]->GetGhostObject();
+    }
+
+
 
 private: // enum
 
     // モデルは左右反転している
 
+    /**
+     * @brief 身体の部位
+    */
     const enum EnBodyParts
     {
         enHead,             // 頭
@@ -83,9 +109,7 @@ private: // data member
     // NewGO
     //////////////////////////////
 
-    //GhostObject* m_ghostBox[EnBodyParts::enMaxBodyParts] = { nullptr };
-
-
+    // ゴーストオブジェクト（当たり判定に使用するボックス）
     using GhostObjectPtr = std::unique_ptr<GhostObject>;
     std::vector<GhostObjectPtr> m_ghostBox;
 
@@ -93,7 +117,9 @@ private: // data member
     // その他
     //////////////////////////////
 
+    Player* m_getOtherPlayer = nullptr;
     Actor* m_getActor = nullptr;
+    StAttackData* m_getStAttackData = nullptr;
 
     ////////////////////////////////////////////////////////////
     // フラグ
