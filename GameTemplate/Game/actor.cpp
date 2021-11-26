@@ -34,19 +34,27 @@ void Actor::Init(
 )
 {
     //アニメーションの設定
-    m_animationPlayer[idle].Load("Assets/modelData/model/Lead_Jab.tkm");
+    m_animationPlayer[idle].Load("Assets/modelData/model/idle.tka");
+    m_animationPlayer[jub].Load("Assets/modelData/model/Lead_Jab.tka");
+    m_animationPlayer[uppercut].Load("Assets/modelData/model/Uppercut.tka");
+    m_animationPlayer[hook].Load("Assets/modelData/model/hook.tka");
+    m_animationPlayer[bodyBlow].Load("Assets/modelData/model/Body_blow.tka");
+    m_animationPlayer[straight].Load("Assets/modelData/model/straight.tka");
     //ループ再生をtrueにする
     m_animationPlayer[idle].SetLoopFlag(true);
 
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
+    m_modelCharacter->PlayAnimation(idle); //アニメーションの再生
+
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
     m_rotY = initRotAngle;
     m_rotation.SetRotationY(m_rotY);
     m_modelCharacter->SetRotation(m_rotation);
 
-    m_modelCharacter->PlayAnimation(idle); //アニメーション
+    m_scale = { 2.0f,2.0f,2.0f };
+    m_modelCharacter->SetScale(m_scale);
 }
 
 void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float initRot)

@@ -41,9 +41,12 @@ void Player::Init(
         initRotAngle
     );
 
-    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
+    m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
+    m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData);
 
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
+
+    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
     m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
 }
@@ -63,13 +66,13 @@ void Player::DebugInit(
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
     m_actor->DebugInit(filePath, initPos, initRot);
 
-    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
+    m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
+    m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData);
 
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
-    m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
-    m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData);
-        
+    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
+
     m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
 }
 
