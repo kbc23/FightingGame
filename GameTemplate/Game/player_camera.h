@@ -14,7 +14,7 @@ public:
 
 
 public: // Get function
-    const Vector3& GetPosition(const int playerNum)
+    const Vector3 GetPosition(const int playerNum)
     {
         if (playerNum == m_playerNum) {
             return m_cameraPosition;

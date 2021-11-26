@@ -63,14 +63,14 @@ namespace
         { 12.0f,0.0f,0.0f },    // 前腕
         { 5.0f,0.0f,0.0f },     // 手
         { 0.0f,-15.0f,0.0f },   // 太もも
-        { 0.0f,-15.0f,0.0f },   // 下腿
+        { 0.0f,-15.0f,-2.0f },   // 下腿
         { 0.0f,0.0f,5.0f },     // 足
         // 右
         { -10.0f,0.0f,0.0f },   // 上腕
         { -12.0f,0.0f,0.0f },   // 前腕
         { -5.0f,0.0f,0.0f },    // 手
         { 0.0f,-15.0f,0.0f },   // 太もも
-        { 0.0f,-15.0f,0.0f },   // 下腿
+        { 0.0f,-15.0f,-2.0f },   // 下腿
         { 0.0f,0.0f,5.0f }      // 足
     };
 }
@@ -104,6 +104,8 @@ void Hitbox::Init(Player& otherPlayer, Actor& actor, StAttackData& attackData)
     m_getActor = &actor;
     m_getStAttackData = &attackData;
 
+    m_getActor->SetTest(*this);
+
     // ボックスの作成
     Create();
 
@@ -112,8 +114,7 @@ void Hitbox::Init(Player& otherPlayer, Actor& actor, StAttackData& attackData)
 
 void Hitbox::Update()
 {
-    // ボックスの更新
-    UpdateHitbox();
+
 }
 
 void Hitbox::Create()
@@ -177,7 +178,8 @@ const bool Hitbox::UpdateCheckAttack()
     if (false == m_getStAttackData->GetFlagAttackNow()) {
         return false;
     }
-
+    
+    // すでに攻撃が当たっている
     if (true == m_getStAttackData->GetFlagAlreadyAttacked()) {
         return false;
     }

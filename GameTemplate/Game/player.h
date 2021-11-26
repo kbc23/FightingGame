@@ -8,7 +8,6 @@
 #include "hitbox.h"
 
 class PlayerCamera;
-class AttackJudgment;
 class PlayerUI;
 class GameData;
 
@@ -25,6 +24,7 @@ public:
      * @param gamePad キャラクターの移動に使用するゲームパッド
      * @param initPos 初期位置
      * @param initRotAngle 初期向き
+     * @param playerNum プレイヤー番号
      * @param pOtherPlayer 相手プレイヤー
     */
     void Init(
@@ -41,6 +41,7 @@ public:
      * @param playerNum プレイヤー番号
      * @param initPos 初期位置
      * @param initRot 初期向き
+     * @param pOtherPlayer 相手プレイヤー
     */
     void DebugInit(
         const char* filePath,
@@ -65,83 +66,77 @@ private:
      * @brief プレイヤーの移動量を計算する
      * @return 移動量
     */
-    const Vector3& Move();
+    const Vector3 Move();
 
     /**
      * @brief ダッシュ時のプレイヤーの移動量を計算する
      * @return 移動量
     */
-    const Vector3& DashMove();
+    const Vector3 DashMove();
 
     ////////////////////////////////////////////////////////////
     // 攻撃関連
     ////////////////////////////////////////////////////////////
 
+    /**
+     * @brief 攻撃関連の毎フレームの処理
+    */
     void UpdateAttack();
-
-
-
-    /**
-     * @brief 攻撃情報を作成
-    */
-    const bool AttackCreate();
-
-    /**
-     * @brief 攻撃に関する毎フレームの処理
-    */
-    void AttackUpdate();
 
     /**
      * @brief 攻撃が当たった際の処理
     */
     void HitAttack();
-    
-    /**
-     * @brief 攻撃情報をリセット
-    */
-    void FinishAttack();
 
     /**
      * @brief 攻撃時のアニメーションの開始
     */
     void AttackAnimationStart();
 
-    /**
-     * @brief 連続攻撃の確認
-    */
-    //const bool CheckContinuousAttack(const int attackType);
 
 
 public: // Get function
+    /**
+     * @brief 位置情報を取得
+     * @return 位置
+    */
     const Vector3& GetPosition()
     {
         return m_actor->GetPosition();
     }
 
+    /**
+     * @brief 回転情報を取得
+     * @return 回転
+    */
     const Quaternion& GetRotation()
     {
         return m_actor->GetRotation();
     }
 
+    /**
+     * @brief Actorクラスのインスタンスを取得
+     * @return Actorクラスのインスタンス
+    */
     Actor& GetActor()
     {
         return *m_actor;
     }
 
+    /**
+     * @brief 当たり判定のゴーストオブジェクトを取得
+     * @param bodyParts 身体の部位
+     * @return 指定した身体の部位の当たり判定のゴーストオブジェクト
+    */
     btGhostObject& GetGhostObject(const int bodyParts)
     {
         return m_hitbox->GetGhostObject(bodyParts);
     }
 
     /**
-     * @brief 剛体を取得する関数。
-     * @return 剛体
+     * @brief 体力が０になったか
+     * @return [true]: 体力が０, [false]: 体力が０ではない
     */
-    //RigidBody* GetRigidBody()
-    //{
-    //    return m_actor->GetRigidBody();
-    //}
-
     const bool CheckHp_0()
     {
         return m_flagHp_0;
@@ -193,6 +188,10 @@ public: // Set function
         return true;
     }
 
+    /**
+     * @brief ゲームが終了したかのフラグをセット
+     * @param flag ゲームが終了したか
+    */
     void SetFlagGameEndStopOperation(const bool flag)
     {
         m_flagGameEndStopOperation = flag;
@@ -200,6 +199,9 @@ public: // Set function
 
 
 private: // Used in the Set function
+    /**
+     * @brief 体力が０になったかの確認
+    */
     void CheckHp()
     {
         // HPが０以下の場合、HPを０に設定し、敗北した状態にする
@@ -212,7 +214,6 @@ private: // Used in the Set function
 
 private: // constant
     static const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
-    static const int m_MAX_MP = 4;
 
 
 private: // data member
@@ -227,7 +228,6 @@ private: // data member
     Actor* m_actor = nullptr; // キャラクター
     GamePad* m_gamePad = nullptr; // ゲームパッド
     Player* m_otherPlayer = nullptr; // 対戦相手
-    AttackJudgment* m_attackJudgment = nullptr; // 攻撃判定
     PlayerUI* m_playerUI = nullptr; // プレイヤーに関するUI
     Hitbox* m_hitbox = nullptr; // プレイヤーの当たり判定、攻撃判定
 
@@ -262,7 +262,4 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     int m_playerNum = -1; // 自分か相手のどちらかを区別する番号
-
-    // Debug
-    int m_defenseTime = 0;
 };

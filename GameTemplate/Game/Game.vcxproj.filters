@@ -296,9 +296,6 @@
     <ClCompile Include="debug_wire_frame.cpp">
       <Filter>MyCode\Engine\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="attack_judgment.cpp">
-      <Filter>MyCode\MainProcessing\Player</Filter>
-    </ClCompile>
     <ClCompile Include="physics_object_base.cpp">
       <Filter>MyCode\Engine\GhostObject</Filter>
     </ClCompile>
@@ -585,9 +582,6 @@
     </ClInclude>
     <ClInclude Include="debug_wire_frame.h">
       <Filter>MyCode\Engine\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="attack_judgment.h">
-      <Filter>MyCode\MainProcessing\Player</Filter>
     </ClInclude>
     <ClInclude Include="physics_object_base.h">
       <Filter>MyCode\Engine\GhostObject</Filter>

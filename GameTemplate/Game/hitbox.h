@@ -3,7 +3,7 @@
 
 class Player;
 class Actor;
-class StAttackData;
+struct StAttackData;
 
 /**
  * @brief 当たり判定の処理
@@ -18,17 +18,23 @@ public:
     void Init(Player& otherPlayer, Actor& actor, StAttackData& attackData);
     void Update() override final;
 
-
+    /**
+     * @brief 攻撃が当たったかの毎フレームの処理
+     * @return 
+    */
     const bool UpdateCheckAttack();
 
-
-private:
-    void Create();
-
-
+    /**
+     * @brief 当たり判定の情報の更新
+    */
     void UpdateHitbox();
 
 
+private:
+    /**
+     * @brief 当たり判定を作成
+    */
+    void Create();
 
     /**
      * @brief 攻撃判定が相手プレイヤーの当たり判定に当たったかの確認
@@ -36,6 +42,9 @@ private:
     */
     const bool CheckHit();
 
+    /**
+     * @brief 攻撃が当たったときの処理
+    */
     void HitAttack();
 
 
@@ -57,6 +66,11 @@ private:
 
 
 public: // get function
+    /**
+     * @brief 当たり判定のゴーストオブジェクトを取得
+     * @param bodyParts 身体の部位
+     * @return 指定した身体の部位の当たり判定のゴーストオブジェクト
+    */
     btGhostObject& GetGhostObject(const int bodyParts)
     {
         return *m_ghostBox[bodyParts]->GetGhostObject();

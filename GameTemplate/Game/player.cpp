@@ -3,7 +3,6 @@
 
 #include "constant.h"
 #include "player_camera.h"
-#include "attack_judgment.h"
 #include "player_UI.h"
 #include "game_data.h"
 
@@ -15,7 +14,6 @@ Player::Player()
 Player::~Player()
 {
     DeleteGO(m_actor);
-    DeleteGO(m_attackJudgment);
     DeleteGO(m_playerUI);
 }
 
@@ -45,9 +43,6 @@ void Player::Init(
 
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
-    m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
-    m_attackJudgment->Init(playerNum);
-
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
     m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
@@ -69,9 +64,6 @@ void Player::DebugInit(
     m_actor->DebugInit(filePath, initPos, initRot);
 
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
-
-    m_attackJudgment = NewGO<AttackJudgment>(igo::EnPriority::normal);
-    m_attackJudgment->Init(playerNum);
 
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
@@ -217,21 +209,6 @@ void Player::Controller()
         m_defenceData.SetFlagDefense(false);
     }
 
-    if (m_findGameData->GetOtherPlayerNum() == m_playerNum) {
-        ++m_defenseTime;
-        
-        if (180 >= m_defenseTime) {
-            m_defenceData.SetFlagDefense(true);
-        }
-        else {
-            m_defenceData.SetFlagDefense(false);
-        }
-
-        if (360 <= m_defenseTime) {
-            m_defenseTime = 0;
-        }
-    }
-
     // Debug: Startボタン: ゲーム終了
     if (true == m_gamePad->IsTrigger(enButtonStart)) {
         //ゲームを終了
@@ -258,7 +235,7 @@ void Player::Controller()
     m_actor->AddStatus(moveAmount);
 }
 
-const Vector3& Player::Move()
+const Vector3 Player::Move()
 {
     // 現在の位置情報を保存
     Vector3 oldPos = m_actor->GetPosition();
@@ -290,7 +267,7 @@ const Vector3& Player::Move()
     return moveAmount;
 }
 
-const Vector3& Player::DashMove()
+const Vector3 Player::DashMove()
 {
     // ダッシュのために仮で作成するポジション
     Vector3 attackRangePosition =
@@ -343,46 +320,6 @@ void Player::UpdateAttack()
     }
 }
 
-const bool Player::AttackCreate()
-{
-    // 攻撃前のディレイがあるならここで処理を終了
-    //if (false == m_attackData.DelayAttack()) {
-    //    return false;
-    //}
-
-    //// 攻撃範囲を作成
-    //m_attackJudgment->Create(
-    //    m_attackData.CreateAttackPosition(m_actor->GetPosition(), m_actor->GetRotation()),
-    //    m_actor->GetRotation(),
-    //    m_attackData.GetRange()
-    //);
-
-    return true;
-}
-
-void Player::AttackUpdate()
-{
-    // 攻撃中でない場合、処理をしない
-    if (false == m_attackData.GetFlagAttackNow()) {
-        return;
-    }
-
-    if (false == m_attackData.GetFlagCreateAttackRange()) {
-        if (false == AttackCreate()) {
-            return;
-        }
-    }
-
-    // 攻撃が当たったか（攻撃がまだ当たっていないときのみ）
-    if (false == m_attackData.GetFlagAlreadyAttacked() && true == m_attackJudgment->CheckHit()) {
-        HitAttack();
-    }
-
-    //if (true == m_attackData.UpdateFinish()) {
-    //    FinishAttack();
-    //}
-}
-
 void Player::HitAttack()
 {    
     // ダメージ処理
@@ -393,18 +330,6 @@ void Player::HitAttack()
         // ダメージを与えられてない
         return;
     }
-
-    //m_attackData.SetFlagAlreadyAttacked(true);
-    //m_attackData.HitCheckAttackData();
-}
-
-void Player::FinishAttack()
-{
-    // 攻撃判定の削除
-    m_attackJudgment->Release();
-
-    // 攻撃時のステータスの初期化
-    //m_attackData.ResetAttackData();
 }
 
 void Player::AttackAnimationStart()
@@ -430,16 +355,3 @@ void Player::AttackAnimationStart()
         return;
     }
 }
-
-//const bool Player::CheckContinuousAttack(const int attackType)
-//{
-//    //if (true == m_attackData.CheckNextNGAttackType(attackType)) {
-//        if (true == m_actor->GetFlagAttackAnimation()) {
-//            return false;
-//       }
-//    //}
-//
-//    FinishAttack();
-//
-//    return true;
-//}

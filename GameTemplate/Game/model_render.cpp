@@ -275,6 +275,17 @@ void ModelRender::Update()
 	}
 	// モデルの座標更新
 	m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+
+	// 他クラスの物の情報の更新
+	UpdateOtherData();
+}
+
+void ModelRender::UpdateOtherData()
+{
+	// 当たり判定の情報の更新
+	if (m_skeletonPointer) {
+		m_getHitbox->UpdateHitbox();
+	}
 }
 
 void ModelRender::SwayCharacter()

@@ -2,6 +2,7 @@
 #include <Model.h>
 
 #include "shadow.h"
+#include "hitbox.h"
 
 ////////////////////////////////////////////////////////////
 // メモ
@@ -135,9 +136,17 @@ private:
 	*/
 	void InitAnimation(AnimationClip* animationClip, int maxAnimationClipNum);
 
+	/**
+	 * @brief 他のクラスの物だが、モデルと位置がずれるのを防ぐためにここで処理をおこなう
+	*/
+	void UpdateOtherData();
+
 
 
 public:
+	/**
+	 * @brief スウェーの処理
+	*/
 	void SwayCharacter();
 
 
@@ -296,6 +305,12 @@ public: // Set関数
 	}
 
 
+	void SetTest(Hitbox& hitbox)
+	{
+		m_getHitbox = &hitbox;
+	}
+
+
 private: // data member
     Model m_model;
 	Shadow* m_shadowModel = nullptr; // 影の描画処理
@@ -311,4 +326,6 @@ private: // data member
 
 	bool m_finishInit = false; // 初期化が終わったか
 	bool m_flagShadow = false; // 影が発生するか
+
+	Hitbox* m_getHitbox = nullptr;
 };

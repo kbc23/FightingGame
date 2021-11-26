@@ -69,11 +69,6 @@ public: // Get function
         return m_rotation;
     }
 
-    //RigidBody* GetRigidBody()
-    //{
-    //    return m_charaCon.GetRigidBody();
-    //}
-
     const bool GetFlagAttackAnimation()
     {
         return m_flagAttackAnimation;
@@ -101,6 +96,12 @@ public: // Set function
     }
 
 
+    void SetTest(Hitbox& hitbox)
+    {
+        m_modelCharacter->SetTest(hitbox);
+    }
+
+
 public: //enum
     enum AnimationEnum
     {
@@ -123,7 +124,6 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     ModelRender* m_modelCharacter = { nullptr }; // プレイヤーキャラクターのモデル
-    //CharacterController m_charaCon; // キャラコン
 
     ////////////////////////////////////////////////////////////
     // キャラクターのステータス

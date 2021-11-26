@@ -47,9 +47,6 @@ void Actor::Init(
     m_modelCharacter->SetRotation(m_rotation);
 
     m_modelCharacter->PlayAnimation(idle); //アニメーション
-
-    //キャラコンの初期化
-    //m_charaCon.Init(PLAYER_COLLIDER_RADIUS, PLAYER_COLLIDER_HEIGHT, m_position);
 }
 
 void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float initRot)
@@ -66,6 +63,7 @@ void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float 
 
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
+    m_modelCharacter->PlayAnimation(idle); //アニメーションの再生
     //m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ);
 
     m_position = initPos;
@@ -76,11 +74,6 @@ void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float 
 
     m_scale = { 2.0f,2.0f,2.0f };
     m_modelCharacter->SetScale(m_scale);
-
-    //m_modelCharacter->PlayAnimation(idle); //アニメーションの再生
-
-    //キャラコンの初期化
-    //m_charaCon.Init(PLAYER_COLLIDER_RADIUS, PLAYER_COLLIDER_HEIGHT, m_position);
 }
 
 void Actor::Update()
@@ -93,7 +86,6 @@ void Actor::Update()
 void Actor::AddStatus(Vector3& addMoveAmount)
 {
     // キャラクターの位置を決定
-    //m_position = m_charaCon.Execute(addMoveAmount, 1.0f);
     m_position += addMoveAmount;
     // キャラクターの向きを決定
     Turn(addMoveAmount);
