@@ -571,9 +571,6 @@
     <ClInclude Include="FPSLimitter.h">
       <Filter>MyCode\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="constant.h">
-      <Filter>MyCode\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
       <Filter>MyCode\MainProcessing\Player</Filter>
     </ClInclude>
@@ -648,6 +645,9 @@
     </ClInclude>
     <ClInclude Include="hitbox.h">
       <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="constant.h">
+      <Filter>MyCode\MainProcessing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

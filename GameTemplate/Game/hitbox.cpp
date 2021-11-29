@@ -4,6 +4,7 @@
 #include "player.h"
 #include "actor.h"
 #include "st_attack_data.h"
+#include "st_defense_data.h"
 
 
 
@@ -11,7 +12,8 @@ namespace
 {
     // ƒ‚ƒfƒ‹‚Í¶‰E”½“]‚µ‚Ä‚¢‚é
 
-    constexpr const wchar_t* BONE_NAME[Hitbox::m_MAX_EN_BODY_PARTS] =
+    // œ‚Ì–¼‘O
+    constexpr const wchar_t* BONE_NAME[Hitbox::m_MAX_BODY_PARTS] =
     {
         L"J_Bip_C_Head",        // “ª
         L"J_Bip_C_UpperChest",  // g‘Ì
@@ -32,7 +34,8 @@ namespace
         L"J_Bip_R_Foot"         // ‘«
     };
 
-    const Vector3 BONE_SIZE[Hitbox::m_MAX_EN_BODY_PARTS] =
+    // “–‚½‚è”»’è‚ÌƒTƒCƒY
+    const Vector3 HITBOX_SIZE[Hitbox::m_MAX_BODY_PARTS] =
     {
         { 20.0f,20.0f,20.0f },  // “ª
         { 25.0f,30.0f,20.0f },  // g‘Ì
@@ -53,7 +56,8 @@ namespace
         { 8.0f,8.0f,18.0f }     // ‘«
     };
 
-    const Vector3 POSITION_ADJUSTMENT[Hitbox::m_MAX_EN_BODY_PARTS] =
+    // “–‚½‚è”»’è‚ÌˆÊ’u’²®
+    const Vector3 HITBOX_POSITION_ADJUSTMENT[Hitbox::m_MAX_BODY_PARTS] =
     {
         { 0.0f,8.0f,0.0f },     // “ª
         { 0.0f,0.0f,0.0f },     // g‘Ì
@@ -98,11 +102,12 @@ bool Hitbox::Start()
     return true;
 }
 
-void Hitbox::Init(Player& otherPlayer, Actor& actor, StAttackData& attackData)
+void Hitbox::Init(Player& otherPlayer, Actor& actor, StAttackData& attackData, StDefenseData& defenseData)
 {
     m_getOtherPlayer = &otherPlayer;
     m_getActor = &actor;
     m_getStAttackData = &attackData;
+    m_getStDefenseData = &defenseData;
 
     m_getActor->SetTest(*this);
 
@@ -135,13 +140,12 @@ void Hitbox::Create()
         boxRot.SetRotation(boneMatrix);
 
         // ˆÊ’u‚Ì’²®
-        Vector3 boxPositionAdjustment = POSITION_ADJUSTMENT[bodyPartsNum];
+        Vector3 boxPositionAdjustment = HITBOX_POSITION_ADJUSTMENT[bodyPartsNum];
         boxRot.Apply(boxPositionAdjustment);
         boxPos += boxPositionAdjustment;
 
         // “–‚½‚è”»’è‚ğì¬
-        m_ghostBox[bodyPartsNum]->CreateBox(boxPos, boxRot, BONE_SIZE[bodyPartsNum]);
-
+        m_ghostBox[bodyPartsNum]->CreateBox(boxPos, boxRot, HITBOX_SIZE[bodyPartsNum]);
     }
 }
 
@@ -163,7 +167,7 @@ void Hitbox::UpdateHitbox()
         boxRot.SetRotation(boneMatrix);
 
         // ˆÊ’u‚Ì’²®
-        Vector3 boxPositionAdjustment = POSITION_ADJUSTMENT[bodyPartsNum];
+        Vector3 boxPositionAdjustment = HITBOX_POSITION_ADJUSTMENT[bodyPartsNum];
         boxRot.Apply(boxPositionAdjustment);
         boxPos += boxPositionAdjustment;
 
@@ -185,18 +189,29 @@ const bool Hitbox::UpdateCheckAttack()
     }
 
     // UŒ‚‚ª“–‚½‚Á‚½‚©
-    if (true == CheckHit()) {
+    int hitBodyParts = CheckHit();
+    if (EnBodyParts::enMaxBodyParts != hitBodyParts) {
+        // UŒ‚‚ª“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
         HitAttack();
 
+        // ‚±‚±‚Å–hŒä‚µ‚Ä‚é‚©A“–‚½‚Á‚½êŠ‚ªèAã˜r‚©‚ÌŠm”F‚ğ‚¨‚±‚È‚¤
+        if (true == m_getOtherPlayer->GetStDefenseData().GetFlagDefense() &&
+            true == CheckHitDefenseBodyParts(hitBodyParts)) {
+            // UŒ‚‚Í“–‚½‚Á‚½‚¯‚ÇAƒ_ƒ[ƒW‚Í‚È‚¢
+            return false;
+        }
+
+        // UŒ‚‚ª“–‚½‚Á‚½
         return true;
     }
 
+    // UŒ‚‚Í“–‚½‚Á‚Ä‚È‚¢
     return false;
 }
 
-const bool Hitbox::CheckHit()
+const int Hitbox::CheckHit()
 {
-    bool checkHit = false; // “–‚½‚è”»’è‚ÆUŒ‚”»’è‚ªG‚ê‚Ä‚¢‚é‚©
+    int checkHitBodyParts = EnBodyParts::enMaxBodyParts; // “–‚½‚è”»’è‚ÆUŒ‚”»’è‚ªG‚ê‚Ä‚¢‚é‚©
 
     //ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è‚ÆUŒ‚”»’è‚ªG‚ê‚½‚©‚Ì”»’è
     for (int bodyPartsNum = 0; EnBodyParts::enMaxBodyParts > bodyPartsNum; ++bodyPartsNum) {
@@ -204,15 +219,33 @@ const bool Hitbox::CheckHit()
             [&](const btCollisionObject& contactObject)
             {
                 // ¶è‚ª“–‚½‚Á‚½‚Æ‚«
-                if (m_ghostBox[enLeftHand]->IsSelf(contactObject)) {
-                    checkHit = true;
-
-                    return checkHit;
+                if (m_ghostBox[EnBodyParts::enLeftHand]->IsSelf(contactObject)) {
+                    checkHitBodyParts = bodyPartsNum;
+                    return;
                 }
             });
+
+        // “–‚½‚Á‚½‚ç”»’èˆ—‚©‚ç”²‚¯‚é
+        if (EnBodyParts::enMaxBodyParts != checkHitBodyParts) {
+            break;
+        }
     }
 
-    return checkHit;
+    return checkHitBodyParts;
+}
+
+const bool Hitbox::CheckHitDefenseBodyParts(const int bodyParts)
+{
+    // è
+    if (EnBodyParts::enLeftHand == bodyParts || EnBodyParts::enRightHand == bodyParts) {
+        return true;
+    }
+    // ã˜r
+    if (EnBodyParts::enLeftUpperArm == bodyParts || EnBodyParts::enRightUpperArm == bodyParts) {
+        return true;
+    }
+
+    return false;
 }
 
 void Hitbox::HitAttack()

@@ -1,9 +1,11 @@
 #pragma once
+#include  "constant.h"
 #include "ghost_object.h"
 
 class Player;
 class Actor;
 struct StAttackData;
+struct StDefenseData;
 
 /**
  * @brief 当たり判定の処理
@@ -15,7 +17,7 @@ public:
     Hitbox();
     ~Hitbox();
     bool Start() override final;
-    void Init(Player& otherPlayer, Actor& actor, StAttackData& attackData);
+    void Init(Player& otherPlayer, Actor& actor, StAttackData& attackData, StDefenseData& defenseData);
     void Update() override final;
 
     /**
@@ -40,7 +42,11 @@ private:
      * @brief 攻撃判定が相手プレイヤーの当たり判定に当たったかの確認
      * @return 当たったか
     */
-    const bool CheckHit();
+    const int CheckHit();
+
+
+    const bool CheckHitDefenseBodyParts(const int bodyParts);
+
 
     /**
      * @brief 攻撃が当たったときの処理
@@ -82,7 +88,7 @@ private: // enum
 
     // モデルは左右反転している
 
-    /**
+        /**
      * @brief 身体の部位
     */
     const enum EnBodyParts
@@ -109,7 +115,9 @@ private: // enum
 
 
 public:
-    static const int m_MAX_EN_BODY_PARTS = EnBodyParts::enMaxBodyParts;
+    static const int m_MAX_BODY_PARTS = EnBodyParts::enMaxBodyParts;
+
+
 
 
 
@@ -134,6 +142,7 @@ private: // data member
     Player* m_getOtherPlayer = nullptr;
     Actor* m_getActor = nullptr;
     StAttackData* m_getStAttackData = nullptr;
+    StDefenseData* m_getStDefenseData = nullptr;
 
     ////////////////////////////////////////////////////////////
     // フラグ

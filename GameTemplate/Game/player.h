@@ -142,6 +142,11 @@ public: // Get function
         return m_flagHp_0;
     }
 
+    StDefenseData& GetStDefenseData()
+    {
+        return m_defenceData;
+    }
+
 
 public: // Set function
     /**

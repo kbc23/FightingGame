@@ -42,7 +42,7 @@ void Player::Init(
     );
 
     m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
-    m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData);
+    m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData, m_defenceData);
 
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
@@ -67,7 +67,7 @@ void Player::DebugInit(
     m_actor->DebugInit(filePath, initPos, initRot);
 
     m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
-    m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData);
+    m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData, m_defenceData);
 
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
@@ -92,7 +92,7 @@ void Player::Update()
     m_playerUI->UpdateKnockBackUI(m_squeezeStatus.GetFlagSqueeze(), m_playerNum);
     m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
     m_playerUI->UpdateDefenseUI(m_defenceData.GetFlagDefense(), m_playerNum);
-    m_playerUI->UpdateDefenseValueUI(m_defenceData.GetDefenseValue(), m_playerNum);
+    //m_playerUI->UpdateDefenseValueUI(m_defenceData.GetDefenseValue(), m_playerNum);
 }
 
 ////////////////////////////////////////////////////////////
@@ -121,35 +121,14 @@ void Player::Controller()
         return;
     }
 
-    // ガードブレイクでスタンしている間、処理をしない
-    if (true == m_defenceData.GetFlagGuardBreak()) {
-        return;
-    }
-
-    // 次の攻撃ができる状態でない場合、処理をしない
-    //if (false == m_attackData.GetFlagNextAttackPossible()) {
-    //    // 攻撃アニメーション中、処理をしない
-    //    if (false == m_actor->GetFlagAttackAnimation()) {
-    //        m_attackData.SetFlagNextAttackPossible(true);
-    //    }
-    //    else {
-    //        return;
-    //    }
-    //}
-
-    if (false == m_defenceData.GetFlagDefense()) {
-        m_defenceData.AddDefenseValue();
-    }
-
-
+    //////////////////////////////
+    // ボタン入力
+    //////////////////////////////
 
     // Aボタン
     if (false == m_defenceData.GetFlagDefense() &&
         false == m_dashStatus.GetFlagDash() &&
         true == m_gamePad->IsTrigger(enButtonA)) {
-        //if (false == CheckContinuousAttack(m_attackData.EnAttackType::enJub)) {
-        //    return;
-        //}
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enJub)) {
             AttackAnimationStart();
         }
@@ -158,9 +137,6 @@ void Player::Controller()
     if (false == m_defenceData.GetFlagDefense() &&
         false == m_dashStatus.GetFlagDash() &&
         true == m_gamePad->IsTrigger(enButtonB)) {
-        //if (false == CheckContinuousAttack(m_attackData.EnAttackType::enHook)) {
-        //    return;
-        //}
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enHook)) {
             AttackAnimationStart();
         }
@@ -169,9 +145,6 @@ void Player::Controller()
     if (false == m_defenceData.GetFlagDefense() &&
         false == m_dashStatus.GetFlagDash() &&
         true == m_gamePad->IsTrigger(enButtonX)) {
-        //if (false == CheckContinuousAttack(m_attackData.EnAttackType::enUppercut)) {
-        //    return;
-        //}
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enUppercut)) {
             AttackAnimationStart();
         }
@@ -180,9 +153,6 @@ void Player::Controller()
     if (false == m_defenceData.GetFlagDefense() &&
         false == m_dashStatus.GetFlagDash() &&
         true == m_gamePad->IsTrigger(enButtonY)) {
-        //if (false == CheckContinuousAttack(m_attackData.EnAttackType::enStraight)) {
-        //    return;
-        //}
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enStraight)) {
             AttackAnimationStart();
         }
@@ -191,9 +161,6 @@ void Player::Controller()
     if (false == m_defenceData.GetFlagDefense() &&
         false == m_dashStatus.GetFlagDash() &&
         true == m_gamePad->IsTrigger(enButtonRB2)) {
-        //if (false == CheckContinuousAttack(m_attackData.EnAttackType::enBodyBlow)) {
-        //    return;
-        //}
         if (true == m_attackData.SetAttackData(m_attackData.EnAttackType::enBodyBlow)) {
             AttackAnimationStart();
         }
@@ -210,6 +177,10 @@ void Player::Controller()
     }
     else {
         m_defenceData.SetFlagDefense(false);
+    }
+
+    if (m_playerNum == m_findGameData->GetOtherPlayerNum()) {
+        m_defenceData.SetFlagDefense(true);
     }
 
     // Debug: Startボタン: ゲーム終了
@@ -319,6 +290,8 @@ void Player::UpdateAttack()
     m_defenceData.Update();
 
     if (true == m_hitbox->UpdateCheckAttack()) {
+
+
         HitAttack();
     }
 }
