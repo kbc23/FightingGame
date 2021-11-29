@@ -37,7 +37,7 @@ public: // get function
      * @brief 現在攻撃中かを取得
      * @return 現在攻撃中か
     */
-    const bool GetFlagAttackNow()
+    const bool GetFlagAttackNow() const
     {
         return m_flagAttackNow;
     }
@@ -46,7 +46,7 @@ public: // get function
      * @brief 攻撃力を取得
      * @return 攻撃力
     */
-    const int GetPower()
+    const int GetPower() const
     {
         return m_power;
     }
@@ -55,7 +55,7 @@ public: // get function
      * @brief 攻撃がすでに当たったかを取得
      * @return 攻撃がすでに当たったか
     */
-    const bool GetFlagAlreadyAttacked()
+    const bool GetFlagAlreadyAttacked() const
     {
         return m_flagAlreadyAttacked;
     }
@@ -64,7 +64,7 @@ public: // get function
      * @brief 攻撃の種類を取得
      * @return 攻撃の種類
     */
-    const int GetAttackType()
+    const int GetAttackType() const
     {
         return m_attackType;
     }
@@ -96,11 +96,11 @@ public: // enum
     enum EnAttackType
     {
         enNotAttacking, // 攻撃していない
-        enJub, // ジャブ
-        enHook, // フック
-        enBodyBlow, // ボディブロー
-        enStraight, // ストレート
-        enUppercut, // アッパーカット
+        enJub,          // ジャブ
+        enHook,         // フック
+        enBodyBlow,     // ボディブロー
+        enStraight,     // ストレート
+        enUppercut,     // アッパーカット
     };
 
     /**
@@ -108,9 +108,9 @@ public: // enum
     */
     enum EnImpactType
     {
-        enNotImpact, // なにもない
-        enSqueeze, // のけぞり
-        enDown // ダウン
+        enNotImpact,    // なにもない
+        enSqueeze,      // のけぞり
+        enDown          // ダウン
     };
 
 

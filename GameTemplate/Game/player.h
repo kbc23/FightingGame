@@ -100,7 +100,7 @@ public: // Get function
      * @brief 位置情報を取得
      * @return 位置
     */
-    const Vector3& GetPosition()
+    const Vector3& GetPosition() const
     {
         return m_actor->GetPosition();
     }
@@ -109,18 +109,9 @@ public: // Get function
      * @brief 回転情報を取得
      * @return 回転
     */
-    const Quaternion& GetRotation()
+    const Quaternion& GetRotation() const
     {
         return m_actor->GetRotation();
-    }
-
-    /**
-     * @brief Actorクラスのインスタンスを取得
-     * @return Actorクラスのインスタンス
-    */
-    Actor& GetActor()
-    {
-        return *m_actor;
     }
 
     /**
@@ -128,7 +119,7 @@ public: // Get function
      * @param bodyParts 身体の部位
      * @return 指定した身体の部位の当たり判定のゴーストオブジェクト
     */
-    btGhostObject& GetGhostObject(const int bodyParts)
+    btGhostObject& GetGhostObject(const int bodyParts) const
     {
         return m_hitbox->GetGhostObject(bodyParts);
     }
@@ -137,7 +128,7 @@ public: // Get function
      * @brief 体力が０になったか
      * @return [true]: 体力が０, [false]: 体力が０ではない
     */
-    const bool CheckHp_0()
+    const bool CheckHp_0() const
     {
         return m_flagHp_0;
     }
@@ -154,38 +145,15 @@ public: // Set function
      * @param damage ダメージ量
      * @return ダメージを与えられたか
     */
-    const bool ReceiveDamage(const int damage//,
-                            //const int defenseBreakPower,
-                            //const int impactType
-    )
+    const bool ReceiveDamage(const int damage)
     {
         // HPが０なら処理をしない
         if (true == m_flagHp_0) {
             return false;
         }
 
-        // ダウン時の無敵の時、ダメージを与えない
-        //if (true == m_downStatus.GetFlagInvincible()) {
-        //    return false;
-        //}
-
-        //防御中
-        //if (true == m_defenceData.GetFlagDefense()) {
-        //    m_defenceData.DecreaseDefenseValue(defenseBreakPower);
-        //    return true;
-        //}
-
         // ダメージ処理
         m_hp -= damage;
-
-        // のけぞりの処理
-        //if (StAttackData::EnImpactType::enSqueeze == impactType) {
-        //    m_squeezeStatus.StartSqueeze();
-        //}
-        //// ダウンの処理
-        //else if (StAttackData::EnImpactType::enDown == impactType) {
-        //    m_downStatus.StartDown();
-        //}
 
         // HPの確認
         CheckHp();
@@ -240,8 +208,8 @@ private: // data member
     // FindGO
     //////////////////////////////
 
-    PlayerCamera* m_findPlayerCamera = nullptr;
-    GameData* m_findGameData = nullptr;
+    PlayerCamera* m_findPlayerCamera = nullptr; // プレイヤーのカメラ
+    GameData* m_findGameData = nullptr; // ゲームデータ
 
     ////////////////////////////////////////////////////////////
     // プレイヤーのステータス

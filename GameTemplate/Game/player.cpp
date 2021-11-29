@@ -30,10 +30,20 @@ void Player::Init(
     Player* pOtherPlayer
 )
 {
+    // 引数で持ってきた物をこのクラスで保持
     m_gamePad = &gamePad;
     m_playerNum = playerNum;
     m_otherPlayer = pOtherPlayer;
 
+    ////////////////////////////////////////////////////////////
+    // 初期化
+    ////////////////////////////////////////////////////////////
+
+    //////////////////////////////
+    // NewGO
+    //////////////////////////////
+
+    // Actorクラスの初期化
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
     m_actor->Init(
         "Assets/modelData/unityChan.tkm",
@@ -41,13 +51,20 @@ void Player::Init(
         initRotAngle
     );
 
+    // 当たり判定の初期化
     m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
     m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData, m_defenceData);
 
+    // プレイヤーに関係するUIクラスの初期化
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
-    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
+    //////////////////////////////
+    // FindGO
+    //////////////////////////////
 
+    // プレイヤーのカメラ
+    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
+    // ゲームデータ
     m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
 }
 
@@ -59,9 +76,18 @@ void Player::DebugInit(
     Player* pOtherPlayer
 )
 {
+    // 引数で持ってきた物をこのクラスで保持
     m_gamePad = g_pad[playerNum];
     m_playerNum = playerNum;
     m_otherPlayer = pOtherPlayer;
+
+    ////////////////////////////////////////////////////////////
+    // 初期化
+    ////////////////////////////////////////////////////////////
+
+    //////////////////////////////
+    // NewGO
+    //////////////////////////////
     
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
     m_actor->DebugInit(filePath, initPos, initRot);
@@ -70,6 +96,10 @@ void Player::DebugInit(
     m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData, m_defenceData);
 
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
+
+    //////////////////////////////
+    // FindGO
+    //////////////////////////////
 
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
 
@@ -81,6 +111,7 @@ void Player::Update()
     // 操作
     Controller();
 
+    // 攻撃関連の毎フレームの処理
     UpdateAttack();
 
     //////////////////////////////
@@ -92,7 +123,6 @@ void Player::Update()
     m_playerUI->UpdateKnockBackUI(m_squeezeStatus.GetFlagSqueeze(), m_playerNum);
     m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
     m_playerUI->UpdateDefenseUI(m_defenceData.GetFlagDefense(), m_playerNum);
-    //m_playerUI->UpdateDefenseValueUI(m_defenceData.GetDefenseValue(), m_playerNum);
 }
 
 ////////////////////////////////////////////////////////////
@@ -179,9 +209,11 @@ void Player::Controller()
         m_defenceData.SetFlagDefense(false);
     }
 
+    // Debug: start
     if (m_playerNum == m_findGameData->GetOtherPlayerNum()) {
         m_defenceData.SetFlagDefense(true);
     }
+    // Debug: end
 
     // Debug: Startボタン: ゲーム終了
     if (true == m_gamePad->IsTrigger(enButtonStart)) {
@@ -205,14 +237,23 @@ void Player::Controller()
         }
     }
 
+    // スウェーの処理
+    Vector2 swayMove = g_vec2Zero;
+    if (m_gamePad->GetRStickXF() != 0.0f) {
+        swayMove.x += m_gamePad->GetRStickXF();
+    }
+    if (m_gamePad->GetRStickYF() != 0.0f) {
+        swayMove.y += m_gamePad->GetRStickYF();
+    }
+
     // プレイヤーのモデルに位置情報などのステータス情報を渡す
-    m_actor->AddStatus(moveAmount);
+    m_actor->AddStatus(moveAmount, swayMove);
 }
 
 const Vector3 Player::Move()
 {
     // 現在の位置情報を保存
-    Vector3 oldPos = m_actor->GetPosition();
+    //Vector3 oldPos = m_actor->GetPosition();
 
     // カメラの前方向を取得
     // ※カメラの前方向を参照する技を使うときに[cameraFront]が使えるかも
@@ -289,9 +330,9 @@ void Player::UpdateAttack()
     // ガード関連のUpdate
     m_defenceData.Update();
 
+    // 攻撃が当たったときの処理
     if (true == m_hitbox->UpdateCheckAttack()) {
-
-
+        // 攻撃が当たった
         HitAttack();
     }
 }
@@ -299,10 +340,7 @@ void Player::UpdateAttack()
 void Player::HitAttack()
 {    
     // ダメージ処理
-    if (false == m_otherPlayer->ReceiveDamage(m_attackData.GetPower()//,
-                                                //m_attackData.GetDefenseBreakPower(),
-                                                //m_attackData.GetImpactType())
-    )) {
+    if (false == m_otherPlayer->ReceiveDamage(m_attackData.GetPower())) {
         // ダメージを与えられてない
         return;
     }
@@ -310,6 +348,10 @@ void Player::HitAttack()
 
 void Player::AttackAnimationStart()
 {
+    // 攻撃時のアニメーションの再生を開始する関数
+    // この関数は、良い感じの処理に変えたい
+    // （Actorクラスのインスタンスで処理をするようにしたい）
+
     if (m_attackData.EnAttackType::enJub == m_attackData.GetAttackType()) {
         m_actor->SetAttackAnimation(m_actor->AnimationEnum::jub);
         return;

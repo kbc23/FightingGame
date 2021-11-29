@@ -84,7 +84,6 @@ public:
 	);
 
 
-
 private:
 	/**
 	 * @brief モデルの初期化
@@ -142,13 +141,11 @@ private:
 	void UpdateOtherData();
 
 
-
 public:
 	/**
 	 * @brief スウェーの処理
 	*/
 	void SwayCharacter();
-
 
 
 public:
@@ -179,7 +176,6 @@ public:
 	{
 		return m_animationPointer->IsInited();
 	}
-
 
 
 public: // Get関数
@@ -223,11 +219,14 @@ public: // Get関数
 		return *m_skeletonPointer->GetBone(boneId);
 	}
 
+	/**
+	 * @brief スケルトンを取得
+	 * @return スケルトン
+	*/
 	Skeleton& GetSkeleton()
 	{
 		return *m_skeletonPointer;
 	}
-
 
 
 public: // Set関数
@@ -304,10 +303,23 @@ public: // Set関数
 		}
 	}
 
-
+	/**
+	 * @brief Hitboxクラスの位置を更新する際、このクラスでしたいので持ってくる
+	 * （関数名変えること）
+	 * @param hitbox Hitboxクラスのインスタンス
+	*/
 	void SetTest(Hitbox& hitbox)
 	{
 		m_getHitbox = &hitbox;
+	}
+
+	/**
+	 * @brief スウェーの移動量を取得
+	 * @param swayMove スウェーの移動量
+	*/
+	void SetSwayMove(const Vector2& swayMove)
+	{
+		m_swayMove = swayMove;
 	}
 
 
@@ -327,5 +339,7 @@ private: // data member
 	bool m_finishInit = false; // 初期化が終わったか
 	bool m_flagShadow = false; // 影が発生するか
 
-	Hitbox* m_getHitbox = nullptr;
+	Hitbox* m_getHitbox = nullptr; // 取得したHitboxクラスのインスタンス
+
+	Vector2 m_swayMove = g_vec2Zero; // スウェーの移動量
 };

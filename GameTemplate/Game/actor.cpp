@@ -3,7 +3,7 @@
 
 
 
-namespace
+namespace // constant
 {
     const float PLAYER_COLLIDER_RADIUS = 20.0f;
     const float PLAYER_COLLIDER_HEIGHT = 100.0f;
@@ -43,16 +43,23 @@ void Actor::Init(
     //ループ再生をtrueにする
     m_animationPlayer[idle].SetLoopFlag(true);
 
+    ////////////////////////////////////////////////////////////
+    // 初期化
+    ////////////////////////////////////////////////////////////
+
+    // キャラクターモデル
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
     m_modelCharacter->PlayAnimation(idle); //アニメーションの再生
 
+    // 初期位置の設定
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
+    // 初期回転の設定
     m_rotY = initRotAngle;
     m_rotation.SetRotationY(m_rotY);
     m_modelCharacter->SetRotation(m_rotation);
-
+    // 初期拡大率の設定
     m_scale = { 2.0f,2.0f,2.0f };
     m_modelCharacter->SetScale(m_scale);
 }
@@ -69,34 +76,43 @@ void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float 
     //ループ再生をtrueにする
     m_animationPlayer[idle].SetLoopFlag(true);
 
+    ////////////////////////////////////////////////////////////
+    // 初期化
+    ////////////////////////////////////////////////////////////
+
+    // キャラクターモデル
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
     m_modelCharacter->PlayAnimation(idle); //アニメーションの再生
-    //m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ);
 
+    // 初期位置の設定
     m_position = initPos;
     m_modelCharacter->SetPosition(m_position);
+    // 初期回転の設定
     m_rotY = initRot;
     m_rotation.SetRotationY(m_rotY);
     m_modelCharacter->SetRotation(m_rotation);
-
+    // 初期拡大率の設定
     m_scale = { 2.0f,2.0f,2.0f };
     m_modelCharacter->SetScale(m_scale);
 }
 
 void Actor::Update()
 {
+    // 攻撃アニメーション関連
     AttackAnimation();
-
+    // モデルに位置情報などのデータを渡す
     SetModelStatus();
 }
 
-void Actor::AddStatus(Vector3& addMoveAmount)
+void Actor::AddStatus(Vector3& addMoveAmount, const Vector2& swayMove)
 {
     // キャラクターの位置を決定
     m_position += addMoveAmount;
     // キャラクターの向きを決定
     Turn(addMoveAmount);
+    // スウェーのセット
+    m_modelCharacter->SetSwayMove(swayMove);
 }
 
 void Actor::Turn(Vector3& addMoveAmount)
@@ -126,7 +142,7 @@ void Actor::AttackAnimation()
 
     // アニメーションが再生されていない（攻撃のアニメーションの再生が終わった）
     if (false == m_modelCharacter->IsPlayingAnimation()) {
-        m_modelCharacter->PlayAnimation(idle);
+        m_modelCharacter->PlayAnimation(idle); // 通常時のアニメーションにする
         m_flagAttackAnimation = false;
     }
 }

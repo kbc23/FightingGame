@@ -15,6 +15,7 @@ void StDashStatus::StartDash()
 
 void StDashStatus::DashUpdate()
 {
+    // ダッシュ回数の回復処理
     DashRecoveryTime();
 
     if (false == m_flagDash) {
@@ -23,6 +24,7 @@ void StDashStatus::DashUpdate()
 
     ++m_countDash;
 
+    // ダッシュ時間が終わった
     if (m_MAX_COUNT_DASH <= m_countDash) {
         m_flagDash = false;
         m_countDash = 0;

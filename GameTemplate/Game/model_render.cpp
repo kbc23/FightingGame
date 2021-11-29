@@ -304,12 +304,6 @@ void ModelRender::SwayCharacter()
 
 
 
-	// コントローラーを使用し、ローカル行列の平行移動成分を変化させる
-	float controllerX = g_pad[0]->GetRStickXF();
-	float controllerY = g_pad[0]->GetRStickYF();
-
-
-
 	// ボーンの回転の軸になる前方向のベクトルを作成
 	Vector3 vecFront = Vector3::Front;
 	// ボーンの回転の軸になる右方向のベクトルを作成
@@ -317,7 +311,7 @@ void ModelRender::SwayCharacter()
 	// ボーンの回転の軸に使用するベクトルをY軸に回すためのクォータニオンを作成
 	Quaternion m_Rot;
 	m_Rot.SetRotationY(0.6f); // 回転量を設定
-	// ボーンお回転の軸になるベクトルをY軸で回転
+	// ボーンの回転の軸になるベクトルをY軸で回転
 	m_Rot.Apply(vecFront);
 	m_Rot.Apply(vecRight);
 
@@ -326,8 +320,8 @@ void ModelRender::SwayCharacter()
 	// ボーンの回転情報を作成する行列を作成
 	Matrix rotMatrixX, rotMatrixZ;
 	// 回転情報を作成
-	rotMatrixX.MakeRotationAxis(vecFront, -controllerX);
-	rotMatrixZ.MakeRotationAxis(vecRight, controllerY);
+	rotMatrixX.MakeRotationAxis(vecFront, -m_swayMove.x);
+	rotMatrixZ.MakeRotationAxis(vecRight, m_swayMove.y);
 
 	// 回転情報の行列を乗算し、ボーンを回転させる
 	rotMatrixX *= rotMatrixZ;

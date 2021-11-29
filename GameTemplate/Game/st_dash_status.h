@@ -23,11 +23,19 @@ public: // function
 
 
 public: // Get function
-    const bool GetFlagDash()
+    /**
+     * @brief ダッシュ中かを取得
+     * @return ダッシュ中か
+    */
+    const bool GetFlagDash() const
     {
         return m_flagDash;
     }
 
+    /**
+     * @brief ダッシュの残り回数を取得
+     * @return ダッシュの残り回数
+    */
     const int GetRemainingNumberOfTimes()
     {
         return m_remainingNumberOfTimes;

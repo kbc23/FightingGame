@@ -14,7 +14,12 @@ public:
 
 
 public: // Get function
-    const Vector3 GetPosition(const int playerNum)
+    /**
+     * @brief 指定したプレイヤーのカメラの位置を取得
+     * @param playerNum プレイヤー番号
+     * @return 指定したプレイヤーのカメラの位置
+    */
+    const Vector3 GetPosition(const int playerNum) const
     {
         if (playerNum == m_playerNum) {
             return m_cameraPosition;
@@ -28,16 +33,29 @@ public: // Get function
 
 
 public: // Set function
+    /**
+     * @brief プレイヤーの位置をセット
+     * @param playerPos プレイヤーの位置
+    */
     void SetPlayerPosition(const Vector3& playerPos)
     {
         m_playerPosition = playerPos;
     }
 
+    /**
+     * @brief 敵の位置をセット
+     * @param enemyPos 敵の位置
+    */
     void SetEnemyPosition(const Vector3& enemyPos)
     {
         m_enemyPosition = enemyPos;
     }
 
+    /**
+     * @brief 自身と相手のプレイヤー番号をセット
+     * @param playerNum 自身のプレイヤー番号
+     * @param otherPlayerNum 相手のプレイヤー番号
+    */
     void SetPlayerNum(const int playerNum, const int otherPlayerNum)
     {
         m_playerNum = playerNum;
@@ -68,8 +86,8 @@ private: // data member
     // 仮置き
     ////////////////////////////////////////////////////////////
 
-    int m_playerNum = -1;
-    int m_otherPlayerNum = -1;
+    int m_playerNum = -1; // 自身のプレイヤー番号
+    int m_otherPlayerNum = -1; // 相手のプレイヤー番号
 
 
 };

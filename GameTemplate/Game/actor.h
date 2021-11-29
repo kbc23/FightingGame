@@ -17,7 +17,6 @@ public:
      * @param filePath モデルのファイルパス
      * @param initPos 初期位置
      * @param initRotAngle 初期向き
-     * @param pOtherActor 相手のモデル
     */
     void Init(
         const char* filePath,
@@ -28,7 +27,6 @@ public:
     /**
      * @brief 
      * @param filePath モデルのファイルパス
-     * @param playerNum プレイヤー番号
      * @param initPos 初期位置
      * @param initRot 初期向き
     */
@@ -39,7 +37,7 @@ public:
      * @param addMoveAmount 更新する移動量
      * @param addRotAngle 更新する回転量
     */
-    void AddStatus(Vector3& addMoveAmount);
+    void AddStatus(Vector3& addMoveAmount, const Vector2& swayMove);
 
     /**
      * @brief キャラクターが移動方向に向く処理
@@ -49,53 +47,85 @@ public:
 
 
 private:
+    /**
+     * @brief 攻撃関連のアニメーションの処理
+    */
     void AttackAnimation();
 
     /**
-     * @brief キャラクターモデルに必要なステータス情報を渡す
+     * @brief モデルにステータス情報を渡す
     */
     void SetModelStatus();
 
 
-
 public: // Get function
-    const Vector3& GetPosition()
+    /**
+     * @brief 位置を取得
+     * @return 位置
+    */
+    const Vector3& GetPosition() const
     {
         return m_position;
     }
 
-    const Quaternion& GetRotation()
+    /**
+     * @brief 回転を取得
+     * @return 回転
+    */
+    const Quaternion& GetRotation() const
     {
         return m_rotation;
     }
 
-    const bool GetFlagAttackAnimation()
+    /**
+     * @brief 攻撃アニメーション中かを取得
+     * @return 攻撃アニメーション中か
+    */
+    const bool GetFlagAttackAnimation() const
     {
         return m_flagAttackAnimation;
     }
 
-    Bone& GetBone(const wchar_t boneName)
+    /**
+     * @brief 指定した名前のボーンを取得
+     * @param boneName ボーンの名前
+     * @return 指定した名前のボーン
+    */
+    Bone& GetBone(const wchar_t boneName) const
     {
         return m_modelCharacter->GetBone(boneName);
     }
 
-    Skeleton& GetSkeleton()
+    /**
+     * @brief スケルトンを取得
+     * @return スケルトン
+    */
+    Skeleton& GetSkeleton() const
     {
         return m_modelCharacter->GetSkeleton();
     }
 
 
-
 public: // Set function
+    /**
+     * @brief 指定した攻撃アニメーションを再生
+     * @param animation 攻撃アニメーション
+    */
     void SetAttackAnimation(const int animation)
     {
         m_flagAttackAnimation = true;
 
+        // 同じアニメーションを指定した際、最初から再生されるように通常時アニメーションを挟む
         m_modelCharacter->PlayAnimation(idle);
-        m_modelCharacter->PlayAnimation(animation); //アニメーションの再生
+        //アニメーションの再生
+        m_modelCharacter->PlayAnimation(animation);
     }
 
-
+    /**
+     * @brief ModelRenderクラスでHitboxクラスの位置情報などの更新をしたいので渡す処理
+     * （関数の名前をどうにかする）
+     * @param hitbox Hitboxクラスのインスタンス
+    */
     void SetTest(Hitbox& hitbox)
     {
         m_modelCharacter->SetTest(hitbox);
@@ -103,6 +133,9 @@ public: // Set function
 
 
 public: //enum
+    /**
+     * @brief アニメーションクリップ
+    */
     enum AnimationEnum
     {
         idle,
@@ -113,9 +146,6 @@ public: //enum
         straight,
         AnimationMax
     };
-
-
-private: // constant
 
 
 private: // data member

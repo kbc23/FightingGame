@@ -8,7 +8,7 @@
 
 
 
-namespace
+namespace // constant
 {
     // モデルは左右反転している
 
@@ -83,8 +83,10 @@ namespace
 
 Hitbox::Hitbox()
 {
+    // 身体のパーツすべてが入る配列のサイズを確保
     m_ghostBox.resize(EnBodyParts::enMaxBodyParts);
 
+    // ポインタを作成
     for (int bodyPartsNum = 0; EnBodyParts::enMaxBodyParts > bodyPartsNum; ++bodyPartsNum) {
         m_ghostBox[bodyPartsNum].reset(new GhostObject);
     }
@@ -92,6 +94,7 @@ Hitbox::Hitbox()
 
 Hitbox::~Hitbox()
 {
+    // ポインタを削除
     for (int bodyPartsNum = 0; EnBodyParts::enMaxBodyParts > bodyPartsNum; ++bodyPartsNum) {
         m_ghostBox[bodyPartsNum].reset();
     }
@@ -104,11 +107,15 @@ bool Hitbox::Start()
 
 void Hitbox::Init(Player& otherPlayer, Actor& actor, StAttackData& attackData, StDefenseData& defenseData)
 {
+    // 引数で持ってきた物をこのクラスで保持
     m_getOtherPlayer = &otherPlayer;
     m_getActor = &actor;
     m_getStAttackData = &attackData;
     m_getStDefenseData = &defenseData;
 
+    // キャラクターのModelRenderクラスで位置情報の更新をしたいため、
+    // ここでModelRenderクラスに自身の情報を渡す
+    // （関数名変えること）
     m_getActor->SetTest(*this);
 
     // ボックスの作成
@@ -236,19 +243,21 @@ const int Hitbox::CheckHit()
 
 const bool Hitbox::CheckHitDefenseBodyParts(const int bodyParts)
 {
-    // 手
+    // 手に当たったか
     if (EnBodyParts::enLeftHand == bodyParts || EnBodyParts::enRightHand == bodyParts) {
         return true;
     }
-    // 上腕
+    // 上腕に当たったか
     if (EnBodyParts::enLeftUpperArm == bodyParts || EnBodyParts::enRightUpperArm == bodyParts) {
         return true;
     }
 
+    // 当たっていない場合
     return false;
 }
 
 void Hitbox::HitAttack()
 {
+    // すでに攻撃が当たったことを伝える
     m_getStAttackData->SetFlagAlreadyAttacked(true);
 }
