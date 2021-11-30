@@ -119,7 +119,7 @@ void Hitbox::Init(Player& otherPlayer, Actor& actor, StAttackData& attackData, S
     m_getActor->SetTest(*this);
 
     // ボックスの作成
-    Create();
+    //Create();
 
     m_flagInit = true;
 }

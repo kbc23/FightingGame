@@ -54,7 +54,7 @@ void Player::Init(
 
     // 当たり判定の初期化
     m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
-    //m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData, m_defenceData);
+    m_hitbox->Init(*m_otherPlayer, *m_actor, m_attackData, m_defenceData);
 
     // プレイヤーに関係するUIクラスの初期化
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
