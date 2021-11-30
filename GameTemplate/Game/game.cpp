@@ -38,6 +38,9 @@ void Game::Update()
 		//}
 		//if (m_charaNo != -1) {
 		// キャラが選ばれたのオンラインマッチをスタートする。
+		if (m_onlineTwoPlayerMatchEngine) {
+			delete m_onlineTwoPlayerMatchEngine;
+		}
 		m_onlineTwoPlayerMatchEngine = new NetWork;
 		m_onlineTwoPlayerMatchEngine->Init(
 			&m_charaNo,
@@ -65,7 +68,6 @@ void Game::Update()
 	case EnStep::enStep_Error:
 		//ReturnCharacterSelect();
 		m_step = EnStep::enStep_InitNetWork;
-		delete m_onlineTwoPlayerMatchEngine;
 		break;
 	}
 }
