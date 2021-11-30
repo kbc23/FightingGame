@@ -47,7 +47,7 @@ void Player::Init(
     // ActorƒNƒ‰ƒX‚Ì‰Šú‰»
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
     m_actor->Init(
-        "Assets/modelData/unityChan.tkm",
+        "Assets/modelData/model/model.tkm",
         initPos,
         initRotAngle
     );
