@@ -41,10 +41,15 @@ public:
 
 
 private:
+public:
     /**
      * @brief 当たり判定を作成
     */
     void Create();
+
+private:
+
+
 
     /**
      * @brief 攻撃判定が相手プレイヤーの当たり判定に当たったかの確認

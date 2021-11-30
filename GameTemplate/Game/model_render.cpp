@@ -284,6 +284,10 @@ void ModelRender::UpdateOtherData()
 {
 	// “–‚½‚è”»’è‚Ìî•ñ‚ÌXV
 	if (m_skeletonPointer) {
+		if (false == m_flagInitHitbox) {
+			m_getHitbox->Create();
+		}
+
 		m_getHitbox->UpdateHitbox();
 	}
 }

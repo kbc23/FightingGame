@@ -351,6 +351,8 @@ private: // data member
 
 	Hitbox* m_getHitbox = nullptr; // 取得したHitboxクラスのインスタンス
 
+	bool m_flagInitHitbox = false;
+
 	Vector2 m_swayMove = g_vec2Zero; // スウェーの移動量
 	bool m_flagSwayNow = false;
 
