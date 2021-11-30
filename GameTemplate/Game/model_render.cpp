@@ -263,10 +263,11 @@ void ModelRender::Update()
 		return;
 	}
 
-	SwayCharacter();
+	//SwayCharacter();
 
 	// スケルトンを更新
 	if (m_skeletonPointer) {	// スケルトンが初期化されていたら
+		SwayCharacter();
 		m_skeletonPointer->Update(m_model.GetWorldMatrix());
 	}
 	// アニメーションを進める
