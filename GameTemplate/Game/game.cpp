@@ -65,6 +65,7 @@ void Game::Update()
 	case EnStep::enStep_Error:
 		//ReturnCharacterSelect();
 		m_step = EnStep::enStep_InitNetWork;
+		delete m_onlineTwoPlayerMatchEngine;
 		break;
 	}
 }
