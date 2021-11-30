@@ -228,6 +228,11 @@ public: // Get関数
 		return *m_skeletonPointer;
 	}
 
+	Matrix& GetModelWorldMatrix()
+	{
+		m_model.GetWorldMatrix();
+	}
+
 
 public: // Set関数
 	/**
@@ -319,7 +324,12 @@ public: // Set関数
 	*/
 	void SetSwayMove(const Vector2& swayMove)
 	{
+		//if (true == m_flagSwayNow) {
+		//	return;
+		//}
+
 		m_swayMove = swayMove;
+		//m_flagSwayNow = true;
 	}
 
 
@@ -342,4 +352,9 @@ private: // data member
 	Hitbox* m_getHitbox = nullptr; // 取得したHitboxクラスのインスタンス
 
 	Vector2 m_swayMove = g_vec2Zero; // スウェーの移動量
+	bool m_flagSwayNow = false;
+
+	int m_swayTimer = 0;
+
+	static const int m_MAX_SWAY_TIME = 30;
 };

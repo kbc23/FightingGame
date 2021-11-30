@@ -105,6 +105,11 @@ public: // Get function
         return m_modelCharacter->GetSkeleton();
     }
 
+    Matrix& GetModelWorldMatrix()
+    {
+        m_modelCharacter->GetModelWorldMatrix();
+    }
+
 
 public: // Set function
     /**

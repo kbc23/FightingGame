@@ -356,6 +356,9 @@
     <ClCompile Include="hitbox.cpp">
       <Filter>MyCode\MainProcessing\Player</Filter>
     </ClCompile>
+    <ClCompile Include="attack_move_bone.cpp">
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -648,6 +651,9 @@
     </ClInclude>
     <ClInclude Include="constant.h">
       <Filter>MyCode\MainProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_move_bone.h">
+      <Filter>MyCode\MainProcessing\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

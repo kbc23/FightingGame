@@ -322,6 +322,17 @@ public:
 	}
 
 	/**
+	 * @brief 位置情報を行列にセット
+	 * @param translation 位置情報
+	*/
+	void SetTranslation(const Vector3& translation)
+	{
+		m[3][0] = translation.x;
+		m[3][1] = translation.y;
+		m[3][2] = translation.z;
+	}
+
+	/**
 	 * @brief 行列から拡大情報を取得
 	 * @return 拡大情報
 	*/

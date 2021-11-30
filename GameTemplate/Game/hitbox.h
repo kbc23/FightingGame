@@ -53,9 +53,9 @@ private:
     const int CheckHit();
 
     /**
-     * @brief –hŒä‚Éè‚ªã˜r‚É“–‚½‚Á‚½‚©‚ğŠm”F
+     * @brief –hŒä‚Éè‚ª‘O˜r‚É“–‚½‚Á‚½‚©‚ğŠm”F
      * @param bodyParts “–‚½‚Á‚½•”ˆÊ
-     * @return è‚©ã˜r‚É“–‚½‚Á‚Ä‚¢‚½‚©
+     * @return è‚©‘O˜r‚É“–‚½‚Á‚Ä‚¢‚½‚©
     */
     const bool CheckHitDefenseBodyParts(const int bodyParts);
 

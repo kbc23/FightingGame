@@ -201,7 +201,7 @@ const bool Hitbox::UpdateCheckAttack()
         // 攻撃が当たったときの処理
         HitAttack();
 
-        // ここで防御してるか、当たった場所が手、上腕かの確認をおこなう
+        // ここで防御してるか、当たった場所が手、前腕かの確認をおこなう
         if (true == m_getOtherPlayer->GetStDefenseData().GetFlagDefense() &&
             true == CheckHitDefenseBodyParts(hitBodyParts)) {
             // 攻撃は当たったけど、ダメージはない
@@ -247,8 +247,8 @@ const bool Hitbox::CheckHitDefenseBodyParts(const int bodyParts)
     if (EnBodyParts::enLeftHand == bodyParts || EnBodyParts::enRightHand == bodyParts) {
         return true;
     }
-    // 上腕に当たったか
-    if (EnBodyParts::enLeftUpperArm == bodyParts || EnBodyParts::enRightUpperArm == bodyParts) {
+    // 前腕に当たったか
+    if (EnBodyParts::enLeftForearm == bodyParts || EnBodyParts::enRightForearm == bodyParts) {
         return true;
     }
 

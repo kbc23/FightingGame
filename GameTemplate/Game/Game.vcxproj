@@ -293,6 +293,7 @@
     <ClCompile Include="..\..\MiniEngine\tkFile\TksFile.cpp" />
     <ClCompile Include="..\..\MiniEngine\VertexBuffer.cpp" />
     <ClCompile Include="actor.cpp" />
+    <ClCompile Include="attack_move_bone.cpp" />
     <ClCompile Include="debug_wire_frame.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="font_render.cpp" />
@@ -397,6 +398,7 @@
     <ClInclude Include="..\..\MiniEngine\tkFile\TksFile.h" />
     <ClInclude Include="..\..\MiniEngine\VertexBuffer.h" />
     <ClInclude Include="actor.h" />
+    <ClInclude Include="attack_move_bone.h" />
     <ClInclude Include="constant.h" />
     <ClInclude Include="debug_wire_frame.h" />
     <ClInclude Include="fade.h" />

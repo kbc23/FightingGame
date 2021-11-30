@@ -10,6 +10,7 @@
 class PlayerCamera;
 class PlayerUI;
 class GameData;
+class AttackMoveBone;
 
 class Player : public IGameObject
 {
@@ -136,6 +137,11 @@ public: // Get function
     StDefenseData& GetStDefenseData()
     {
         return m_defenceData;
+    }
+
+    Actor& GetActor()
+    {
+        return *m_actor;
     }
 
 

@@ -295,6 +295,10 @@ void ModelRender::SwayCharacter()
 		return;
 	}
 
+	//if (false == m_flagSwayNow) {
+	//	return;
+	//}
+
 	// 骨の名前でボーンIDを検索
 	int boneId = m_skeletonPointer->FindBoneID(L"J_Bip_C_UpperChest");
 	// 検索したボーンIDを使用して、ボーンを取得
@@ -309,11 +313,26 @@ void ModelRender::SwayCharacter()
 	// ボーンの回転の軸になる右方向のベクトルを作成
 	Vector3 vecRight = Vector3::Right;
 	// ボーンの回転の軸に使用するベクトルをY軸に回すためのクォータニオンを作成
-	Quaternion m_Rot;
-	m_Rot.SetRotationY(0.6f); // 回転量を設定
+	Quaternion m_RotY;
+	m_RotY.SetRotationY(0.6f); // 回転量を設定
 	// ボーンの回転の軸になるベクトルをY軸で回転
-	m_Rot.Apply(vecFront);
-	m_Rot.Apply(vecRight);
+	m_RotY.Apply(vecFront);
+	m_RotY.Apply(vecRight);
+
+	//float test = 0.0f;
+
+	//if (m_MAX_SWAY_TIME / 2 > m_swayTimer) {
+	//	test = m_swayTimer;
+	//}
+	//else {
+	//	test = m_MAX_SWAY_TIME - m_swayTimer;
+	//}
+
+
+	//if (m_MAX_SWAY_TIME <= m_swayTimer) {
+	//	m_swayTimer = 0;
+	//	m_flagSwayNow = false;
+	//}
 
 
 

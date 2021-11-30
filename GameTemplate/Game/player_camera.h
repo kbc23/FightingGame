@@ -88,6 +88,4 @@ private: // data member
 
     int m_playerNum = -1; // 自身のプレイヤー番号
     int m_otherPlayerNum = -1; // 相手のプレイヤー番号
-
-
 };

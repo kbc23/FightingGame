@@ -113,6 +113,16 @@ public: // enum
         enDown          // ƒ_ƒEƒ“
     };
 
+    /**
+     * @brief ‚Ç‚¿‚ç‚Ìè‚ÅUŒ‚‚µ‚Ä‚¢‚é‚©
+    */
+    enum EnAttackHand
+    {
+        enLeftHand,         // ¶è
+        enRightHand,        // ‰Eè
+        enMaxAttackHand
+    };
+
 
 private: // data member
     ////////////////////////////////////////////////////////////

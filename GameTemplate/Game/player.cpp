@@ -5,6 +5,7 @@
 #include "player_camera.h"
 #include "player_UI.h"
 #include "game_data.h"
+#include "attack_move_bone.h"
 
 Player::Player()
 {
