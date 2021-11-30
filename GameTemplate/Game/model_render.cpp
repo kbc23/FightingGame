@@ -267,7 +267,7 @@ void ModelRender::Update()
 
 	// スケルトンを更新
 	if (m_skeletonPointer) {	// スケルトンが初期化されていたら
-		SwayCharacter();
+		//SwayCharacter();
 		m_skeletonPointer->Update(m_model.GetWorldMatrix());
 	}
 	// アニメーションを進める
@@ -278,7 +278,7 @@ void ModelRender::Update()
 	m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 
 	// 他クラスの物の情報の更新
-	UpdateOtherData();
+	//UpdateOtherData();
 }
 
 void ModelRender::UpdateOtherData()
