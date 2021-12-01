@@ -70,7 +70,7 @@ void NetWork::Init(
 
 	// ŒÅ’èƒtƒŒ[ƒ€‚ÌÅ‘åFPS30‚ÉÝ’è‚·‚éB
 	m_frameRateInfoBackup = g_engine->GetFrameRateInfo();
-	g_engine->SetFrameRateMode(TkEngine::EnFrameRateMode::enFrameRateMode_Fix, MAX_FPS);
+	g_engine->SetFrameRateMode(TkEngine::EnFrameRateMode::enFrameRateMode_Fix, static_cast<int>(MAX_FPS));
 
 }
 

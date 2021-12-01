@@ -141,12 +141,14 @@ private:
 	void UpdateOtherData();
 
 
-public:
+private:
 	/**
 	 * @brief スウェーの処理
 	*/
 	void SwayCharacter();
 
+
+	void CheckSwayMove();
 
 public:
 	/**
@@ -319,18 +321,64 @@ public: // Set関数
 	}
 
 	/**
-	 * @brief スウェーの移動量を取得
-	 * @param swayMove スウェーの移動量
+	 * @brief スウェーの移動方向
+	 * @param swayMove 入力情報
 	*/
-	void SetSwayMove(const Vector2& swayMove)
+	void SetSwayMove(const Vector2& swayMoveController)
 	{
-		//if (true == m_flagSwayNow) {
-		//	return;
-		//}
-
-		m_swayMove = swayMove;
-		//m_flagSwayNow = true;
+		// 左右方向の確認
+		// 入力: 右
+		if (EnSwayController::enNotMove < swayMoveController.x) {
+			m_swayController[EnXY::x] = EnSwayController::enRight;
+		}
+		// 入力: 左
+		else if (EnSwayController::enNotMove > swayMoveController.x) {
+			m_swayController[EnXY::x] = EnSwayController::enLeft;
+		}
+		// 入力: なし
+		else {
+			m_swayController[EnXY::x] = EnSwayController::enNotMove;
+		}
+		// 上下方向の確認
+		// 入力: 上
+		if (EnSwayController::enNotMove < swayMoveController.y) {
+			m_swayController[EnXY::y] = EnSwayController::enUp;
+		}
+		// 入力: 下
+		else if (EnSwayController::enNotMove > swayMoveController.y) {
+			m_swayController[EnXY::y] = EnSwayController::enDown;
+		}
+		// 入力: なし
+		else {
+			m_swayController[EnXY::y] = EnSwayController::enNotMove;
+		}
 	}
+
+
+private: // enum
+	/**
+	 * @brief スウェーの移動方向
+	*/
+	enum EnSwayController
+	{
+		enLeft = -1,
+		enRight = 1,
+		enUp = 1,
+		enDown = -1,
+		enNotMove = 0
+	};
+
+	/**
+	 * @brief 仮設置
+	*/
+	enum EnXY
+	{
+		x,
+		y,
+		MaxXY
+	};
+
+	int m_swayController[EnXY::MaxXY] = { EnSwayController::enNotMove }; // スウェーの移動方向
 
 
 private: // data member
@@ -351,12 +399,7 @@ private: // data member
 
 	Hitbox* m_getHitbox = nullptr; // 取得したHitboxクラスのインスタンス
 
-	bool m_flagInitHitbox = false;
+	bool m_flagInitHitbox = false; // 当たり判定を初期化したか
 
 	Vector2 m_swayMove = g_vec2Zero; // スウェーの移動量
-	bool m_flagSwayNow = false;
-
-	int m_swayTimer = 0;
-
-	static const int m_MAX_SWAY_TIME = 30;
 };

@@ -4,6 +4,15 @@
 #include "shadow_map.h"
 #include "shadow_light_camera.h"
 
+
+
+namespace // constant
+{
+	const float SWAY_MOVE = 0.2f;
+}
+
+
+
 ModelRender::ModelRender()
 {
 
@@ -300,18 +309,12 @@ void ModelRender::SwayCharacter()
 		return;
 	}
 
-	//if (false == m_flagSwayNow) {
-	//	return;
-	//}
-
 	// 骨の名前でボーンIDを検索
 	int boneId = m_skeletonPointer->FindBoneID(L"J_Bip_C_UpperChest");
 	// 検索したボーンIDを使用して、ボーンを取得
 	Bone* bone = m_skeletonPointer->GetBone(boneId);
 	// ボーンのローカル行列を取得
 	Matrix boneMatrix = bone->GetLocalMatrix();
-
-
 
 	// ボーンの回転の軸になる前方向のベクトルを作成
 	Vector3 vecFront = Vector3::Front;
@@ -324,22 +327,8 @@ void ModelRender::SwayCharacter()
 	m_RotY.Apply(vecFront);
 	m_RotY.Apply(vecRight);
 
-	//float test = 0.0f;
-
-	//if (m_MAX_SWAY_TIME / 2 > m_swayTimer) {
-	//	test = m_swayTimer;
-	//}
-	//else {
-	//	test = m_MAX_SWAY_TIME - m_swayTimer;
-	//}
-
-
-	//if (m_MAX_SWAY_TIME <= m_swayTimer) {
-	//	m_swayTimer = 0;
-	//	m_flagSwayNow = false;
-	//}
-
-
+	// スウェーの移動量を計算
+	CheckSwayMove();
 
 	// ボーンの回転情報を作成する行列を作成
 	Matrix rotMatrixX, rotMatrixZ;
@@ -353,4 +342,89 @@ void ModelRender::SwayCharacter()
 
 	// 変更したボーン行列を設定
 	bone->SetLocalMatrix(boneMatrix);
+}
+
+void ModelRender::CheckSwayMove()
+{
+	// 左右方向の移動量の計算
+	// 入力: 左
+	if (EnSwayController::enLeft == m_swayController[EnXY::x]) {
+		m_swayMove.x -= SWAY_MOVE;
+
+		// 移動量が上限を超えたか
+		if (EnSwayController::enLeft >= m_swayMove.x) {
+			m_swayMove.x = EnSwayController::enLeft;
+		}
+	}
+	// 入力: 右
+	else if (EnSwayController::enRight == m_swayController[EnXY::x]) {
+		m_swayMove.x += SWAY_MOVE;
+
+		// 移動量が上限を超えたか
+		if (EnSwayController::enRight <= m_swayMove.x) {
+			m_swayMove.x = EnSwayController::enRight;
+		}
+	}
+	// 入力: なし
+	else if (EnSwayController::enNotMove == m_swayController[EnXY::x]) {
+		// 右方向に移動している
+		if (EnSwayController::enNotMove < m_swayMove.x) {
+			m_swayMove.x -= SWAY_MOVE;
+
+			// 逆側に移動したか
+			if (EnSwayController::enNotMove > m_swayMove.x) {
+				m_swayMove.x = EnSwayController::enNotMove;
+			}
+		}
+		// 左方向に移動している
+		else if (EnSwayController::enNotMove > m_swayMove.x) {
+			m_swayMove.x += SWAY_MOVE;
+
+			// 逆側に移動したか
+			if (EnSwayController::enNotMove < m_swayMove.x) {
+				m_swayMove.x = EnSwayController::enNotMove;
+			}
+		}
+	}
+
+	// 上下方向の移動量の計算
+	// 入力: 上
+	if (EnSwayController::enUp == m_swayController[EnXY::y]) {
+		m_swayMove.y += SWAY_MOVE;
+
+		// 移動量が上限を超えたか
+		if (EnSwayController::enUp <= m_swayMove.y) {
+			m_swayMove.y = EnSwayController::enUp;
+		}
+	}
+	// 入力: 下
+	else if (EnSwayController::enDown == m_swayController[EnXY::y]) {
+		m_swayMove.y -= SWAY_MOVE;
+
+		// 移動量が上限を超えたか
+		if (EnSwayController::enDown >= m_swayMove.y) {
+			m_swayMove.y = EnSwayController::enDown;
+		}
+	}
+	// 入力: なし
+	else if (EnSwayController::enNotMove == m_swayController[EnXY::y]) {
+		// 上方向に移動している
+		if (EnSwayController::enNotMove < m_swayMove.y) {
+			m_swayMove.y -= SWAY_MOVE;
+
+			// 逆側に移動したか
+			if (EnSwayController::enNotMove > m_swayMove.y) {
+				m_swayMove.y = EnSwayController::enNotMove;
+			}
+		}
+		// 下方向に移動している
+		else if (EnSwayController::enNotMove > m_swayMove.y) {
+			m_swayMove.y += SWAY_MOVE;
+
+			// 逆側に移動したか
+			if (EnSwayController::enNotMove < m_swayMove.y) {
+				m_swayMove.y = EnSwayController::enNotMove;
+			}
+		}
+	}
 }

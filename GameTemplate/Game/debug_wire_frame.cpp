@@ -159,7 +159,7 @@ void DebugWireFrame::RenderContextUpdate(RenderContext& rc)
 	//ディスクリプタヒープに設定。
 	rc.SetDescriptorHeap(m_descriptorHeap);
 	//ドローコール。
-	rc.DrawIndexed(m_vertexList.size());
+	rc.DrawIndexed(static_cast<UINT>(m_vertexList.size()));
 }
 
 //1フレーム内にdrawLineは線の数だけ行う
