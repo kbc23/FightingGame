@@ -5,7 +5,8 @@
 #include "player_camera.h"
 #include "player_UI.h"
 #include "game_data.h"
-#include "attack_move_bone.h"
+//#include "attack_move_bone.h"
+#include "player_controller.h"
 
 Player::Player()
 {
@@ -59,6 +60,9 @@ void Player::Init(
     // プレイヤーに関係するUIクラスの初期化
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
 
+    m_playerController = NewGO<PlayerController>(igo::EnPriority::normal);
+    m_playerController->Init(*m_gamePad, m_playerStatus);
+
     //////////////////////////////
     // FindGO
     //////////////////////////////
@@ -97,6 +101,9 @@ void Player::DebugInit(
     m_hitbox->Init(*m_otherPlayer, *m_actor, m_playerStatus);
 
     m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
+
+    m_playerController = NewGO<PlayerController>(igo::EnPriority::normal);
+    m_playerController->Init(*m_gamePad, m_playerStatus);
 
     //////////////////////////////
     // FindGO
@@ -145,87 +152,35 @@ void Player::Controller()
     // ボタン入力
     //////////////////////////////
 
-    // Aボタン
-    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonA)) {
-        m_playerStatus.SetAttackData(enButtonA);
-        AttackAnimationStart();
-    }
-    // Bボタン
-    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonB)) {
-        m_playerStatus.SetAttackData(enButtonB);
-        AttackAnimationStart();
-    }
-    // Xボタン
-    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonX)) {
-        m_playerStatus.SetAttackData(enButtonX);
-        AttackAnimationStart();
-    }
-    // Yボタン
-    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonY)) {
-        m_playerStatus.SetAttackData(enButtonY);
-        AttackAnimationStart();
-    }
-    // R2ボタン
-    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonRB2)) {
-        m_playerStatus.SetAttackData(enButtonRB2);
-        AttackAnimationStart();
-    }
-
-    // R1ボタン: ダッシュ
-    if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
-        m_playerStatus.StartDash();
-    }
-
-    // L1ボタン: ガード
-    if (false == m_playerStatus.CheckNowDash() && true == m_gamePad->IsPress(enButtonLB1)) {
-        m_playerStatus.StartDefence();
-    }
-    else {
-        m_playerStatus.EndDefence();
-    }
-
-    // Debug: start
-    //if (m_playerNum == m_findGameData->GetOtherPlayerNum()) {
-    //    m_defenceData.SetFlagDefense(true);
-    //}
-    // Debug: end
-
-    // Debug: Startボタン: ゲーム終了
-    if (true == m_gamePad->IsTrigger(enButtonStart)) {
-        //ゲームを終了
-        exit(EXIT_SUCCESS);
-    }
-
-
+    m_playerController->ControllerButton();
 
     // プレイヤーの移動
-    Vector3 moveAmount = Vector3::Zero;
+    Vector3 moveAmount = m_playerController->ControllerLStick();
 
     // ガード中は処理をしない
     if (false == m_playerStatus.CheckNowDefence()) {
         if (false == m_playerStatus.CheckNowDash()) {
-            moveAmount = Move();
+            moveAmount = Move(moveAmount);
         }
         // ダッシュ
         else {
             moveAmount = DashMove();
         }
     }
+    else {
+        moveAmount = Vector3::Zero;
+    }
 
     // スウェーの処理
-    Vector2 swayMove = g_vec2Zero;
-    if (m_gamePad->GetRStickXF() != 0.0f) {
-        swayMove.x += m_gamePad->GetRStickXF();
-    }
-    if (m_gamePad->GetRStickYF() != 0.0f) {
-        swayMove.y += m_gamePad->GetRStickYF();
-    }
+    Vector2 swayMove = m_playerController->ControllerRStick();
 
+    // 攻撃時のアニメーションを再生
+    AttackAnimationStart();
     // プレイヤーのモデルに位置情報などのステータス情報を渡す
     m_actor->AddStatus(moveAmount, swayMove);
 }
 
-const Vector3 Player::Move()
+const Vector3 Player::Move(const Vector3& moveAmountBeforeEditing)
 {
     // カメラの前方向を取得
     Vector3 cameraFront = m_actor->GetPosition() - m_findPlayerCamera->GetPosition(m_playerNum);
@@ -236,16 +191,9 @@ const Vector3 Player::Move()
     Vector3 cameraRight = Cross(g_vec3AxisY, cameraFront);
 
     // キャラクターの移動速度
-    float characterSpeed = 9.0f;
+    const float CHARACTER_SPEED = 9.0f;
 
-    Vector3 pospos = Vector3::Zero;
-
-    if (m_gamePad->GetLStickXF() != 0.0f) {
-        pospos.x += m_gamePad->GetLStickXF() * characterSpeed;
-    }
-    if (m_gamePad->GetLStickYF() != 0.0f) {
-        pospos.z += m_gamePad->GetLStickYF() * characterSpeed;
-    }
+    Vector3 pospos = moveAmountBeforeEditing * CHARACTER_SPEED;
 
     //キャラクターの移動量を計算
     Vector3 moveAmount = cameraFront * pospos.z + cameraRight * pospos.x;
@@ -272,7 +220,7 @@ const Vector3 Player::DashMove()
     float characterSpeed = 80.0f;
 
     // キャラクターの移動量の計算
-    toPos.z = toPos.z * characterSpeed;
+    toPos.z *= characterSpeed;
     // キャラクターのQuaternionを使ってベクトルをプレイヤーの前方向に回転させる
     m_actor->GetRotation().Apply(toPos);
 
@@ -286,21 +234,7 @@ const Vector3 Player::DashMove()
 
 void Player::UpdateAttack()
 {
-    ////m_attackData.UpdateContinuousAttack();
-    //m_attackData.Update();
-
-    //// ダッシュ関連のUpdate
-    //m_dashStatus.DashUpdate();
-
-    //// ノックバック関連のUpdate
-    //m_squeezeStatus.SqueezeUpdate();
-
-    //// ダウン関連のUpdate
-    //m_downStatus.DownUpdate();
-
-    //// ガード関連のUpdate
-    //m_defenceData.Update();
-
+    // プレイヤーのステータス関係の更新処理
     m_playerStatus.StatusUpdate();
 
     // 攻撃が当たったときの処理

@@ -6,7 +6,8 @@
 class PlayerCamera;
 class PlayerUI;
 class GameData;
-class AttackMoveBone;
+//class AttackMoveBone;
+class PlayerController;
 
 class Player : public IGameObject
 {
@@ -63,7 +64,7 @@ private:
      * @brief プレイヤーの移動量を計算する
      * @return 移動量
     */
-    const Vector3 Move();
+    const Vector3 Move(const Vector3& moveAmountBeforeEditing);
 
     /**
      * @brief ダッシュ時のプレイヤーの移動量を計算する
@@ -205,6 +206,7 @@ private: // data member
     Player* m_otherPlayer = nullptr; // 対戦相手
     PlayerUI* m_playerUI = nullptr; // プレイヤーに関するUI
     Hitbox* m_hitbox = nullptr; // プレイヤーの当たり判定、攻撃判定
+    PlayerController* m_playerController = nullptr;
 
     //////////////////////////////
     // FindGO
