@@ -175,7 +175,9 @@ void Player::Controller()
     Vector2 swayMove = m_playerController->ControllerRStick();
 
     // 攻撃時のアニメーションを再生
-    AttackAnimationStart();
+    if (true == m_playerStatus.CheckNowAttack()) {
+        AttackAnimationStart();
+    }
     // プレイヤーのモデルに位置情報などのステータス情報を渡す
     m_actor->AddStatus(moveAmount, swayMove);
 }
