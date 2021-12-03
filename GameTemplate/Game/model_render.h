@@ -142,13 +142,23 @@ private:
 
 
 private:
+	////////////////////////////////////////////////////////////
+	// スウェークラスを作ってModelRenderクラスに持たせて処理した方がいいかも
+	////////////////////////////////////////////////////////////
+	
+	void SwayOrCrouching();
+
 	/**
 	 * @brief スウェーの処理
 	*/
 	void SwayCharacter();
 
-
 	void CheckSwayMove();
+
+
+	void Crouching();
+
+
 
 public:
 	/**

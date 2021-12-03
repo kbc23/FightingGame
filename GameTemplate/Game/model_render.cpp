@@ -272,7 +272,7 @@ void ModelRender::Update()
 		return;
 	}
 
-	SwayCharacter();
+	SwayOrCrouching();
 
 	// スケルトンを更新
 	if (m_skeletonPointer) {	// スケルトンが初期化されていたら
@@ -299,6 +299,16 @@ void ModelRender::UpdateOtherData()
 		}
 
 		m_getHitbox->UpdateHitbox();
+	}
+}
+
+void ModelRender::SwayOrCrouching()
+{
+	if (EnSwayController::enUp == m_swayController[EnXY::y]) {
+		Crouching();
+	}
+	else {
+		SwayCharacter();
 	}
 }
 
@@ -427,4 +437,10 @@ void ModelRender::CheckSwayMove()
 			}
 		}
 	}
+}
+
+
+void ModelRender::Crouching()
+{
+
 }

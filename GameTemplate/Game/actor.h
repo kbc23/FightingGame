@@ -57,6 +57,12 @@ private:
     */
     void SetModelStatus();
 
+    void SwayOrCrouching(const Vector2& swayMove);
+
+    void CrouchingStart();
+
+    void Crouching();
+
 
 public: // Get function
     /**
@@ -154,6 +160,17 @@ public: //enum
         enCrouchingEnd,
         AnimationMax
     };
+
+    enum class EnCrouchingStatus
+    {
+        enNotCrouching,
+        enStart,
+        enCrouching,
+        enEnd,
+        MaxCrouchingStatus
+    };
+
+    EnCrouchingStatus m_crouchingStatus = EnCrouchingStatus::enNotCrouching;
 
 
 private: // data member

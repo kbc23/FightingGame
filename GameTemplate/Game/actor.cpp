@@ -87,7 +87,7 @@ void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float 
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ,
                             m_animationPlayer, AnimationEnum::AnimationMax);
-    m_modelCharacter->PlayAnimation(enIdle); //アニメーションの再生
+    m_modelCharacter->PlayAnimation(AnimationEnum::enIdle); //アニメーションの再生
 
     // 初期位置の設定
     m_position = initPos;
@@ -117,6 +117,8 @@ void Actor::AddStatus(Vector3& addMoveAmount, const Vector2& swayMove)
     Turn(addMoveAmount);
     // スウェーのセット
     m_modelCharacter->SetSwayMove(swayMove);
+
+    SwayOrCrouching(swayMove);
 }
 
 void Actor::Turn(Vector3& addMoveAmount)
@@ -146,7 +148,7 @@ void Actor::AttackAnimation()
 
     // アニメーションが再生されていない（攻撃のアニメーションの再生が終わった）
     if (false == m_modelCharacter->IsPlayingAnimation()) {
-        m_modelCharacter->PlayAnimation(enIdle); // 通常時のアニメーションにする
+        m_modelCharacter->PlayAnimation(AnimationEnum::enIdle); // 通常時のアニメーションにする
         m_flagAttackAnimation = false;
     }
 }
@@ -157,4 +159,42 @@ void Actor::SetModelStatus()
     m_modelCharacter->SetPosition(m_position);
     m_modelCharacter->SetRotation(m_rotation);
     m_modelCharacter->SetScale(m_scale);
+}
+
+void Actor::SwayOrCrouching(const Vector2& swayMove)
+{
+    if (0.5f <= swayMove.y) {
+        CrouchingStart();
+    }
+    Crouching();
+}
+
+void Actor::CrouchingStart()
+{
+    if (EnCrouchingStatus::enNotCrouching == m_crouchingStatus) {
+        m_crouchingStatus = EnCrouchingStatus::enStart;
+        m_modelCharacter->PlayAnimation(AnimationEnum::enCrouchingStart);
+    }
+}
+
+void Actor::Crouching()
+{
+    if (EnCrouchingStatus::enStart == m_crouchingStatus) {
+        if (false == m_modelCharacter->IsPlayingAnimation()) {
+            m_crouchingStatus = EnCrouchingStatus::enCrouching;
+            m_modelCharacter->PlayAnimation(AnimationEnum::enCrouching);
+        }
+    }
+    else if (EnCrouchingStatus::enCrouching == m_crouchingStatus) {
+        if (false == m_modelCharacter->IsPlayingAnimation()) {
+            m_crouchingStatus = EnCrouchingStatus::enEnd;
+            m_modelCharacter->PlayAnimation(AnimationEnum::enCrouchingEnd);
+        }
+    }
+    else if (EnCrouchingStatus::enEnd == m_crouchingStatus) {
+        if (false == m_modelCharacter->IsPlayingAnimation()) {
+            m_crouchingStatus = EnCrouchingStatus::enNotCrouching;
+            m_modelCharacter->PlayAnimation(AnimationEnum::enIdle);
+        }
+    }
 }
