@@ -4,8 +4,7 @@
 
 class Player;
 class Actor;
-struct StAttackData;
-struct StDefenseData;
+struct StPlayerStatus;
 
 /**
  * @brief 当たり判定の処理
@@ -26,7 +25,7 @@ public:
      * @param attackData 攻撃情報のインスタンス
      * @param defenseData 防御情報のインスタンス
     */
-    void Init(Player& otherPlayer, Actor& actor, StAttackData& attackData, StDefenseData& defenseData);
+    void Init(Player& otherPlayer, Actor& actor, StPlayerStatus& playerStatus);
 
     /**
      * @brief 攻撃が当たったかの毎フレームの処理
@@ -136,8 +135,7 @@ private: // data member
 
     Player* m_getOtherPlayer = nullptr; // 相手プレイヤー
     Actor* m_getActor = nullptr; // キャラクターのモデル関連
-    StAttackData* m_getStAttackData = nullptr; // 攻撃情報
-    StDefenseData* m_getStDefenseData = nullptr; // 防御情報
+    StPlayerStatus* m_getStPlayerStatus = nullptr;
 
     ////////////////////////////////////////////////////////////
     // フラグ

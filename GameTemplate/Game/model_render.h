@@ -213,7 +213,7 @@ public: // Get関数
 	 * @param boneName ボーンの名前
 	 * @return ボーン
 	*/
-	Bone& GetBone(const wchar_t boneName)
+	Bone& GetBone(const wchar_t boneName) const
 	{
 		// ボーンの名前を指定してボーンIDを検索
 		int boneId = m_skeletonPointer->FindBoneID(&boneName);
@@ -225,12 +225,12 @@ public: // Get関数
 	 * @brief スケルトンを取得
 	 * @return スケルトン
 	*/
-	Skeleton& GetSkeleton()
+	Skeleton& GetSkeleton() const
 	{
 		return *m_skeletonPointer;
 	}
 
-	Matrix& GetModelWorldMatrix()
+	Matrix& GetModelWorldMatrix() const
 	{
 		m_model.GetWorldMatrix();
 	}

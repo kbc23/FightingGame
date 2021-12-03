@@ -34,14 +34,14 @@ void Actor::Init(
 )
 {
     //アニメーションの設定
-    m_animationPlayer[idle].Load("Assets/modelData/model/idle.tka");
-    m_animationPlayer[jub].Load("Assets/modelData/model/Lead_Jab.tka");
-    m_animationPlayer[uppercut].Load("Assets/modelData/model/Uppercut.tka");
-    m_animationPlayer[hook].Load("Assets/modelData/model/hook.tka");
-    m_animationPlayer[bodyBlow].Load("Assets/modelData/model/Body_blow.tka");
-    m_animationPlayer[straight].Load("Assets/modelData/model/straight.tka");
+    m_animationPlayer[enIdle].Load("Assets/modelData/model/idle.tka");
+    m_animationPlayer[enJub].Load("Assets/modelData/model/Lead_Jab.tka");
+    m_animationPlayer[enUppercut].Load("Assets/modelData/model/Uppercut.tka");
+    m_animationPlayer[enHook].Load("Assets/modelData/model/hook.tka");
+    m_animationPlayer[enBodyBlow].Load("Assets/modelData/model/Body_blow.tka");
+    m_animationPlayer[enStraight].Load("Assets/modelData/model/straight.tka");
     //ループ再生をtrueにする
-    m_animationPlayer[idle].SetLoopFlag(true);
+    m_animationPlayer[enIdle].SetLoopFlag(true);
 
     ////////////////////////////////////////////////////////////
     // 初期化
@@ -50,7 +50,7 @@ void Actor::Init(
     // キャラクターモデル
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
-    m_modelCharacter->PlayAnimation(idle); //アニメーションの再生
+    m_modelCharacter->PlayAnimation(enIdle); //アニメーションの再生
 
     // 初期位置の設定
     m_position = initPos;
@@ -67,14 +67,17 @@ void Actor::Init(
 void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float initRot)
 {
     //アニメーションの設定
-    m_animationPlayer[idle].Load("Assets/modelData/model/idle.tka");
-    m_animationPlayer[jub].Load("Assets/modelData/model/Lead_Jab.tka");
-    m_animationPlayer[uppercut].Load("Assets/modelData/model/Uppercut.tka");
-    m_animationPlayer[hook].Load("Assets/modelData/model/hook.tka");
-    m_animationPlayer[bodyBlow].Load("Assets/modelData/model/Body_blow.tka");
-    m_animationPlayer[straight].Load("Assets/modelData/model/straight.tka");
+    m_animationPlayer[AnimationEnum::enIdle].Load("Assets/modelData/model/idle.tka");
+    m_animationPlayer[AnimationEnum::enJub].Load("Assets/modelData/model/Lead_Jab.tka");
+    m_animationPlayer[AnimationEnum::enUppercut].Load("Assets/modelData/model/Uppercut.tka");
+    m_animationPlayer[AnimationEnum::enHook].Load("Assets/modelData/model/hook.tka");
+    m_animationPlayer[AnimationEnum::enBodyBlow].Load("Assets/modelData/model/Body_blow.tka");
+    m_animationPlayer[AnimationEnum::enStraight].Load("Assets/modelData/model/straight.tka");
+    m_animationPlayer[AnimationEnum::enCrouchingStart].Load("Assets/modelData/model/Crouching_Start.tka");
+    m_animationPlayer[AnimationEnum::enCrouching].Load("Assets/modelData/model/Crouching.tka");
+    m_animationPlayer[AnimationEnum::enCrouchingEnd].Load("Assets/modelData/model/Crouching_End.tka");
     //ループ再生をtrueにする
-    m_animationPlayer[idle].SetLoopFlag(true);
+    m_animationPlayer[AnimationEnum::enIdle].SetLoopFlag(true);
 
     ////////////////////////////////////////////////////////////
     // 初期化
@@ -82,8 +85,9 @@ void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float 
 
     // キャラクターモデル
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
-    m_modelCharacter->PlayAnimation(idle); //アニメーションの再生
+    m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ,
+                            m_animationPlayer, AnimationEnum::AnimationMax);
+    m_modelCharacter->PlayAnimation(enIdle); //アニメーションの再生
 
     // 初期位置の設定
     m_position = initPos;
@@ -142,7 +146,7 @@ void Actor::AttackAnimation()
 
     // アニメーションが再生されていない（攻撃のアニメーションの再生が終わった）
     if (false == m_modelCharacter->IsPlayingAnimation()) {
-        m_modelCharacter->PlayAnimation(idle); // 通常時のアニメーションにする
+        m_modelCharacter->PlayAnimation(enIdle); // 通常時のアニメーションにする
         m_flagAttackAnimation = false;
     }
 }

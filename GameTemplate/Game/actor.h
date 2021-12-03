@@ -121,7 +121,7 @@ public: // Set function
         m_flagAttackAnimation = true;
 
         // 同じアニメーションを指定した際、最初から再生されるように通常時アニメーションを挟む
-        m_modelCharacter->PlayAnimation(idle);
+        m_modelCharacter->PlayAnimation(enIdle);
         //アニメーションの再生
         m_modelCharacter->PlayAnimation(animation);
     }
@@ -143,12 +143,15 @@ public: //enum
     */
     enum AnimationEnum
     {
-        idle,
-        jub,
-        uppercut,
-        hook,
-        bodyBlow,
-        straight,
+        enIdle,
+        enJub,
+        enUppercut,
+        enHook,
+        enBodyBlow,
+        enStraight,
+        enCrouchingStart,
+        enCrouching,
+        enCrouchingEnd,
         AnimationMax
     };
 

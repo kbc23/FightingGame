@@ -3,8 +3,7 @@
 
 #include "player.h"
 #include "actor.h"
-#include "st_attack_data.h"
-#include "st_defense_data.h"
+#include "st_player_status.h"
 
 
 
@@ -105,13 +104,12 @@ bool Hitbox::Start()
     return true;
 }
 
-void Hitbox::Init(Player& otherPlayer, Actor& actor, StAttackData& attackData, StDefenseData& defenseData)
+void Hitbox::Init(Player& otherPlayer, Actor& actor, StPlayerStatus& playerStatus)
 {
     // 引数で持ってきた物をこのクラスで保持
     m_getOtherPlayer = &otherPlayer;
     m_getActor = &actor;
-    m_getStAttackData = &attackData;
-    m_getStDefenseData = &defenseData;
+    m_getStPlayerStatus = &playerStatus;
 
     // キャラクターのModelRenderクラスで位置情報の更新をしたいため、
     // ここでModelRenderクラスに自身の情報を渡す
@@ -186,12 +184,12 @@ void Hitbox::UpdateHitbox()
 const bool Hitbox::UpdateCheckAttack()
 {
     // 攻撃中ではない
-    if (false == m_getStAttackData->GetFlagAttackNow()) {
+    if (false == m_getStPlayerStatus->CheckNowAttack()) {
         return false;
     }
     
     // すでに攻撃が当たっている
-    if (true == m_getStAttackData->GetFlagAlreadyAttacked()) {
+    if (true == m_getStPlayerStatus->CheckNowAlreadyAttacked()) {
         return false;
     }
 
@@ -202,7 +200,7 @@ const bool Hitbox::UpdateCheckAttack()
         HitAttack();
 
         // ここで防御してるか、当たった場所が手、前腕かの確認をおこなう
-        if (true == m_getOtherPlayer->GetStDefenseData().GetFlagDefense() &&
+        if (true == m_getStPlayerStatus->CheckNowDefence() &&
             true == CheckHitDefenseBodyParts(hitBodyParts)) {
             // 攻撃は当たったけど、ダメージはない
             return false;
@@ -259,5 +257,5 @@ const bool Hitbox::CheckHitDefenseBodyParts(const int bodyParts)
 void Hitbox::HitAttack()
 {
     // すでに攻撃が当たったことを伝える
-    m_getStAttackData->SetFlagAlreadyAttacked(true);
+    m_getStPlayerStatus->SetAlreadyAttacked();
 }

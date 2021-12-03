@@ -359,6 +359,12 @@
     <ClCompile Include="attack_move_bone.cpp">
       <Filter>MyCode\MainProcessing\Player</Filter>
     </ClCompile>
+    <ClCompile Include="player_controller.cpp">
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="st_player_status.cpp">
+      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -654,6 +660,12 @@
     </ClInclude>
     <ClInclude Include="attack_move_bone.h">
       <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_controller.h">
+      <Filter>MyCode\MainProcessing\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="st_player_status.h">
+      <Filter>MyCode\MainProcessing\Player\Status</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

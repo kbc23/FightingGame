@@ -308,6 +308,7 @@
     <ClCompile Include="physics_object_base.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player_camera.cpp" />
+    <ClCompile Include="player_controller.cpp" />
     <ClCompile Include="player_UI.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="shadow.cpp" />
@@ -331,6 +332,7 @@
     <ClCompile Include="st_defense_data.cpp" />
     <ClCompile Include="st_down_status.cpp" />
     <ClCompile Include="st_squeeze_status.cpp" />
+    <ClCompile Include="st_player_status.cpp" />
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="wav_file.cpp" />
@@ -415,6 +417,7 @@
     <ClInclude Include="physics_object_base.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="player_camera.h" />
+    <ClInclude Include="player_controller.h" />
     <ClInclude Include="player_UI.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="shadow_light_camera.h" />
@@ -430,6 +433,7 @@
     <ClInclude Include="st_defense_data.h" />
     <ClInclude Include="st_down_status.h" />
     <ClInclude Include="st_squeeze_status.h" />
+    <ClInclude Include="st_player_status.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="util.h" />

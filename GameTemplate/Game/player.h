@@ -1,11 +1,7 @@
 #pragma once
 #include "actor.h"
-#include "st_attack_data.h"
-#include "st_dash_status.h"
-#include "st_squeeze_status.h"
-#include "st_down_status.h"
-#include "st_defense_data.h"    
 #include "hitbox.h"
+#include "st_player_status.h"
 
 class PlayerCamera;
 class PlayerUI;
@@ -75,6 +71,11 @@ private:
     */
     const Vector3 DashMove();
 
+    /**
+     * @brief しゃがみの処理
+    */
+    void Crouching();
+
     ////////////////////////////////////////////////////////////
     // 攻撃関連
     ////////////////////////////////////////////////////////////
@@ -132,11 +133,6 @@ public: // Get function
     const bool CheckHp_0() const
     {
         return m_flagHp_0;
-    }
-
-    StDefenseData& GetStDefenseData()
-    {
-        return m_defenceData;
     }
 
     Actor& GetActor()
@@ -222,11 +218,7 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     int m_hp = m_MAX_HP; // プレイヤーの体力
-    StAttackData m_attackData; // 攻撃関連のデータ
-    StDashStatus m_dashStatus; // ダッシュ関連のデータ
-    StSqueezeStatus m_squeezeStatus; // のけぞり関連のデータ
-    StDownStatus m_downStatus; // ダウン関連のデータ
-    StDefenseData m_defenceData; // 防御関連のデータ
+    StPlayerStatus m_playerStatus; // プレイヤーのステータス
 
     ////////////////////////////////////////////////////////////
     // フラグ
