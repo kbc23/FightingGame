@@ -63,6 +63,8 @@ private:
 
     void Crouching();
 
+    void CrouchingEnd();
+
 
 public: // Get function
     /**

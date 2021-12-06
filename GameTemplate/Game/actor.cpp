@@ -166,6 +166,9 @@ void Actor::SwayOrCrouching(const Vector2& swayMove)
     if (0.5f <= swayMove.y) {
         CrouchingStart();
     }
+    else if (0.5f > swayMove.y) {
+        CrouchingEnd();
+    }
     Crouching();
 }
 
@@ -196,5 +199,13 @@ void Actor::Crouching()
             m_crouchingStatus = EnCrouchingStatus::enNotCrouching;
             m_modelCharacter->PlayAnimation(AnimationEnum::enIdle);
         }
+    }
+}
+
+void Actor::CrouchingEnd()
+{
+    if (EnCrouchingStatus::enCrouching == m_crouchingStatus) {
+        m_crouchingStatus = EnCrouchingStatus::enEnd;
+        m_modelCharacter->PlayAnimation(AnimationEnum::enCrouchingEnd);
     }
 }
