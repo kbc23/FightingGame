@@ -171,7 +171,7 @@ void NetWork::Update_Joined()
 		SendInitDataOtherPlayer();
 		m_timer = 0.0f;
 		std::random_device rnd;
-		m_waitLimitTime = 10.0f + rnd() % 30;
+		m_waitLimitTime = 10.0f;// +rnd() % 30;
 		// 他プレイヤーの初期化情報受け取り待ちへ遷移する。
 		m_state = State::enWaitRecvInitDataOtherPlayer;
 
