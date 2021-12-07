@@ -115,10 +115,12 @@ void Actor::AddStatus(Vector3& addMoveAmount, const Vector2& swayMove)
     m_position += addMoveAmount;
     // キャラクターの向きを決定
     Turn(addMoveAmount);
+
     // スウェーのセット
     m_modelCharacter->SetSwayMove(swayMove);
 
-    SwayOrCrouching(swayMove);
+    // しゃがみの処理
+    CrouchingUpdate(swayMove.y);
 }
 
 void Actor::Turn(Vector3& addMoveAmount)
@@ -161,19 +163,26 @@ void Actor::SetModelStatus()
     m_modelCharacter->SetScale(m_scale);
 }
 
-void Actor::SwayOrCrouching(const Vector2& swayMove)
+void Actor::CrouchingUpdate(const float swayMoveY)
 {
-    if (0.5f <= swayMove.y) {
+    // 前方向に入力
+    if (0.5f <= swayMoveY) {
+        // しゃがむ
         CrouchingStart();
     }
-    else if (0.5f > swayMove.y) {
+    // 前方向に入力していない
+    else if (0.5f > swayMoveY) {
+        // 起き上がる
         CrouchingEnd();
     }
+
+    // しゃがみ中の処理
     Crouching();
 }
 
 void Actor::CrouchingStart()
 {
+    // しゃがむ
     if (EnCrouchingStatus::enNotCrouching == m_crouchingStatus) {
         m_crouchingStatus = EnCrouchingStatus::enStart;
         m_modelCharacter->PlayAnimation(AnimationEnum::enCrouchingStart);
@@ -182,20 +191,29 @@ void Actor::CrouchingStart()
 
 void Actor::Crouching()
 {
+    // しゃがみ開始
     if (EnCrouchingStatus::enStart == m_crouchingStatus) {
+        // アニメーションが終わる
         if (false == m_modelCharacter->IsPlayingAnimation()) {
+            // しゃがみ中の状態にし、アニメーションを再生
             m_crouchingStatus = EnCrouchingStatus::enCrouching;
             m_modelCharacter->PlayAnimation(AnimationEnum::enCrouching);
         }
     }
+    // しゃがみ中
     else if (EnCrouchingStatus::enCrouching == m_crouchingStatus) {
+        // アニメーションが終わる
         if (false == m_modelCharacter->IsPlayingAnimation()) {
+            // 起き上がる状態にし、アニメーションを再生
             m_crouchingStatus = EnCrouchingStatus::enEnd;
             m_modelCharacter->PlayAnimation(AnimationEnum::enCrouchingEnd);
         }
     }
+    // 起き上がり中
     else if (EnCrouchingStatus::enEnd == m_crouchingStatus) {
+        // アニメーションが終わる
         if (false == m_modelCharacter->IsPlayingAnimation()) {
+            // 通常状態にし、アニメーションを再生
             m_crouchingStatus = EnCrouchingStatus::enNotCrouching;
             m_modelCharacter->PlayAnimation(AnimationEnum::enIdle);
         }
@@ -204,7 +222,9 @@ void Actor::Crouching()
 
 void Actor::CrouchingEnd()
 {
+    // しゃがみ中
     if (EnCrouchingStatus::enCrouching == m_crouchingStatus) {
+        // 起き上がる状態にし、アニメーションを再生
         m_crouchingStatus = EnCrouchingStatus::enEnd;
         m_modelCharacter->PlayAnimation(AnimationEnum::enCrouchingEnd);
     }

@@ -57,12 +57,25 @@ private:
     */
     void SetModelStatus();
 
-    void SwayOrCrouching(const Vector2& swayMove);
+    /**
+     * @brief しゃがみの毎フレームの処理
+     * @param swayMoveY スウェーのY軸の移動量
+    */
+    void CrouchingUpdate(const float swayMoveY);
 
+    /**
+     * @brief しゃがみの開始
+    */
     void CrouchingStart();
 
+    /**
+     * @brief しゃがみ中のあれこれ（毎フレーム）
+    */
     void Crouching();
 
+    /**
+     * @brief しゃがみ起き上がり
+    */
     void CrouchingEnd();
 
 
