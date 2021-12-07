@@ -190,6 +190,8 @@ void NetWork::Update_WaitStartGame()
 		// 1秒ごとにプレイヤーを初期化するためのデータを再送する。
 		SendInitDataOtherPlayer();
 		m_timer = 0.0f;
+
+		nsDebug::Log("Update_WaitStartGame()_End(SendInitDataOtherPlayer)\n");
 	}
 
 	if (m_timer > m_waitLimitTime) {
@@ -204,7 +206,7 @@ void NetWork::Update_WaitStartGame()
 		m_allPlayerNotifyPossibleGameStartFunc();
 		m_state = State::enInGameBufferingPadData;
 
-		nsDebug::Log("Update_WaitStartGame()_End\n");
+		nsDebug::Log("Update_WaitStartGame()_End(AllPlayerNotifyPossibleGameStart)\n");
 	}
 }
 

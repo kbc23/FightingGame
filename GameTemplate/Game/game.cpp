@@ -15,7 +15,9 @@ Game::Game()
 
 Game::~Game()
 {
-
+	if (nullptr != m_onlineTwoPlayerMatchEngine) {
+		delete m_onlineTwoPlayerMatchEngine;
+	}
 }
 
 bool Game::Start()
@@ -69,6 +71,7 @@ void Game::Update()
 	case EnStep::enStep_Error:
 		//ReturnCharacterSelect();
 		m_step = EnStep::enStep_InitNetWork;
+		delete m_onlineTwoPlayerMatchEngine;
 		break;
 	}
 }
