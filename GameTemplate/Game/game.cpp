@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "game.h"
 
+#include "my_debug.h"
 #include "constant.h"
 #include "my_debug.h"
 #include "player.h"
@@ -161,6 +162,8 @@ const bool Game::CheckHp_0()
 
 void Game::OnAllPlayerJoined(void* pData, int size)
 {
+	nsDebug::Log("OnAllPlayerJoined()_Start\n");
+
 	// 自分と相手のプレイヤー番号を取得
 	m_playerNum = m_onlineTwoPlayerMatchEngine->GetPlayerNo();
 	m_otherPlayerNum = m_onlineTwoPlayerMatchEngine->GetOtherPlayerNo();
@@ -217,19 +220,26 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 	// ほかのプレイヤーがゲーム開始可能になるまで待つ。
 	m_step = EnStep::enStep_WaitAllPlayerStartGame;
 
+	nsDebug::Log("OnAllPlayerJoined()_End\n");
 	//m_fontRender.SetText(L"WaitAllPlayerStartGame!!");
 }
 
 void Game::OnAllPlayerStartGame()
 {
+	nsDebug::Log("OnAllPlayerStartGame()_Start\n");
 	// すべてのプレイヤーがゲーム開始可能になったので、ゲームスタート！
 	//m_fontRender.SetText(L"InGame!!");
 	m_step = EnStep::enStep_InGame;
 
+	nsDebug::Log("OnAllPlayerStartGame()_End\n");
 }
 
 void Game::OnError()
 {
+	nsDebug::Log("OnError()_Start\n");
+
 	MessageBoxA(nullptr, "通信エラーが起きました。", "エラー", MB_OK);
 	m_step = EnStep::enStep_Error;
+
+	nsDebug::Log("OnError()_End\n");
 }
