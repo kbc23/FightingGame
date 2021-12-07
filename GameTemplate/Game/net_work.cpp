@@ -189,7 +189,7 @@ void NetWork::Update_WaitStartGame()
 		// 相手方にこのデータが届いておらず、ずっとここで待つことがあったので、
 		// 1秒ごとにプレイヤーを初期化するためのデータを再送する。
 		SendInitDataOtherPlayer();
-		m_timer = 0.0f;
+		//m_timer = 0.0f;
 
 		nsDebug::Log("Update_WaitStartGame()_End(SendInitDataOtherPlayer)\n");
 	}
