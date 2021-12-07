@@ -63,4 +63,6 @@ void PlayerCamera::UpdateOtherPlayerCamera()
     //プレイヤーの座標に求めたベクトルを足して、カメラの座標とします
     m_otherCameraPosition = m_enemyPosition + pos;
 
+    m_otherCameraTarget.y = 75.0f;
+
 }
