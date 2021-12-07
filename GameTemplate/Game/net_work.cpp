@@ -14,7 +14,7 @@ NetWork* NetWork::m_instance = nullptr;
 namespace
 {
 	const ExitGames::Common::JString PLAYER_NAME = L"user";
-    const float MAX_FPS = 10.0f;	// オンライン対戦時の最大FPS
+    const float MAX_FPS = 30.0f;	// オンライン対戦時の最大FPS
 }
 
 
