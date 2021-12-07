@@ -115,18 +115,20 @@ void NetWork::Update()
 
 void NetWork::Update_Initialized()
 {
-	nsDebug::Log("Update_Initialized()\n");
+	nsDebug::Log("Update_Initialized()_Start\n");
 
 	ExitGames::LoadBalancing::ConnectOptions connectOption;
 	connectOption.setAuthenticationValues(ExitGames::LoadBalancing::AuthenticationValues().setUserID(ExitGames::Common::JString() + GETTIMEMS())).setUsername(PLAYER_NAME + GETTIMEMS());
 	connectOption.setTryUseDatagramEncryption(true);
 	m_loadBalancingClient->connect(connectOption);
 	m_state = State::enConnecting;
+
+	nsDebug::Log("Update_Initialized()_End\n");
 }
 
 void NetWork::Update_Connected()
 {
-	nsDebug::Log("Update_Connected()\n");
+	nsDebug::Log("Update_Connected()_Start\n");
 
 	// サーバーに接続できたので、部屋を作る。
 	ExitGames::LoadBalancing::RoomOptions roomOption;
@@ -146,11 +148,13 @@ void NetWork::Update_Connected()
 	std::random_device rnd;
 	m_waitLimitTime = 10.0f + rnd() % 30;
 	m_state = State::enJoining;
+
+	nsDebug::Log("Update_Connected()_End\n");
 }
 
 void NetWork::Update_Joined()
 {
-	nsDebug::Log("Update_Joined()\n");
+	nsDebug::Log("Update_Joined()_Start\n");
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
@@ -158,6 +162,8 @@ void NetWork::Update_Joined()
 		// 10秒+α秒経過したので、一旦サーバーから切断して、再接続。
 		m_state = State::enDisconnecting;
 		m_loadBalancingClient->disconnect();
+
+		nsDebug::Log("Update_Joined()_End(disconnect)\n");
 	}
 	if (m_otherPlayerState == enOtherPlayerNetWorkState_joinedRoom) {
 		// すべてのプレイヤーがルームにそろった。
@@ -168,12 +174,14 @@ void NetWork::Update_Joined()
 		m_waitLimitTime = 10.0f + rnd() % 30;
 		// 他プレイヤーの初期化情報受け取り待ちへ遷移する。
 		m_state = State::enWaitRecvInitDataOtherPlayer;
+
+		nsDebug::Log("Update_Joined()_End\n");
 	}
 }
 
 void NetWork::Update_WaitStartGame()
 {
-	nsDebug::Log("Update_WaitStartGame()\n");
+	nsDebug::Log("Update_WaitStartGame()_Start\n");
 
 	m_timer += g_gameTime->GetFrameDeltaTime();
 
@@ -188,11 +196,15 @@ void NetWork::Update_WaitStartGame()
 		// 10秒+α秒待ってもパケットが届かなかったので、一旦切断して、再接続。
 		m_state = State::enDisconnecting;
 		m_loadBalancingClient->disconnect();
+
+		nsDebug::Log("Update_WaitStartGame()_End(disconnect)\n");
 	}
 	if (m_otherPlayerState == enOtherPlayerNetWorkState_possibleGameStart
 		&& m_isPossibleGameStart) {
 		m_allPlayerNotifyPossibleGameStartFunc();
 		m_state = State::enInGameBufferingPadData;
+
+		nsDebug::Log("Update_WaitStartGame()_End\n");
 	}
 }
 
@@ -209,12 +221,14 @@ void NetWork::Update_InGameBufferingPadData()
 	else {
 		// バッファリング終わり。
 		m_state = State::enInGame;
+
+		nsDebug::Log("Update_InGameBufferingPadData()_End\n");
 	}
 }
 
 void NetWork::Update_InGame()
 {
-	nsDebug::Log("Update_InGame()\n");
+	nsDebug::Log("Update_InGame()_Start\n");
 
 	int loopCount = 0;
 	int plNo = GetPlayerNo();
@@ -267,6 +281,8 @@ void NetWork::Update_InGame()
 
 void NetWork::SendPossibleGameStart()
 {
+	nsDebug::Log("SendPossibleGameStart()_Start\n");
+
 	// ゲーム開始ベントを送信。
 	ExitGames::LoadBalancing::RaiseEventOptions eventOpt;
 
@@ -278,10 +294,14 @@ void NetWork::SendPossibleGameStart()
 		enEvent_PossibleGameStartOtherPlayer,
 		eventOpt
 	);
+
+	nsDebug::Log("SendPossibleGameStart()_End\n");
 }
 
 void NetWork::SendInitDataOtherPlayer()
 {
+	nsDebug::Log("SendInitDataOtherPlayer()_Start\n");
+
 	// ルームにジョインしたことを通知。
 	ExitGames::LoadBalancing::RaiseEventOptions eventOpt;
 	ExitGames::Common::Hashtable event;
@@ -294,10 +314,13 @@ void NetWork::SendInitDataOtherPlayer()
 		enEvent_SendInitDataForOtherPlayer,
 		eventOpt
 	);
+
+	nsDebug::Log("SendInitDataOtherPlayer()_End\n");
 }
 
 void NetWork::SendPadDataDirect()
 {
+	nsDebug::Log("SendPadDataDirect()_Start\n");
 	nsDebug::Log("SendPadData:frameNo = %d\n", m_frameNo);
 
 	// 送るパッドデータを構築する。
@@ -315,10 +338,13 @@ void NetWork::SendPadDataDirect()
 		(std::uint8_t*)&padData,
 		sizeof(padData)
 	);
+
+	nsDebug::Log("SendPadDataDirect()_End\n");
 }
 
 void NetWork::SendRequestResendPadDataDirect(int frameNo)
 {
+	nsDebug::Log("SendRequestResendPadDataDirect()_Start\n");
 	nsDebug::Log("RequestResendPadData : frameNo = %d\n", frameNo);
 
 	SRequestResendPadData reqResendPadData;
@@ -329,15 +355,21 @@ void NetWork::SendRequestResendPadDataDirect(int frameNo)
 		(std::uint8_t*)&reqResendPadData,
 		sizeof(reqResendPadData)
 	);
+
+	nsDebug::Log("SendRequestResendPadDataDirect()_End\n");
 }
 
 unsigned int NetWork::CalcCheckSum(void* pData, int size)
 {
+	nsDebug::Log("CalcCheckSum()_Start\n");
+
 	std::uint8_t* p = reinterpret_cast<std::uint8_t*>(pData);
 	unsigned int checkSum = 0;
 	for (int i = 0; i < size; i++) {
 		checkSum += p[i] + i;
 	}
+
+	nsDebug::Log("CalcCheckSum()_End\n");
 
 	return checkSum;
 }
@@ -374,6 +406,8 @@ void NetWork::joinRoomEventAction(int playerNr, const ExitGames::Common::JVector
 
 void NetWork::OnDirectMessageType_PadData(std::uint8_t* pData, int size)
 {
+	nsDebug::Log("OnDirectMessageType_PadData()_Start\n");
+
 	// パッド情報
 	SPadData padData;
 	memcpy(&padData, pData, size);
@@ -392,10 +426,14 @@ void NetWork::OnDirectMessageType_PadData(std::uint8_t* pData, int size)
 			m_padData[otherPlNo].insert({ padData.frameNo , padData });
 		}
 	}
+
+	nsDebug::Log("OnDirectMessageType_PadData()_End\n");
 }
 
 void NetWork::OnDirectMessageType_RequestResendPadData(std::uint8_t* pData, int size)
 {
+	nsDebug::Log("OnDirectMessageType_RequestResendPadData()_Start\n");
+
 	// パッドデータの再送リクエストを受けたので、過去のパッドデータを再送する。
 	SRequestResendPadData reqResendPadData;
 	memcpy(&reqResendPadData, pData, size);
@@ -409,16 +447,24 @@ void NetWork::OnDirectMessageType_RequestResendPadData(std::uint8_t* pData, int 
 			sizeof(m_padData[plNo][reqResendPadData.frameNo])
 		);
 	}
+
+	nsDebug::Log("OnDirectMessageType_RequestResendPadData()_End\n");
 }
 
 void NetWork::leaveRoomEventAction(int playerNr, bool isInactive)
 {
+	nsDebug::Log("leaveRoomEventAction()_Start\n");
+
 	// 部屋からプレイヤーが抜けたので、ゲーム終了。
 	m_otherPlayerState = enOtherPlayerNetWorkState_leftRoom;
+
+	nsDebug::Log("leaveRoomEventAction()_End\n");
 }
 
 void NetWork::connectReturn(int errorCode, const ExitGames::Common::JString& errorString, const ExitGames::Common::JString& region, const ExitGames::Common::JString& cluster)
 {
+	nsDebug::Log("connectReturn()_Start\n");
+
 	if (errorCode)
 	{
 		// サーバーへの接続エラーが発生したので、切断済みにする。
@@ -428,10 +474,14 @@ void NetWork::connectReturn(int errorCode, const ExitGames::Common::JString& err
 	}
 	// 部屋に入れた。
 	m_state = State::enConnected;
+
+	nsDebug::Log("connectReturn()_End\n");
 }
 
 void NetWork::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContentObj)
 {
+	nsDebug::Log("customEventAction()_Start\n");
+
 	auto eventContent = ExitGames::Common::ValueObject<ExitGames::Common::Hashtable>(eventContentObj).getDataCopy();
 	switch (eventCode) {
 	case enEvent_SendInitDataForOtherPlayer:
@@ -447,15 +497,21 @@ void NetWork::customEventAction(int playerNr, nByte eventCode, const ExitGames::
 			m_allPlayerJoinedRoomFunc(m_recieveDataOnGameStart.get(), m_recieveDataSize);
 			m_state = State::enWaitStartGame;
 		}
+
+		nsDebug::Log("customEventAction()_End_1\n");
 		break;
 	case enEvent_PossibleGameStartOtherPlayer:
 		m_otherPlayerState = enOtherPlayerNetWorkState_possibleGameStart;
+
+		nsDebug::Log("customEventAction()_End_2\n");
 		break;
 	}
 }
 
 void NetWork::onDirectMessage(const ExitGames::Common::Object& msg, int remoteID, bool relay)
 {
+	nsDebug::Log("onDirectMessage()_Start\n");
+
 	// 送られてきたデータをコピー。
 	auto valueObj = (ExitGames::Common::ValueObject<std::uint8_t*>*) & msg;
 	const int* sizes = valueObj->getSizes();
@@ -472,14 +528,20 @@ void NetWork::onDirectMessage(const ExitGames::Common::Object& msg, int remoteID
 		OnDirectMessageType_RequestResendPadData(pData, sizes[0]);
 		break;
 	}
+
+	nsDebug::Log("onDirectMessage()_End\n");
 }
 
 void NetWork::joinRandomOrCreateRoomReturn(int localPlayerNr, const ExitGames::Common::Hashtable& gameProperties, const ExitGames::Common::Hashtable& playerProperties, int errorCode, const ExitGames::Common::JString& errorString)
 {
+	nsDebug::Log("joinRandomOrCreateRoomReturn()_Start\n");
+
 	if (errorCode) {
 		// 部屋を作れなかった。
 		// ステータスを接続済みに戻して、再度部屋を作る。
 		m_state = State::enConnected;
+
+		nsDebug::Log("joinRandomOrCreateRoomReturn()_End(Error)\n");
 		return;
 	}
 	if (localPlayerNr == 1) {
@@ -494,4 +556,6 @@ void NetWork::joinRandomOrCreateRoomReturn(int localPlayerNr, const ExitGames::C
 	}
 	// ルームに入った。
 	m_state = State::enJoined;
+
+	nsDebug::Log("joinRandomOrCreateRoomReturn()_End\n");
 }
