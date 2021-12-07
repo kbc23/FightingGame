@@ -15,7 +15,7 @@ Game::Game()
 
 Game::~Game()
 {
-	if (nullptr != m_onlineTwoPlayerMatchEngine) {
+	if (m_onlineTwoPlayerMatchEngine) {
 		delete m_onlineTwoPlayerMatchEngine;
 	}
 }
