@@ -14,9 +14,9 @@ public:
 
     void ControllerButton();
 
-    const Vector3& ControllerLStick();
+    const Vector3 ControllerLStick();
 
-    const Vector2& ControllerRStick();
+    const Vector2 ControllerRStick();
 
 
 private: // data member

@@ -79,7 +79,7 @@ void PlayerController::ControllerButton()
     // Debug: end
 }
 
-const Vector3& PlayerController::ControllerLStick()
+const Vector3 PlayerController::ControllerLStick()
 {
     // プレイヤーの移動
     Vector3 moveAmount = Vector3::Zero;
@@ -91,7 +91,7 @@ const Vector3& PlayerController::ControllerLStick()
     return moveAmount;
 }
 
-const Vector2& PlayerController::ControllerRStick()
+const Vector2 PlayerController::ControllerRStick()
 {
     // スウェーの処理
     Vector2 swayMove = g_vec2Zero;

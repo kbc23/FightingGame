@@ -14,7 +14,7 @@ namespace // constant
 
 Actor::Actor()
 {
-
+    m_readCSVFileCharacterData.ReadCSVFileData("Assets/Data/data.csv");
 }
 
 Actor::~Actor()
@@ -34,12 +34,33 @@ void Actor::Init(
 )
 {
     //アニメーションの設定
-    m_animationPlayer[enIdle].Load("Assets/modelData/model/idle.tka");
-    m_animationPlayer[enJub].Load("Assets/modelData/model/Lead_Jab.tka");
-    m_animationPlayer[enUppercut].Load("Assets/modelData/model/Uppercut.tka");
-    m_animationPlayer[enHook].Load("Assets/modelData/model/hook.tka");
-    m_animationPlayer[enBodyBlow].Load("Assets/modelData/model/Body_blow.tka");
-    m_animationPlayer[enStraight].Load("Assets/modelData/model/straight.tka");
+    //m_animationPlayer[AnimationEnum::enIdle].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enIdle).c_str()
+    //);
+    //m_animationPlayer[AnimationEnum::enJub].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enJub).c_str()
+    //);
+    //m_animationPlayer[AnimationEnum::enUppercut].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enUppercut).c_str()
+    //);
+    //m_animationPlayer[AnimationEnum::enHook].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enHook).c_str()
+    //);
+    //m_animationPlayer[AnimationEnum::enBodyBlow].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enBodyBlow).c_str()
+    //);
+    //m_animationPlayer[AnimationEnum::enStraight].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enStraight).c_str()
+    //);
+    //m_animationPlayer[AnimationEnum::enCrouchingStart].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enCrouchingStart).c_str()
+    //);
+    //m_animationPlayer[AnimationEnum::enCrouching].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enCrouching).c_str()
+    //);
+    //m_animationPlayer[AnimationEnum::enCrouchingEnd].Load(
+    //    m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enCrouchingEnd).c_str()
+    //);
     //ループ再生をtrueにする
     m_animationPlayer[enIdle].SetLoopFlag(true);
 
@@ -49,7 +70,9 @@ void Actor::Init(
 
     // キャラクターモデル
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax);
+    //m_modelCharacter->Init(m_readCSVFileCharacterData.GetCharacterModelPath().c_str(),
+    //    false, true, modelUpAxis::enModelUpAxisZ, m_animationPlayer, AnimationMax
+    //);
     m_modelCharacter->PlayAnimation(enIdle); //アニメーションの再生
 
     // 初期位置の設定
@@ -67,15 +90,33 @@ void Actor::Init(
 void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float initRot)
 {
     //アニメーションの設定
-    m_animationPlayer[AnimationEnum::enIdle].Load("Assets/modelData/model/idle.tka");
-    m_animationPlayer[AnimationEnum::enJub].Load("Assets/modelData/model/Lead_Jab.tka");
-    m_animationPlayer[AnimationEnum::enUppercut].Load("Assets/modelData/model/Uppercut.tka");
-    m_animationPlayer[AnimationEnum::enHook].Load("Assets/modelData/model/hook.tka");
-    m_animationPlayer[AnimationEnum::enBodyBlow].Load("Assets/modelData/model/Body_blow.tka");
-    m_animationPlayer[AnimationEnum::enStraight].Load("Assets/modelData/model/straight.tka");
-    m_animationPlayer[AnimationEnum::enCrouchingStart].Load("Assets/modelData/model/Crouching_Start.tka");
-    m_animationPlayer[AnimationEnum::enCrouching].Load("Assets/modelData/model/Crouching.tka");
-    m_animationPlayer[AnimationEnum::enCrouchingEnd].Load("Assets/modelData/model/Crouching_End.tka");
+    m_animationPlayer[AnimationEnum::enIdle].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enIdle).c_str()
+    );
+    m_animationPlayer[AnimationEnum::enJub].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enJub).c_str()
+    );
+    m_animationPlayer[AnimationEnum::enUppercut].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enUppercut).c_str()
+    );
+    m_animationPlayer[AnimationEnum::enHook].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enHook).c_str()
+    );
+    m_animationPlayer[AnimationEnum::enBodyBlow].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enBodyBlow).c_str()
+    );
+    m_animationPlayer[AnimationEnum::enStraight].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enStraight).c_str()
+    );
+    m_animationPlayer[AnimationEnum::enCrouchingStart].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enCrouchingStart).c_str()
+    );
+    m_animationPlayer[AnimationEnum::enCrouching].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enCrouching).c_str()
+    );
+    m_animationPlayer[AnimationEnum::enCrouchingEnd].Load(
+        m_readCSVFileCharacterData.GetCharacterAnimationPath(AnimationEnum::enCrouchingEnd).c_str()
+    );
     //ループ再生をtrueにする
     m_animationPlayer[AnimationEnum::enIdle].SetLoopFlag(true);
 
@@ -85,8 +126,10 @@ void Actor::DebugInit(const char* filePath, const Vector3& initPos, const float 
 
     // キャラクターモデル
     m_modelCharacter = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelCharacter->Init(filePath, false, true, modelUpAxis::enModelUpAxisZ,
-                            m_animationPlayer, AnimationEnum::AnimationMax);
+    m_modelCharacter->Init(m_readCSVFileCharacterData.GetCharacterModelPath().c_str(),
+        false, true, modelUpAxis::enModelUpAxisZ,
+        m_animationPlayer, AnimationEnum::AnimationMax
+    );
     m_modelCharacter->PlayAnimation(AnimationEnum::enIdle); //アニメーションの再生
 
     // 初期位置の設定

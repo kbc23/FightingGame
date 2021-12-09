@@ -32,7 +32,6 @@ public:
         int playerNum,
         Player* pOtherPlayer
     );
-
     /**
      * @brief Debugモード時の初期化
      * @param filePath モデルのファイルパス
@@ -54,43 +53,32 @@ private:
     ////////////////////////////////////////////////////////////
     // 移動処理
     ////////////////////////////////////////////////////////////
-
     /**
      * @brief プレイヤーの入力を受ける
     */
     void Controller();
-
     /**
      * @brief プレイヤーの移動量を計算する
      * @return 移動量
     */
     const Vector3 Move(const Vector3& moveAmountBeforeEditing);
-
     /**
      * @brief ダッシュ時のプレイヤーの移動量を計算する
      * @return 移動量
     */
     const Vector3 DashMove();
 
-    /**
-     * @brief しゃがみの処理
-    */
-    void Crouching();
-
     ////////////////////////////////////////////////////////////
     // 攻撃関連
     ////////////////////////////////////////////////////////////
-
     /**
      * @brief 攻撃関連の毎フレームの処理
     */
     void UpdateAttack();
-
     /**
      * @brief 攻撃が当たった際の処理
     */
     void HitAttack();
-
     /**
      * @brief 攻撃時のアニメーションの開始
     */
@@ -107,7 +95,6 @@ public: // Get function
     {
         return m_actor->GetPosition();
     }
-
     /**
      * @brief 回転情報を取得
      * @return 回転
@@ -116,7 +103,6 @@ public: // Get function
     {
         return m_actor->GetRotation();
     }
-
     /**
      * @brief 当たり判定のゴーストオブジェクトを取得
      * @param bodyParts 身体の部位
@@ -126,7 +112,6 @@ public: // Get function
     {
         return m_hitbox->GetGhostObject(bodyParts);
     }
-
     /**
      * @brief 体力が０になったか
      * @return [true]: 体力が０, [false]: 体力が０ではない
@@ -135,7 +120,6 @@ public: // Get function
     {
         return m_flagHp_0;
     }
-
     Actor& GetActor()
     {
         return *m_actor;
@@ -163,7 +147,6 @@ public: // Set function
 
         return true;
     }
-
     /**
      * @brief ゲームが終了したかのフラグをセット
      * @param flag ゲームが終了したか

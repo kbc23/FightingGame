@@ -96,6 +96,9 @@
     <Filter Include="MyCode\Engine\Other">
       <UniqueIdentifier>{7952a66d-ef55-4a88-b426-e0bd537f8e4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCode\Engine\ReadCSVFile">
+      <UniqueIdentifier>{8a9535ad-da00-41a7-b5cc-c9f0524ac0e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -364,6 +367,12 @@
     </ClCompile>
     <ClCompile Include="st_player_status.cpp">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="read_CSV_file.cpp">
+      <Filter>MyCode\Engine\ReadCSVFile</Filter>
+    </ClCompile>
+    <ClCompile Include="read_CSV_file_character_data.cpp">
+      <Filter>MyCode\Engine\ReadCSVFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -666,6 +675,12 @@
     </ClInclude>
     <ClInclude Include="st_player_status.h">
       <Filter>MyCode\MainProcessing\Player\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="read_CSV_file.h">
+      <Filter>MyCode\Engine\ReadCSVFile</Filter>
+    </ClInclude>
+    <ClInclude Include="read_CSV_file_character_data.h">
+      <Filter>MyCode\Engine\ReadCSVFile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

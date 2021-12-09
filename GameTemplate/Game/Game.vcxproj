@@ -310,6 +310,8 @@
     <ClCompile Include="player_camera.cpp" />
     <ClCompile Include="player_controller.cpp" />
     <ClCompile Include="player_UI.cpp" />
+    <ClCompile Include="read_CSV_file.cpp" />
+    <ClCompile Include="read_CSV_file_character_data.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="shadow_light_camera.cpp" />
@@ -419,6 +421,8 @@
     <ClInclude Include="player_camera.h" />
     <ClInclude Include="player_controller.h" />
     <ClInclude Include="player_UI.h" />
+    <ClInclude Include="read_CSV_file.h" />
+    <ClInclude Include="read_CSV_file_character_data.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="shadow_light_camera.h" />
     <ClInclude Include="shadow_map.h" />

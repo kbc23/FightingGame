@@ -81,6 +81,17 @@ void AnimationPlayController::SamplingBoneMatrixFromAnimationClip()
 		//現在再生中のキーフレームを取ってくる。
 		KeyFrame* keyframe = keyFrameList.at(m_currentKeyFrameNo);
 
+		// 追加: start
+		// なぜかDebugで起動しているとき、[keyframe->boneIndex]が[m_boneMatrix]の要素数を超えるため、
+		// [keyframe->boneIndex]が[m_boneMatrix]の要素数を超えた際、その存在しない要素に触れないために
+		// ここで処理を止めるようにしている
+		// どうして要素数を超えるかは不明
+		// メモリ関連でなんか起きてんのか～？
+		if (m_boneMatrix.size() <= keyframe->boneIndex) {
+			continue;
+		}
+		// 追加: end
+
 		m_boneMatrix[keyframe->boneIndex] = keyframe->transform;
 	}
 }
@@ -91,9 +102,9 @@ void AnimationPlayController::CalcBoneMatrixInRootBoneSpace()
 		//ルートの骨を検索する。
 		auto bone = m_skeleton->GetBone(boneNo);
 		// アニメーション中にボーンを動かす際、この処理があるとアニメーションがおかしくなるためコメントアウト (start)
-		//if (bone->GetParentBoneNo() != -1) {
-		//	continue;
-		//}
+		if (bone->GetParentBoneNo() != -1) {
+			continue;
+		}
 		// (end)
 		CalcBoneMatrixInRootBoneSpace(*bone, g_matIdentity);
 	}

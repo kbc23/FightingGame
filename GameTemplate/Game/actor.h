@@ -1,5 +1,6 @@
 #pragma once
 #include "model_render.h"
+#include "read_CSV_file_character_data.h"
 
 /**
  * @brief キャラクターのモデル関連の処理
@@ -194,6 +195,7 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     ModelRender* m_modelCharacter = { nullptr }; // プレイヤーキャラクターのモデル
+    ReadCSVFileCharacterData m_readCSVFileCharacterData;
 
     ////////////////////////////////////////////////////////////
     // キャラクターのステータス
