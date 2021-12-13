@@ -6,9 +6,9 @@
 #include "player_camera.h"
 #include "game_data.h"
 
-namespace
+namespace // constant
 {
-    enum EnPlayer
+    const enum EnPlayer
     {
         enPlayer,
         enOtherPlayer,
@@ -37,10 +37,20 @@ void MyDebug::Init()
     m_gameData->SetPlayerNumAndOtherPlayerNum(enPlayer, enOtherPlayer);
 
     m_playerCamera->SetPlayerNum(enPlayer, enOtherPlayer);
-    m_player[enPlayer]->DebugInit("Assets/modelData/model/model.tkm", enPlayer,
-        pos[enPlayer], rotAngle[enPlayer], m_player[enOtherPlayer]);
-    m_player[enOtherPlayer]->DebugInit("Assets/modelData/model/model.tkm", enOtherPlayer,
-        pos[enOtherPlayer], rotAngle[enOtherPlayer], m_player[enPlayer]);
+    m_player[enPlayer]->Init(
+        *g_pad[enPlayer], 
+        pos[enPlayer], 
+        rotAngle[enPlayer],
+        enPlayer,  
+        m_player[enOtherPlayer]
+    );
+    m_player[enOtherPlayer]->Init(
+        *g_pad[enOtherPlayer], 
+        pos[enOtherPlayer], 
+        rotAngle[enOtherPlayer],
+        enOtherPlayer, 
+        m_player[enPlayer]
+    );
 
     m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelStage->Init("Assets/modelData/stage/stage.tkm", true);

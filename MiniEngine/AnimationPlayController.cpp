@@ -84,9 +84,8 @@ void AnimationPlayController::SamplingBoneMatrixFromAnimationClip()
 		// 追加: start
 		// なぜかDebugで起動しているとき、[keyframe->boneIndex]が[m_boneMatrix]の要素数を超えるため、
 		// [keyframe->boneIndex]が[m_boneMatrix]の要素数を超えた際、その存在しない要素に触れないために
-		// ここで処理を止めるようにしている
-		// どうして要素数を超えるかは不明
-		// メモリ関連でなんか起きてんのか～？
+		// ここで処理を止めるようにしている。
+		// どうして要素数を超えるかは不明。メモリ関連でなんか起きてんのか～？
 		if (m_boneMatrix.size() <= keyframe->boneIndex) {
 			continue;
 		}
@@ -102,6 +101,7 @@ void AnimationPlayController::CalcBoneMatrixInRootBoneSpace()
 		//ルートの骨を検索する。
 		auto bone = m_skeleton->GetBone(boneNo);
 		// アニメーション中にボーンを動かす際、この処理があるとアニメーションがおかしくなるためコメントアウト (start)
+		// 外しても動くんだけどどうして？
 		if (bone->GetParentBoneNo() != -1) {
 			continue;
 		}

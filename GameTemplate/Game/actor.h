@@ -13,33 +13,37 @@ public:
     bool Start() override;
     void Update() override;
 
+    ////////////////////////////////////////////////////////////
+    // 初期化
+    ////////////////////////////////////////////////////////////
     /**
      * @brief 初期化
      * @param filePath モデルのファイルパス
      * @param initPos 初期位置
      * @param initRotAngle 初期向き
     */
-    void Init(
-        const char* filePath,
-        const Vector3& initPos,
-        float initRotAngle
-    );
-
+    void Init(const Vector3& initPos, float initRotAngle);
     /**
-     * @brief 
-     * @param filePath モデルのファイルパス
-     * @param initPos 初期位置
-     * @param initRot 初期向き
+     * @brief アニメーションデータの初期化
+     * @return 初期化できたか
     */
-    void DebugInit(const char* filePath, const Vector3& initPos, const float initRot);
+    const bool AnimationInit();
+    /**
+     * @brief キャラクターデータの初期化
+     * @param initPos 位置情報
+     * @param initRot 回転情報
+    */
+    void CharacterInit(const Vector3& initPos, const float initRot);
 
+    ////////////////////////////////////////////////////////////
+    // その他
+    ////////////////////////////////////////////////////////////
     /**
      * @brief 引数を元にステータスを更新する
      * @param addMoveAmount 更新する移動量
      * @param addRotAngle 更新する回転量
     */
     void AddStatus(Vector3& addMoveAmount, const Vector2& swayMove);
-
     /**
      * @brief キャラクターが移動方向に向く処理
      * @param addMoveAmount 更新する移動量
@@ -52,28 +56,23 @@ private:
      * @brief 攻撃関連のアニメーションの処理
     */
     void AttackAnimation();
-
     /**
      * @brief モデルにステータス情報を渡す
     */
     void SetModelStatus();
-
     /**
      * @brief しゃがみの毎フレームの処理
      * @param swayMoveY スウェーのY軸の移動量
     */
     void CrouchingUpdate(const float swayMoveY);
-
     /**
      * @brief しゃがみの開始
     */
     void CrouchingStart();
-
     /**
      * @brief しゃがみ中のあれこれ（毎フレーム）
     */
     void Crouching();
-
     /**
      * @brief しゃがみ起き上がり
     */
@@ -89,7 +88,6 @@ public: // Get function
     {
         return m_position;
     }
-
     /**
      * @brief 回転を取得
      * @return 回転
@@ -98,7 +96,6 @@ public: // Get function
     {
         return m_rotation;
     }
-
     /**
      * @brief 攻撃アニメーション中かを取得
      * @return 攻撃アニメーション中か
@@ -107,7 +104,6 @@ public: // Get function
     {
         return m_flagAttackAnimation;
     }
-
     /**
      * @brief 指定した名前のボーンを取得
      * @param boneName ボーンの名前
@@ -117,7 +113,6 @@ public: // Get function
     {
         return m_modelCharacter->GetBone(boneName);
     }
-
     /**
      * @brief スケルトンを取得
      * @return スケルトン
@@ -125,11 +120,6 @@ public: // Get function
     Skeleton& GetSkeleton() const
     {
         return m_modelCharacter->GetSkeleton();
-    }
-
-    Matrix& GetModelWorldMatrix()
-    {
-        m_modelCharacter->GetModelWorldMatrix();
     }
 
 
@@ -147,7 +137,6 @@ public: // Set function
         //アニメーションの再生
         m_modelCharacter->PlayAnimation(animation);
     }
-
     /**
      * @brief ModelRenderクラスでHitboxクラスの位置情報などの更新をしたいので渡す処理
      * （関数の名前をどうにかする）
@@ -177,6 +166,9 @@ public: //enum
         AnimationMax
     };
 
+    /**
+     * @brief しゃがみ関連のステータス
+    */
     enum class EnCrouchingStatus
     {
         enNotCrouching,

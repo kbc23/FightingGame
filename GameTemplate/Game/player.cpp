@@ -37,10 +37,6 @@ void Player::Init(
     m_playerNum = playerNum;
     m_otherPlayer = pOtherPlayer;
 
-    ////////////////////////////////////////////////////////////
-    // 初期化
-    ////////////////////////////////////////////////////////////
-
     //////////////////////////////
     // NewGO
     //////////////////////////////
@@ -48,7 +44,7 @@ void Player::Init(
     // Actorクラスの初期化
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
     m_actor->Init(
-        "Assets/modelData/model/model.tkm",
+        //"Assets/modelData/model/model.tkm",
         initPos,
         initRotAngle
     );
@@ -70,47 +66,6 @@ void Player::Init(
     // プレイヤーのカメラ
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
     // ゲームデータ
-    m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
-}
-
-void Player::DebugInit(
-    const char* filePath,
-    const int playerNum,
-    const Vector3& initPos,
-    const float initRot,
-    Player* pOtherPlayer
-)
-{
-    // 引数で持ってきた物をこのクラスで保持
-    m_gamePad = g_pad[playerNum];
-    m_playerNum = playerNum;
-    m_otherPlayer = pOtherPlayer;
-
-    ////////////////////////////////////////////////////////////
-    // 初期化
-    ////////////////////////////////////////////////////////////
-
-    //////////////////////////////
-    // NewGO
-    //////////////////////////////
-    
-    m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-    m_actor->DebugInit(filePath, initPos, initRot);
-
-    m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);
-    m_hitbox->Init(*m_otherPlayer, *m_actor, m_playerStatus);
-
-    m_playerUI = NewGO<PlayerUI>(igo::EnPriority::normal);
-
-    m_playerController = NewGO<PlayerController>(igo::EnPriority::normal);
-    m_playerController->Init(*m_gamePad, m_playerStatus);
-
-    //////////////////////////////
-    // FindGO
-    //////////////////////////////
-
-    m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
-
     m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
 }
 

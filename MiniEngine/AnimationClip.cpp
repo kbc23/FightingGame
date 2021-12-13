@@ -11,10 +11,12 @@ AnimationClip::~AnimationClip()
 {
 }
 
-void AnimationClip::Load(const char* filePath)
+const bool AnimationClip::Load(const char* filePath)
 {
-	m_tkaFile.Load(filePath);
+	bool flagLoadTKA = m_tkaFile.Load(filePath);
 	BuildKeyFramesAndAnimationEvents();
+
+	return flagLoadTKA;
 }
 
 void AnimationClip::BuildKeyFramesAndAnimationEvents()

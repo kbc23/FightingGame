@@ -36,7 +36,8 @@ public:
 	/// 読み込み処理。
 	/// </summary>
 	/// <param name="filePath"></param>
-	void Load(const char* filePath) ;
+	/// 変更: tkaファイルを読み込めたかを戻り値で返す: [true]: 読み込めた [false]: 読み込めなかった
+	const bool Load(const char* filePath);
 	/// <summary>
 	/// アニメーションイベントにクエリを行う。
 	/// </summary>

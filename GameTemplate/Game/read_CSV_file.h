@@ -44,6 +44,11 @@ public:
 		return m_filePath;
 	}
 
+	/**
+	 * @brief 
+	 * @param checkString 
+	 * @return 
+	*/
 	const bool CheckNotFound(const std::string& checkString)
 	{
 		if (m_NOT_FOUND == checkString) {
@@ -80,8 +85,9 @@ public:
 	void GetLineByWord(const std::string& checkWord, std::vector<std::string>& arrayStr);
 
 
-private: //constant
-	static const char* m_NOT_FOUND; // データが見つからなかったときに入力する文字列
+protected: //constant
+	static std::string m_NOT_FOUND; // データが見つからなかったときに入力する文字列
+
 
 private: // data member
     std::ifstream m_file; // 開いたファイルデータを保持する変数

@@ -20,7 +20,7 @@ namespace con
 	const char CELL_DELIMITER = ','; // セルの区切り
 }
 
-const char* ReadCSVFile::m_NOT_FOUND = "not found"; // データが見つからなかったときに入力する文字列
+std::string ReadCSVFile::m_NOT_FOUND = "not found"; // データが見つからなかったときに入力する文字列
 
 ReadCSVFile::ReadCSVFile()
 {

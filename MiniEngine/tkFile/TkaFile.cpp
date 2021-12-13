@@ -2,12 +2,12 @@
 #include "tkFile/TkaFile.h"
 #include <errno.h>
 
-void TkaFile::Load(const char* filePath)
+const bool TkaFile::Load(const char* filePath)
 {
 	FILE* fp = fopen( filePath, "rb");
 	if (fp == nullptr) {
 		MessageBoxA(nullptr, "tkaファイルのオープンに失敗しました。", "エラー", MB_OK);
-		return;
+		return false;
 	}
 	//アニメーションクリップのヘッダーをロード。
 	AnimClipHeader header;
@@ -39,4 +39,5 @@ void TkaFile::Load(const char* filePath)
 	
 	fclose(fp);
 
+	return true;
 }

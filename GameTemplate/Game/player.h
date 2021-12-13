@@ -32,21 +32,6 @@ public:
         int playerNum,
         Player* pOtherPlayer
     );
-    /**
-     * @brief Debugモード時の初期化
-     * @param filePath モデルのファイルパス
-     * @param playerNum プレイヤー番号
-     * @param initPos 初期位置
-     * @param initRot 初期向き
-     * @param pOtherPlayer 相手プレイヤー
-    */
-    void DebugInit(
-        const char* filePath,
-        const int playerNum,
-        const Vector3& initPos,
-        const float initRot,
-        Player* pOtherPlayer
-    );
 
 
 private:
