@@ -44,20 +44,6 @@ public:
 		return m_filePath;
 	}
 
-	/**
-	 * @brief 
-	 * @param checkString 
-	 * @return 
-	*/
-	const bool CheckNotFound(const std::string& checkString)
-	{
-		if (m_NOT_FOUND == checkString) {
-			return true;
-		}
-
-		return false;
-	}
-
 	////////////////////////////////////////////////////////////
 	// セルのデータの取得関連
 	////////////////////////////////////////////////////////////

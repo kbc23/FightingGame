@@ -8,20 +8,35 @@
 
 void ReadCSVFileCharacterData::ReadCSVFileData(std::string filePath)
 {
-    ReadCSVFile readCSVFile;
+    // ファイルを開く
+    Open(filePath);
+    
+    // モデルアセットのフォルダーのパスを取得
+    std::string fileFolderPath = GetCell(2, 1);
+    // キャラクターモデルのファイルネームを取得
+    m_characterModelPath = GetCell(2, 2);
+    // アニメーションデータのファイルネームを取得
+    GetLineByWord("アニメーション", m_characterAnimationPath);
 
-    readCSVFile.Open(filePath);
+    // ファイルを閉じる
+    Close();
 
-    m_characterModelPath = readCSVFile.GetCell(2, 1);
-
-    readCSVFile.GetLineByWord("アニメーション", m_characterAnimationPath);
-
-    readCSVFile.Close();
-
-    for (int test = 0; m_characterAnimationPath.size() > test; ++test) {
-        if ("アニメーション" == m_characterAnimationPath[test]) {
-            m_characterAnimationPath.erase(m_characterAnimationPath.begin() + test);
+    // 必要ない情報を削除
+    for (int animationNum = 0; m_characterAnimationPath.size() > animationNum; ++animationNum) {
+        if ("アニメーション" == m_characterAnimationPath[animationNum]) {
+            m_characterAnimationPath.erase(m_characterAnimationPath.begin() + animationNum);
             break;
         }
+    }
+
+    ////////////////////////////////////////////////////////////
+    // ファイルパスをファイルネームの前に付ける
+    ////////////////////////////////////////////////////////////
+
+    // ファイルパスをファイルネームの前に付ける
+    m_characterModelPath = fileFolderPath + m_characterModelPath;
+    // ファイルパスをファイルネームの前に付ける
+    for (int animationNum = 0; m_characterAnimationPath.size() > animationNum; ++animationNum) {
+        m_characterAnimationPath[animationNum] = fileFolderPath + m_characterAnimationPath[animationNum];
     }
 }

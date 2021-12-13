@@ -1,2 +1,3 @@
-モデル,Assets/modelData/model/model.tkm,,,,,,,,
-アニメーション,Assets/modelData/model/idle.tka,Assets/modelData/model/Lead_Jab_Head.tka,Assets/modelData/model/Uppercut.tka,Assets/modelData/model/Lead_Jab_Body.tka,Assets/modelData/model/Body_blow.tka,Assets/modelData/model/straight.tka,Assets/modelData/model/Crouching_Start.tka,Assets/modelData/model/Crouching.tka,Assets/modelData/model/Crouching_End.tka
+ファイルの場所,Assets/modelData/model/,,,,,,,,
+モデル,model.tkm,,,,,,,,
+アニメーション,idle.tka,Lead_Jab_Head.tka,Lead_Jab_Head_OtherSide.tka,Lead_Jab_Body.tka,Lead_Jab_Body_OtherSide.tka,straight.tka,Crouching_Start.tka,Crouching.tka,Crouching_End.tka
