@@ -16,7 +16,7 @@ void CaslFile::Load(const char* filePath)
 	std::string ddsFolderPath = filePath;
 	int pos = (int)ddsFolderPath.rfind("/");
 	ddsFolderPath = ddsFolderPath.substr(0, pos + 1);
-	int ddsFolderPathCount = ddsFolderPath.length();
+	int ddsFolderPathCount = static_cast<int>(ddsFolderPath.length());
 
 	//‰æ‘œ‚Ì”‚ğæ“¾B
 	int numLevel = ReadInteger(fp);
@@ -129,5 +129,5 @@ float CaslFile::ReadDecimal(FILE* file) const
 		}
 	}
 	//stringŒ^‚ğfloatŒ^‚É•ÏŠ·‚·‚éB
-	return atof(number.c_str());
+	return static_cast<float>(atof(number.c_str()));
 }
