@@ -5,7 +5,6 @@
 #include "player_camera.h"
 #include "player_UI.h"
 #include "game_data.h"
-//#include "attack_move_bone.h"
 #include "player_controller.h"
 
 Player::Player()
@@ -43,11 +42,7 @@ void Player::Init(
 
     // ActorƒNƒ‰ƒX‚Ì‰Šú‰»
     m_actor = NewGO<Actor>(igo::EnPriority::normal, igo::className::ACTOR);
-    m_actor->Init(
-        //"Assets/modelData/model/model.tkm",
-        initPos,
-        initRotAngle
-    );
+    m_actor->Init(initPos, initRotAngle);
 
     // “–‚½‚è”»’è‚Ì‰Šú‰»
     m_hitbox = NewGO<Hitbox>(igo::EnPriority::normal);

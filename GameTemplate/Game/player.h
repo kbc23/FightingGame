@@ -6,7 +6,6 @@
 class PlayerCamera;
 class PlayerUI;
 class GameData;
-//class AttackMoveBone;
 class PlayerController;
 
 class Player : public IGameObject
