@@ -92,10 +92,11 @@ public: // Get function
      * @brief 回転を取得
      * @return 回転
     */
-    const Quaternion& GetRotation() const
+    Quaternion& GetRotation()
     {
         return m_rotation;
     }
+
     /**
      * @brief 攻撃アニメーション中かを取得
      * @return 攻撃アニメーション中か
@@ -158,6 +159,12 @@ public: // Set function
     }
 
 
+    void SetOtherActor(Actor& otherActor)
+    {
+        m_getOtherActor = &otherActor;
+    }
+
+
 
 public: //enum
     /**
@@ -203,6 +210,9 @@ private: // data member
 
     ModelRender* m_modelCharacter = { nullptr }; // プレイヤーキャラクターのモデル
     ReadCSVFileCharacterData m_readCSVFileCharacterData;
+
+
+    Actor* m_getOtherActor = nullptr;
 
     ////////////////////////////////////////////////////////////
     // キャラクターのステータス

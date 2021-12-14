@@ -31,10 +31,7 @@ bool Actor::Start()
 // 初期化
 ////////////////////////////////////////////////////////////
 
-void Actor::Init(
-    const Vector3& initPos,
-    float initRotAngle
-)
+void Actor::Init(const Vector3& initPos, float initRotAngle)
 {
     //アニメーションの設定
     if (false == AnimationInit()) {
@@ -112,17 +109,20 @@ void Actor::AddStatus(Vector3& addMoveAmount, const Vector2& swayMove)
 
 void Actor::Turn(Vector3& addMoveAmount)
 {
-    if (fabsf(addMoveAmount.x) < 0.001f
-        && fabsf(addMoveAmount.z) < 0.001f) {
-        // m_moveSpeed.xとm_moveSpeed.zの絶対値がともに0.001以下ということは
-        // このフレームではキャラは移動していないので旋回する必要はない
-        return;
-    }
+    //if (fabsf(addMoveAmount.x) < 0.001f
+    //    && fabsf(addMoveAmount.z) < 0.001f) {
+    //    // m_moveSpeed.xとm_moveSpeed.zの絶対値がともに0.001以下ということは
+    //    // このフレームではキャラは移動していないので旋回する必要はない
+    //    return;
+    //}
+
+    Vector3 test = m_getOtherActor->GetPosition() - m_position;
+
     // atan2はtanθの値を角度(ラジアン単位)に変換してくれる関数
     // m_moveSpeed.x / m_moveSpeed.zの結果はtanθになる
     // atan2を使用して、角度を求めている
     // これが回転角度になる
-    float angle = atan2(addMoveAmount.x, addMoveAmount.z);
+    float angle = atan2(test.x, test.z);
     // atanが返してくる角度はラジアン単位なので
     // SetRotationDegではなくSetRotationを使用する
     m_rotation.SetRotation(Vector3::AxisY, angle);

@@ -52,6 +52,9 @@ void MyDebug::Init()
         m_player[enPlayer]
     );
 
+    m_player[enPlayer]->GetActor().SetOtherActor(m_player[enOtherPlayer]->GetActor());
+    m_player[enOtherPlayer]->GetActor().SetOtherActor(m_player[enPlayer]->GetActor());
+
     m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
     m_modelStage->Init("Assets/modelData/stage/stage.tkm", true);
 

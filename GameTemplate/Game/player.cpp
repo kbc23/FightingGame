@@ -138,9 +138,9 @@ void Player::Controller()
     }
 
     // R1ボタン: ダッシュ
-    //if (false == m_getStPlayerStatus->CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
-    //    m_getStPlayerStatus->StartDash();
-    //}
+    if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonB)) {
+        m_playerStatus.StartDash();
+    }
     // L1ボタン: ガード
     if (false == m_playerStatus.CheckNowDash() && true == m_gamePad->IsPress(enButtonA)) {
         m_playerStatus.StartDefence();
@@ -167,13 +167,13 @@ void Player::Controller()
 
     // ガード中は処理をしない
     //if (false == m_playerStatus.CheckNowDefence()) {
-        //if (false == m_playerStatus.CheckNowDash()) {
-    moveAmount = Move(moveAmount);
-    //}
-    //// ダッシュ
-    //else {
-    //    moveAmount = DashMove();
-    //}
+    if (false == m_playerStatus.CheckNowDash()) {
+        moveAmount = Move(moveAmount);
+    }
+    // ダッシュ
+    else {
+        moveAmount = DashMove();
+    }
 //}
 //else {
 //    moveAmount = Vector3::Zero;
@@ -195,7 +195,7 @@ void Player::Controller()
 const Vector3 Player::Move(const Vector3& moveAmountBeforeEditing)
 {
     // カメラの前方向を取得
-    Vector3 cameraFront = m_actor->GetPosition() - m_findPlayerCamera->GetPosition(m_playerNum);
+    Vector3 cameraFront = m_otherPlayer->GetActor().GetPosition() - m_actor->GetPosition();
     cameraFront.y = 0.0f;
     cameraFront.Normalize();
 
@@ -236,10 +236,13 @@ const Vector3 Player::DashMove()
     // キャラクターのQuaternionを使ってベクトルをプレイヤーの前方向に回転させる
     m_actor->GetRotation().Apply(toPos);
 
+    m_actor->GetRotation().SetRotation(playerPosition, toPos);
+
     // 上記で取得した情報から、攻撃範囲を生成するポジションを取得
     return toPos;
 }
 
+// 現在、使ってない処理
 void Player::Defence(const float moveY)
 {
     // 後ろ方向に入力

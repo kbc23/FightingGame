@@ -16,7 +16,7 @@
 namespace debugModeStetus
 {
 	// ここの変数の初期値でデバッグモードの設定をする
-	bool flagDebugMode = false; // デバッグモードか
+	bool flagDebugMode = true; // デバッグモードか
 
 	MyDebug* myDebug = nullptr;
 
