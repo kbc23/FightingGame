@@ -146,10 +146,6 @@ void Player::Controller()
         m_playerStatus.StartDefence();
         m_actor->SetDefenceAnimation();
     }
-    else {
-        m_playerStatus.EndDefence();
-        m_actor->EndDefenceAnimation();
-    }
 
     // Debug: start
     //if (m_playerNum == m_findGameData->GetOtherPlayerNum()) {
