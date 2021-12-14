@@ -75,21 +75,21 @@ public: // Set function
 
     void SetAttackData(const int button)
     {
-        if (enButtonA == button) {
-            m_attackData.SetAttackData(m_attackData.EnAttackType::enJub);
+        if (enButtonRB1 == button) {
+            m_attackData.SetAttackData(m_attackData.EnAttackType::enJubHead_L);
         }
-        if (enButtonB == button) {
-            m_attackData.SetAttackData(m_attackData.EnAttackType::enHook);
-        }
-        if (enButtonX == button) {
-            m_attackData.SetAttackData(m_attackData.EnAttackType::enUppercut);
-        }
-        if (enButtonY == button) {
-            m_attackData.SetAttackData(m_attackData.EnAttackType::enStraight);
+        if (enButtonLB1 == button) {
+            m_attackData.SetAttackData(m_attackData.EnAttackType::enJubHead_R);
         }
         if (enButtonRB2 == button) {
-            m_attackData.SetAttackData(m_attackData.EnAttackType::enBodyBlow);
+            m_attackData.SetAttackData(m_attackData.EnAttackType::enJubBody_L);
         }
+        if (enButtonLB2 == button) {
+            m_attackData.SetAttackData(m_attackData.EnAttackType::enJubBody_R);
+        }
+        //if (enButtonRB2 == button) {
+        //    m_attackData.SetAttackData(m_attackData.EnAttackType::enBodyBlow);
+        //}
     }
 
     void SetAlreadyAttacked()

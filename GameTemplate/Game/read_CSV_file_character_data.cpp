@@ -8,11 +8,15 @@
 
 void ReadCSVFileCharacterData::ReadCSVFileData(std::string filePath)
 {
+    ////////////////////////////////////////////////////////////
+    // ファイル操作
+    ////////////////////////////////////////////////////////////
+    
     // ファイルを開く
     Open(filePath);
     
     // モデルアセットのフォルダーのパスを取得
-    std::string fileFolderPath = GetCell(2, 1);
+    const std::string fileFolderPath = GetCell(2, 1);
     // キャラクターモデルのファイルネームを取得
     m_characterModelPath = GetCell(2, 2);
     // アニメーションデータのファイルネームを取得
@@ -20,6 +24,10 @@ void ReadCSVFileCharacterData::ReadCSVFileData(std::string filePath)
 
     // ファイルを閉じる
     Close();
+
+    ////////////////////////////////////////////////////////////
+    // 必要ない情報を削除
+    ////////////////////////////////////////////////////////////
 
     // 必要ない情報を削除
     for (int animationNum = 0; m_characterAnimationPath.size() > animationNum; ++animationNum) {

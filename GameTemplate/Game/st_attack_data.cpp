@@ -51,10 +51,28 @@ namespace nsAttackData
 const bool StAttackData::SetAttackData(const int attackType)
 {
     // ƒWƒƒƒu
-    if (EnAttackType::enJub == attackType) {
+    if (EnAttackType::enJubHead_L == attackType) {
         m_power = nsAttackData::nsJub::POWER; // UŒ‚—Í
         m_attackTimeLimit = nsAttackData::nsJub::ATTACK_TIME_LIMIT; // UŒ‚ŠÔ
-        m_attackType = EnAttackType::enJub; // UŒ‚‚Ìí—Ş
+        m_attackType = EnAttackType::enJubHead_L; // UŒ‚‚Ìí—Ş
+        //m_impactType = nsAttackData::nsJub::IMPACT_TYPE; // UŒ‚‚É‚æ‚é‰e‹¿
+    }
+    else if (EnAttackType::enJubHead_R == attackType) {
+        m_power = nsAttackData::nsJub::POWER; // UŒ‚—Í
+        m_attackTimeLimit = nsAttackData::nsJub::ATTACK_TIME_LIMIT; // UŒ‚ŠÔ
+        m_attackType = EnAttackType::enJubHead_R; // UŒ‚‚Ìí—Ş
+        //m_impactType = nsAttackData::nsJub::IMPACT_TYPE; // UŒ‚‚É‚æ‚é‰e‹¿
+    }
+    else if (EnAttackType::enJubBody_L == attackType) {
+        m_power = nsAttackData::nsJub::POWER; // UŒ‚—Í
+        m_attackTimeLimit = nsAttackData::nsJub::ATTACK_TIME_LIMIT; // UŒ‚ŠÔ
+        m_attackType = EnAttackType::enJubBody_L; // UŒ‚‚Ìí—Ş
+        //m_impactType = nsAttackData::nsJub::IMPACT_TYPE; // UŒ‚‚É‚æ‚é‰e‹¿
+    }
+    else if (EnAttackType::enJubBody_R == attackType) {
+        m_power = nsAttackData::nsJub::POWER; // UŒ‚—Í
+        m_attackTimeLimit = nsAttackData::nsJub::ATTACK_TIME_LIMIT; // UŒ‚ŠÔ
+        m_attackType = EnAttackType::enJubBody_R; // UŒ‚‚Ìí—Ş
         //m_impactType = nsAttackData::nsJub::IMPACT_TYPE; // UŒ‚‚É‚æ‚é‰e‹¿
     }
     // ƒAƒbƒp[ƒJƒbƒg

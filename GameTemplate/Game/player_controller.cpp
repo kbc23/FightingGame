@@ -47,23 +47,34 @@ void PlayerController::ControllerButton()
     if (false == m_getStPlayerStatus->NotAttack() && true == m_gamePad->IsTrigger(enButtonY)) {
         m_getStPlayerStatus->SetAttackData(enButtonY);
     }
+    // L1ボタン
+    if (false == m_getStPlayerStatus->CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonLB1)) {
+        m_getStPlayerStatus->StartDash();
+    }
+    // L2ボタン
+    if (false == m_getStPlayerStatus->NotAttack() && true == m_gamePad->IsTrigger(enButtonLB2)) {
+        m_getStPlayerStatus->SetAttackData(enButtonRB2);
+    }
+    // R1ボタン
+    if (false == m_getStPlayerStatus->CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
+        m_getStPlayerStatus->StartDash();
+    }
     // R2ボタン
     if (false == m_getStPlayerStatus->NotAttack() && true == m_gamePad->IsTrigger(enButtonRB2)) {
         m_getStPlayerStatus->SetAttackData(enButtonRB2);
     }
 
     // R1ボタン: ダッシュ
-    if (false == m_getStPlayerStatus->CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
-        m_getStPlayerStatus->StartDash();
-    }
-
+    //if (false == m_getStPlayerStatus->CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
+    //    m_getStPlayerStatus->StartDash();
+    //}
     // L1ボタン: ガード
-    if (false == m_getStPlayerStatus->CheckNowDash() && true == m_gamePad->IsPress(enButtonLB1)) {
-        m_getStPlayerStatus->StartDefence();
-    }
-    else {
-        m_getStPlayerStatus->EndDefence();
-    }
+    //if (false == m_getStPlayerStatus->CheckNowDash() && true == m_gamePad->IsPress(enButtonLB1)) {
+    //    m_getStPlayerStatus->StartDefence();
+    //}
+    //else {
+    //    m_getStPlayerStatus->EndDefence();
+    //}
 
     // Debug: start
     //if (m_playerNum == m_findGameData->GetOtherPlayerNum()) {

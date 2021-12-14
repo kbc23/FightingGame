@@ -147,6 +147,17 @@ public: // Set function
         m_modelCharacter->SetTest(hitbox);
     }
 
+    void SetDefenceAnimation()
+    {
+        m_modelCharacter->PlayAnimation(enDefence);
+    }
+
+    void EndDefenceAnimation()
+    {
+        m_modelCharacter->PlayAnimation(enIdle);
+    }
+
+
 
 public: //enum
     /**
@@ -155,7 +166,10 @@ public: //enum
     enum AnimationEnum
     {
         enIdle,
-        enJub,
+        enJubHead_L,    // ƒWƒƒƒu
+        enJubHead_R,
+        enJubBody_L,
+        enJubBody_R,
         enUppercut,
         enHook,
         enBodyBlow,
@@ -163,6 +177,7 @@ public: //enum
         enCrouchingStart,
         enCrouching,
         enCrouchingEnd,
+        enDefence,
         AnimationMax
     };
 

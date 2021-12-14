@@ -96,7 +96,10 @@ public: // enum
     enum EnAttackType
     {
         enNotAttacking, // 攻撃していない
-        enJub,          // ジャブ
+        enJubHead_L,    // ジャブ
+        enJubHead_R,
+        enJubBody_L,
+        enJubBody_R,
         enHook,         // フック
         enBodyBlow,     // ボディブロー
         enStraight,     // ストレート

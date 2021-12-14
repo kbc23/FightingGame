@@ -102,24 +102,88 @@ void Player::Controller()
     // ボタン入力
     //////////////////////////////
 
-    m_playerController->ControllerButton();
+    //m_playerController->ControllerButton();
+
+    // Aボタン
+    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonA)) {
+        m_playerStatus.SetAttackData(enButtonA);
+    }
+    // Bボタン
+    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonB)) {
+        m_playerStatus.SetAttackData(enButtonB);
+    }
+    // Xボタン
+    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonX)) {
+        m_playerStatus.SetAttackData(enButtonX);
+    }
+    // Yボタン
+    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonY)) {
+        m_playerStatus.SetAttackData(enButtonY);
+    }
+    // L1ボタン
+    if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonLB1)) {
+        m_playerStatus.SetAttackData(enButtonLB1);
+    }
+    // L2ボタン
+    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonLB2)) {
+        m_playerStatus.SetAttackData(enButtonLB2);
+    }
+    // R1ボタン
+    if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
+        m_playerStatus.SetAttackData(enButtonRB1);
+    }
+    // R2ボタン
+    if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonRB2)) {
+        m_playerStatus.SetAttackData(enButtonRB2);
+    }
+
+    // R1ボタン: ダッシュ
+    //if (false == m_getStPlayerStatus->CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
+    //    m_getStPlayerStatus->StartDash();
+    //}
+    // L1ボタン: ガード
+    if (false == m_playerStatus.CheckNowDash() && true == m_gamePad->IsPress(enButtonA)) {
+        m_playerStatus.StartDefence();
+        m_actor->SetDefenceAnimation();
+    }
+    else {
+        m_playerStatus.EndDefence();
+        m_actor->EndDefenceAnimation();
+    }
+
+    // Debug: start
+    //if (m_playerNum == m_findGameData->GetOtherPlayerNum()) {
+    //    m_defenceData.SetFlagDefense(true);
+    //}
+    // Debug: end
+
+    // Debug: Startボタン: ゲーム終了
+    if (true == m_gamePad->IsTrigger(enButtonStart)) {
+        MessageBoxA(nullptr, "ゲームを終了します(Debug End)", "メッセージ", MB_OK);
+        //ゲームを終了
+        exit(EXIT_SUCCESS);
+    }
+    // Debug: end
+
 
     // プレイヤーの移動
     Vector3 moveAmount = m_playerController->ControllerLStick();
 
     // ガード中は処理をしない
-    if (false == m_playerStatus.CheckNowDefence()) {
-        if (false == m_playerStatus.CheckNowDash()) {
-            moveAmount = Move(moveAmount);
-        }
-        // ダッシュ
-        else {
-            moveAmount = DashMove();
-        }
-    }
-    else {
-        moveAmount = Vector3::Zero;
-    }
+    //if (false == m_playerStatus.CheckNowDefence()) {
+        //if (false == m_playerStatus.CheckNowDash()) {
+    moveAmount = Move(moveAmount);
+    //}
+    //// ダッシュ
+    //else {
+    //    moveAmount = DashMove();
+    //}
+//}
+//else {
+//    moveAmount = Vector3::Zero;
+//}
+
+    Defence(moveAmount.y);
 
     // スウェーの処理
     Vector2 swayMove = m_playerController->ControllerRStick();
@@ -180,6 +244,20 @@ const Vector3 Player::DashMove()
     return toPos;
 }
 
+void Player::Defence(const float moveY)
+{
+    // 後ろ方向に入力
+    if (-0.5f >= moveY) {
+        // 防御の処理
+        m_playerStatus.StartDefence();
+    }
+    // 後ろ方向に入力していない
+    else if (-0.5f < moveY) {
+        // 起き上がる
+        m_playerStatus.EndDefence();
+    }
+}
+
 ////////////////////////////////////////////////////////////
 // 攻撃関連
 ////////////////////////////////////////////////////////////
@@ -211,8 +289,20 @@ void Player::AttackAnimationStart()
     // この関数は、良い感じの処理に変えたい
     // （Actorクラスのインスタンスで処理をするようにしたい）
 
-    if (StAttackData::EnAttackType::enJub == m_playerStatus.GetNowAttackType()) {
-        m_actor->SetAttackAnimation(m_actor->AnimationEnum::enJub);
+    if (StAttackData::EnAttackType::enJubHead_L == m_playerStatus.GetNowAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::enJubHead_L);
+        return;
+    }
+    if (StAttackData::EnAttackType::enJubHead_R == m_playerStatus.GetNowAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::enJubHead_R);
+        return;
+    }
+    if (StAttackData::EnAttackType::enJubBody_L == m_playerStatus.GetNowAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::enJubBody_L);
+        return;
+    }
+    if (StAttackData::EnAttackType::enJubBody_R == m_playerStatus.GetNowAttackType()) {
+        m_actor->SetAttackAnimation(m_actor->AnimationEnum::enJubBody_R);
         return;
     }
     if (StAttackData::EnAttackType::enUppercut == m_playerStatus.GetNowAttackType()) {
