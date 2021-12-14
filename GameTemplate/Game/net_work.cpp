@@ -487,7 +487,7 @@ void NetWork::customEventAction(int playerNr, nByte eventCode, const ExitGames::
 	auto eventContent = ExitGames::Common::ValueObject<ExitGames::Common::Hashtable>(eventContentObj).getDataCopy();
 	switch (eventCode) {
 	case enEvent_SendInitDataForOtherPlayer:
-		//if (m_state == State::enWaitRecvInitDataOtherPlayer) {
+		if (m_state == State::enWaitRecvInitDataOtherPlayer) {
 			K2_ASSERT(!m_isHoge, "“ñ‰ñŒÄ‚Î‚ê‚Ä‚¢‚é");
 			m_isHoge = true;
 			nsDebug::Log("enEvent_SendInitDataForOtherPlayer\n");
@@ -498,7 +498,7 @@ void NetWork::customEventAction(int playerNr, nByte eventCode, const ExitGames::
 			memcpy(m_recieveDataOnGameStart.get(), pSrcData, m_recieveDataSize);
 			m_allPlayerJoinedRoomFunc(m_recieveDataOnGameStart.get(), m_recieveDataSize);
 			m_state = State::enWaitStartGame;
-		//}
+		}
 
 		nsDebug::Log("customEventAction()_End_1\n");
 		break;
