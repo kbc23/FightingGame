@@ -80,6 +80,11 @@ public: // get function
         return *m_ghostBox[bodyParts]->GetGhostObject();
     }
 
+    const int GetDamageStatus()
+    {
+        return m_damageStatus;
+    }
+
 
 private: // enum
 
@@ -142,4 +147,15 @@ private: // data member
     ////////////////////////////////////////////////////////////
 
     bool m_flagInit = false; // èâä˙âªÇµÇΩÇ©
+
+
+    enum EnDamageStatus
+    {
+        enNotDamage,
+        enBodyDamage,
+        enHeadDamage,
+        MaxEnDamageStatus
+    };
+
+    int m_damageStatus = EnDamageStatus::enNotDamage;
 };

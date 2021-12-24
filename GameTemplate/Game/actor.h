@@ -45,10 +45,9 @@ public:
     */
     void AddStatus(Vector3& addMoveAmount, const Vector2& swayMove);
     /**
-     * @brief キャラクターが移動方向に向く処理
-     * @param addMoveAmount 更新する移動量
+     * @brief キャラクターが相手の方向を見る処理
     */
-    void Turn(Vector3& addMoveAmount);
+    void PlayerViewingDirection();
 
 
 private:
@@ -138,6 +137,19 @@ public: // Set function
         //アニメーションの再生
         m_modelCharacter->PlayAnimation(animation);
     }
+
+    void SetDamageAnimation(const int animation)
+    {
+        m_modelCharacter->PlayAnimation(enIdle);
+
+        if (EnDamageStatus::enBodyDamage == animation) {
+            m_modelCharacter->PlayAnimation(enDamageBody);
+        }
+        else if (EnDamageStatus::enHeadDamage == animation) {
+            m_modelCharacter->PlayAnimation(enDamageHead);
+        }
+    }
+
     /**
      * @brief ModelRenderクラスでHitboxクラスの位置情報などの更新をしたいので渡す処理
      * （関数の名前をどうにかする）
@@ -185,6 +197,8 @@ public: //enum
         enCrouching,
         enCrouchingEnd,
         enDefence,
+        enDamageBody,
+        enDamageHead,
         AnimationMax
     };
 
@@ -201,6 +215,16 @@ public: //enum
     };
 
     EnCrouchingStatus m_crouchingStatus = EnCrouchingStatus::enNotCrouching;
+
+    enum EnDamageStatus
+    {
+        enNotDamage,
+        enBodyDamage,
+        enHeadDamage,
+        MaxEnDamageStatus
+    };
+
+    int m_damageStatus = EnDamageStatus::enNotDamage;
 
 
 private: // data member

@@ -232,8 +232,19 @@ const int Hitbox::CheckHit()
 
         // “–‚½‚Á‚½‚ç”»’èˆ—‚©‚ç”²‚¯‚é
         if (EnBodyParts::enMaxBodyParts != checkHitBodyParts) {
+            if (EnBodyParts::enHead == checkHitBodyParts) {
+                m_damageStatus = EnDamageStatus::enHeadDamage;
+            }
+            else {
+                m_damageStatus = EnDamageStatus::enBodyDamage;
+            }
+
             break;
         }
+    }
+
+    if (EnBodyParts::enMaxBodyParts == checkHitBodyParts) {
+        m_damageStatus = EnDamageStatus::enNotDamage;
     }
 
     return checkHitBodyParts;

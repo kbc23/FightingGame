@@ -132,6 +132,9 @@ public: // Set function
         // HPの確認
         CheckHp();
 
+        // ダメージアニメーション
+        m_actor->SetDamageAnimation(m_otherPlayer->m_hitbox->GetDamageStatus());
+
         return true;
     }
     /**
