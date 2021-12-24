@@ -127,7 +127,12 @@ public: // Set function
         }
 
         // ダメージ処理
-        m_hp -= damage;
+        if (m_otherPlayer->m_hitbox->GetDamageStatus() == EnDamageStatus::enBodyDamage) {
+            m_hp -= damage;
+        }
+        else {
+            m_hp -= damage * 2;
+        }
 
         // HPの確認
         CheckHp();
@@ -160,6 +165,15 @@ private: // Used in the Set function
             m_actor->HP_0();
         }
     }
+
+private:
+    enum EnDamageStatus
+    {
+        enNotDamage,
+        enBodyDamage,
+        enHeadDamage,
+        MaxEnDamageStatus
+    };
 
 
 private: // constant
