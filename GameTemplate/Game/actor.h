@@ -130,6 +130,10 @@ public: // Set function
     */
     void SetAttackAnimation(const int animation)
     {
+        if (true == m_hp0) {
+            return;
+        }
+
         m_flagAttackAnimation = true;
 
         // 同じアニメーションを指定した際、最初から再生されるように通常時アニメーションを挟む
@@ -140,6 +144,10 @@ public: // Set function
 
     void SetDamageAnimation(const int animation)
     {
+        if (true == m_hp0) {
+            return;
+        }
+
         m_modelCharacter->PlayAnimation(enIdle);
 
         if (EnDamageStatus::enBodyDamage == animation) {
@@ -162,11 +170,19 @@ public: // Set function
 
     void SetDefenceAnimation()
     {
+        if (true == m_hp0) {
+            return;
+        }
+
         m_modelCharacter->PlayAnimation(enDefence);
     }
 
     void EndDefenceAnimation()
     {
+        if (true == m_hp0) {
+            return;
+        }
+
         m_modelCharacter->PlayAnimation(enIdle);
     }
 
@@ -174,6 +190,21 @@ public: // Set function
     void SetOtherActor(Actor& otherActor)
     {
         m_getOtherActor = &otherActor;
+    }
+
+
+    void KnockDownAnimation()
+    {
+        if (false == m_hp0) {
+            return;
+        }
+        
+        m_modelCharacter->PlayAnimation(enKnockedDown);
+    }
+
+    void HP_0()
+    {
+        m_hp0 = true;
     }
 
 
@@ -199,6 +230,7 @@ public: //enum
         enDefence,
         enDamageBody,
         enDamageHead,
+        enKnockedDown,
         AnimationMax
     };
 
@@ -255,4 +287,5 @@ private: // data member
 
     bool m_flagOperation = true; // 操作可能か
     bool m_flagAttackAnimation = false; // 攻撃時のアニメーションをしているか
+    bool m_hp0 = false;
 };

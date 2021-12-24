@@ -87,6 +87,7 @@ void Actor::CharacterInit(const Vector3& initPos, const float initRot)
 
 void Actor::Update()
 {
+    KnockDownAnimation();
     // 攻撃アニメーション関連
     AttackAnimation();
     // モデルに位置情報などのデータを渡す
@@ -123,6 +124,10 @@ void Actor::PlayerViewingDirection()
 
 void Actor::AttackAnimation()
 {
+    if (true == m_hp0) {
+        return;
+    }
+
     // 攻撃のアニメーション中ではない場合
     if (false == m_flagAttackAnimation) {
         return;

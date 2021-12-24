@@ -157,6 +157,7 @@ private: // Used in the Set function
         if (0 >= m_hp) {
             m_hp = 0;
             m_flagHp_0 = true;
+            m_actor->HP_0();
         }
     }
 
