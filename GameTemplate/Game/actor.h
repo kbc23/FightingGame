@@ -124,6 +124,16 @@ public: // Get function
 
 
 public: // Set function
+    void SetIdleAnimation()
+    {
+        if (true == m_hp0) {
+            return;
+        }
+
+        // 同じアニメーションを指定した際、最初から再生されるように通常時アニメーションを挟む
+        m_modelCharacter->PlayAnimation(enIdle);
+    }
+    
     /**
      * @brief 指定した攻撃アニメーションを再生
      * @param animation 攻撃アニメーション
@@ -202,9 +212,9 @@ public: // Set function
         m_modelCharacter->PlayAnimation(enKnockedDown);
     }
 
-    void HP_0()
+    void HP_0(const bool flag)
     {
-        m_hp0 = true;
+        m_hp0 = flag;
     }
 
 

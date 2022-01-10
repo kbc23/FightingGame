@@ -69,6 +69,12 @@ public: // Update data
         SetPosition(playerNum);
     }
 
+    void UpdateDownCountUI(const int time)
+    {
+        int textValue = time / 60;
+        m_downCountUI->SetText(textValue);
+    }
+
     void SetPosition(const int playerNum)
     {
         if (playerNum == m_findGameData->GetPlayerNum()) {
@@ -102,6 +108,8 @@ private: // data member
     FontRender* m_downUI = nullptr;
     FontRender* m_defenseUI = nullptr;
     FontRender* m_defenseValueUI = nullptr;
+
+    FontRender* m_downCountUI = nullptr;
 
     GameData* m_findGameData = nullptr;
 

@@ -4,13 +4,16 @@
 PlayerUI::PlayerUI()
 {
     m_hpUI = NewGO<FontRender>(igo::EnPriority::font);
-    m_hpUI->Init(L"1000");
+    m_hpUI->Init(L"");
+
+    m_downCountUI = NewGO<FontRender>(igo::EnPriority::font);
+    m_downCountUI->Init(L"");
 
     //m_mpUI = NewGO<FontRender>(igo::EnPriority::font);
     //m_mpUI->Init(L"4");
     
     m_dashUI = NewGO<FontRender>(igo::EnPriority::font);
-    m_dashUI->Init(L"3");
+    m_dashUI->Init(L"");
 
     m_knockBackUI = NewGO<FontRender>(igo::EnPriority::font);
     m_knockBackUI->Init(L"‚Ì‚¯‚¼‚è");
@@ -25,7 +28,7 @@ PlayerUI::PlayerUI()
     m_defenseUI->Deactivate();
 
     m_defenseValueUI = NewGO<FontRender>(igo::EnPriority::font);
-    m_defenseValueUI->Init(L"100");
+    m_defenseValueUI->Init(L"");
 }
 
 PlayerUI::~PlayerUI()
@@ -35,6 +38,7 @@ PlayerUI::~PlayerUI()
     DeleteGO(m_knockBackUI);
     DeleteGO(m_downUI);
     DeleteGO(m_defenseUI);
+    DeleteGO(m_downCountUI);
 }
 
 bool PlayerUI::Start()

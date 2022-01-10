@@ -66,17 +66,29 @@ void Player::Init(
 
 void Player::Update()
 {
+    if (GetFlagDown() == true) {
+        m_playerUI->UpdateDownCountUI(m_downCount);
+        DownUp();
+
+        return;
+    }
+
     // 操作
     Controller();
 
     // 攻撃関連の毎フレームの処理
     UpdateAttack();
 
+    //if (m_playerNum == m_findGameData->GetPlayerNum()) {
+    //    m_otherPlayer->m_playerStatus.StartDefence();
+    //    m_otherPlayer->m_actor->SetDefenceAnimation();
+    //}
+
     //////////////////////////////
     // UIのUpdate
     //////////////////////////////
 
-    m_playerUI->UpdateHpUI(m_hp, m_playerNum);
+    //m_playerUI->UpdateHpUI(m_hp, m_playerNum);
     //m_playerUI->UpdateDashUI(m_dashStatus.GetRemainingNumberOfTimes(), m_playerNum);
     //m_playerUI->UpdateKnockBackUI(m_squeezeStatus.GetFlagSqueeze(), m_playerNum);
     //m_playerUI->UpdateDownUI(m_downStatus.GetFlagDown(), m_playerNum);
@@ -110,7 +122,8 @@ void Player::Controller()
     }
     // Bボタン
     if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonB)) {
-        m_playerStatus.SetAttackData(enButtonB);
+        ZishouDamage();
+        return;
     }
     // Xボタン
     if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonX)) {
@@ -138,9 +151,9 @@ void Player::Controller()
     }
 
     // R1ボタン: ダッシュ
-    if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonB)) {
-        m_playerStatus.StartDash();
-    }
+    //if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonB)) {
+        //m_playerStatus.StartDash();
+    //}
     // L1ボタン: ガード
     if (false == m_playerStatus.CheckNowDash() && true == m_gamePad->IsPress(enButtonA)) {
         m_playerStatus.StartDefence();

@@ -112,6 +112,11 @@ public: // Get function
         return *m_actor;
     }
 
+    void SetFlagDownWait(const bool flag)
+    {
+        m_flagDownWait = flag;
+    }
+
 
 public: // Set function
     /**
@@ -142,6 +147,21 @@ public: // Set function
 
         return true;
     }
+
+    void ZishouDamage()
+    {
+        // HPが０なら処理をしない
+        if (true == m_flagHp_0) {
+            return;
+        }
+
+        m_hp = 0;
+
+        // HPの確認
+        CheckHp();
+    }
+
+
     /**
      * @brief ゲームが終了したかのフラグをセット
      * @param flag ゲームが終了したか
@@ -150,6 +170,56 @@ public: // Set function
     {
         m_flagGameEndStopOperation = flag;
     }
+
+    void DownUp()
+    {
+        // HPが０なら処理をしない
+        if (true == m_flagHp_0) {
+            return;
+        }
+
+        if (false == GetFlagDown()) {
+            return;
+        }
+
+        CountDownTime();
+
+        if (true == m_gamePad->IsTrigger(enButtonA)) {
+            ++m_downUpCount;
+        }
+
+
+        else if (10 <= m_downUpCount && 1 == m_countDown) {
+            SetFlagDown(false);
+            m_hp = m_HP_50_PERCENT;
+            m_downUpCount = 0;
+            m_actor->HP_0(false);
+            m_actor->SetIdleAnimation();
+
+            m_downCount = 0;
+        }
+        else if (20 <= m_downUpCount && 2 == m_countDown) {
+            SetFlagDown(false);
+            m_hp = m_HP_25_PERCENT;
+            m_downUpCount = 0;
+            m_actor->HP_0(false);
+            m_actor->SetIdleAnimation();
+
+            m_downCount = 0;
+        }
+    }
+
+    void CountDownTime()
+    {
+        ++m_downCount;
+
+        if (m_downCount >= 600) {
+            m_flagHp_0 = true;
+        }
+    }
+
+    int m_downUpCount = 0;
+    int m_downCount = 0;
 
 
 private: // Used in the Set function
@@ -161,8 +231,16 @@ private: // Used in the Set function
         // HPが０以下の場合、HPを０に設定し、敗北した状態にする
         if (0 >= m_hp) {
             m_hp = 0;
-            m_flagHp_0 = true;
-            m_actor->HP_0();
+            SetFlagDown(true);
+            m_otherPlayer->SetFlagDownWait(true);
+
+            ++m_countDown;
+
+            if (m_COUNT_DOWN_END == m_countDown) {
+                m_flagHp_0 = true;
+            }
+
+            m_actor->HP_0(true);
         }
     }
 
@@ -178,6 +256,10 @@ private:
 
 private: // constant
     static const int m_MAX_HP = 1000; // プレイヤーの体力の最大値
+    static const int m_HP_50_PERCENT = 500;
+    static const int m_HP_25_PERCENT = 250;
+
+    static const int m_COUNT_DOWN_END = 3;
 
 
 private: // data member
@@ -217,6 +299,21 @@ private: // data member
     bool m_flagOperation = true; // 操作可能か
     bool m_flagHp_0 = false; // HPが０になったか
     bool m_flagGameEndStopOperation = false; // ゲームが終了して操作ができなくなっているか
+
+    bool m_flagDown = false;
+
+    void SetFlagDown(const bool flag)
+    {
+        m_flagDown = flag;
+    }
+
+    const bool GetFlagDown()
+    {
+        return m_flagDown;
+    }
+
+    bool m_flagDownWait = false;
+    int m_countDown = 0;
 
     ////////////////////////////////////////////////////////////
     // その他
