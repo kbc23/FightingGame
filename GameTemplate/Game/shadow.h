@@ -9,7 +9,7 @@ public:
     void Update() override final;
     void ShadowRender(RenderContext& renderContext) override final;
 
-    void Init(const char* filePath);
+    void Init(const char* filePath, Skeleton& skeleton);
     
 
 
@@ -50,5 +50,4 @@ private: // data member
     Vector3 m_position = g_vec3Zero;			// ˆÊ’u
     Quaternion m_rotation = g_quatIdentity;		// ‰ñ“]
     Vector3 m_scale = g_vec3One;				// Šg‘å
-
 };

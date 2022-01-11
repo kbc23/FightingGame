@@ -39,13 +39,17 @@ void Shadow::ShadowRender(RenderContext& renderContext)
     m_shadowModel.Draw(renderContext, ShadowLightCamera::GetInstance()->GetShadowLightCamera());
 }
 
-void Shadow::Init(const char* filePath)
+void Shadow::Init(const char* filePath, Skeleton& skeleton)
 {
     // シャドウマップ描画用のモデルを用意する
     ModelInitData ShadowModelInitData;
     ShadowModelInitData.m_fxFilePath = "Assets/shader/sampleDrawShadowMap.fx";
     ShadowModelInitData.m_tkmFilePath = filePath;
-    m_shadowModel;
+    // スケルトンを指定する。
+    if (&skeleton) {	// スケルトンが初期化されていたら
+        ShadowModelInitData.m_skeleton = &skeleton;
+    }
+
     m_shadowModel.Init(ShadowModelInitData);
     m_shadowModel.UpdateWorldMatrix(
         { 0,50,0 },

@@ -147,7 +147,8 @@ void ModelRender::InitModel(const char* filePath,
 	// âeÇê∂ê¨Ç∑ÇÈÇ©
 	if (true == flagShadow) {
 		m_shadowModel = NewGO<Shadow>(0);
-		m_shadowModel->Init(filePath);
+
+		m_shadowModel->Init(filePath, *m_skeletonPointer);
 
 		m_flagShadow = true;
 	}
