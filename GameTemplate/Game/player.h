@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "hitbox.h"
 #include "st_player_status.h"
+#include "player_UI.h"
 
 class PlayerCamera;
 class PlayerUI;
@@ -196,6 +197,7 @@ public: // Set function
             m_actor->HP_0(false);
             m_actor->SetIdleAnimation();
 
+            m_playerUI->ResetDownCountUI();
             m_downCount = 0;
         }
         else if (20 <= m_downUpCount && 2 == m_countDown) {
@@ -205,6 +207,7 @@ public: // Set function
             m_actor->HP_0(false);
             m_actor->SetIdleAnimation();
 
+            m_playerUI->ResetDownCountUI();
             m_downCount = 0;
         }
     }

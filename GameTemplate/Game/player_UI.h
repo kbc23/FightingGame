@@ -75,6 +75,11 @@ public: // Update data
         m_downCountUI->SetText(textValue);
     }
 
+    void ResetDownCountUI()
+    {
+        m_downCountUI->SetText(L"");
+    }
+
     void SetPosition(const int playerNum)
     {
         if (playerNum == m_findGameData->GetPlayerNum()) {
