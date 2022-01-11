@@ -106,7 +106,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/../MiniEngine;$(SolutionDir)/Sample_00;$(SolutionDir)/../ExEngine;$(SolutionDir)/../ExEngine/bulletPhysics/src;$(SolutionDir)/../ExEngine/effekseer/src/Effekseer;$(SolutionDir)/../ExEngine/effekseer/src/EffekseerRendererDX12</IncludePath>
-    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Debug;$(SolutionDir)/exlib/x64;$(SolutionDir)/../photon-windows-sdk_v5-0-1-1\Common-cpp\lib;$(SolutionDir)/../photon-windows-sdk_v5-0-1-1\LoadBalancing-cpp\lib;$(SolutionDir)/../photon-windows-sdk_v5-0-1-1\Photon-cpp\lib;$(SolutionDir)/../ExEngine/effekseer/install_msvc2019/lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Debug;$(SolutionDir)/exlib/x64;$(SolutionDir)/../photon-windows-sdk_v5-0-2-0\Common-cpp\lib;$(SolutionDir)/../photon-windows-sdk_v5-0-2-0\LoadBalancing-cpp\lib;$(SolutionDir)/../photon-windows-sdk_v5-0-2-0\Photon-cpp\lib;$(SolutionDir)/../ExEngine/effekseer/install_msvc2019/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -121,7 +121,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/../MiniEngine;$(SolutionDir)/Sample_00;$(SolutionDir)/../ExEngine;$(SolutionDir)/../ExEngine/bulletPhysics/src;$(SolutionDir)/../ExEngine/effekseer/src/Effekseer;$(SolutionDir)/../ExEngine/effekseer/src/EffekseerRendererDX12</IncludePath>
-    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Release;$(SolutionDir)/exlib/x64;$(LibraryPath);$(SolutionDir)/../photon-windows-sdk_v5-0-1-1\Common-cpp\lib;$(SolutionDir)/../photon-windows-sdk_v5-0-1-1\LoadBalancing-cpp\lib;$(SolutionDir)/../photon-windows-sdk_v5-0-1-1\Photon-cpp\lib;$(SolutionDir)/../ExEngine/effekseer/install_msvc2019/lib</LibraryPath>
+    <LibraryPath>$(SolutionDir)/../MiniEngine/DirectXTK/Bin/Desktop_2019_Win10/x64/Release;$(SolutionDir)/exlib/x64;$(LibraryPath);$(SolutionDir)/../photon-windows-sdk_v5-0-2-0\Common-cpp\lib;$(SolutionDir)/../photon-windows-sdk_v5-0-2-0\LoadBalancing-cpp\lib;$(SolutionDir)/../photon-windows-sdk_v5-0-2-0\Photon-cpp\lib;$(SolutionDir)/../ExEngine/effekseer/install_msvc2019/lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -152,7 +152,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)/../photon-windows-sdk_v5-0-1-1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/../photon-windows-sdk_v5-0-2-0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -209,7 +209,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)/../photon-windows-sdk_v5-0-1-1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/../photon-windows-sdk_v5-0-2-0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
