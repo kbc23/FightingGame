@@ -8,7 +8,7 @@ namespace nsAttackData
     // ƒWƒƒƒu
     namespace nsJub
     {
-        const int POWER = 200; // UŒ‚—Í
+        const int POWER = 20; // UŒ‚—Í
         const int ATTACK_TIME_LIMIT = 16; // UŒ‚ŠÔ
         const int IMPACT_TYPE = StAttackData::EnImpactType::enSqueeze; // UŒ‚‚É‚æ‚é‰e‹¿
     }
