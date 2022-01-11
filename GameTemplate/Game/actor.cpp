@@ -110,9 +110,9 @@ void Actor::AddStatus(Vector3& addMoveAmount, const Vector2& swayMove)
 
 void Actor::PlayerViewingDirection()
 {
-    if (m_getOtherActor == nullptr) {
-        return;
-    }
+    //if (m_getOtherActor == nullptr) {
+    //    return;
+    //}
 
     Vector3 viewingDirection = m_getOtherActor->GetPosition() - m_position;
 
