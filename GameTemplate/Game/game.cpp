@@ -208,6 +208,9 @@ void Game::OnAllPlayerJoined(void* pData, int size)
 		m_player[m_playerNum]
 	);
 
+	m_player[m_playerNum]->GetActor().SetOtherActor(m_player[m_otherPlayerNum]->GetActor());
+	m_player[m_otherPlayerNum]->GetActor().SetOtherActor(m_player[m_playerNum]->GetActor());
+
 	m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
 	m_modelStage->Init("Assets/modelData/stage/stage.tkm", true);
 
