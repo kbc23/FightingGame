@@ -13,6 +13,13 @@ public:
     bool Start() override;
     void Update() override;
 
+    void AudienceUpdate();
+
+    void InitAudience()
+    {
+        m_playerOrAudience = EnPlayerOrAudience::enAudience;
+    }
+
     ////////////////////////////////////////////////////////////
     // 初期化
     ////////////////////////////////////////////////////////////
@@ -241,6 +248,7 @@ public: //enum
         enDamageBody,
         enDamageHead,
         enKnockedDown,
+        enRooting,
         AnimationMax
     };
 
@@ -298,4 +306,12 @@ private: // data member
     bool m_flagOperation = true; // 操作可能か
     bool m_flagAttackAnimation = false; // 攻撃時のアニメーションをしているか
     bool m_hp0 = false;
+
+    enum EnPlayerOrAudience : bool
+    {
+        enPlayer = true,
+        enAudience = false
+    };
+
+    bool m_playerOrAudience = EnPlayerOrAudience::enPlayer;
 };

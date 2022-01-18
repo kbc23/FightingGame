@@ -6,6 +6,7 @@
 #include "player_UI.h"
 #include "game_data.h"
 #include "player_controller.h"
+#include "sound_SE.h"
 
 Player::Player()
 {
@@ -62,6 +63,12 @@ void Player::Init(
     m_findPlayerCamera = FindGO<PlayerCamera>(igo::className::PLAYER_CAMERA);
     // ゲームデータ
     m_findGameData = FindGO<GameData>(igo::className::GAME_DATA);
+
+
+
+
+    m_seAttack = NewGO<SoundSE>(igo::EnPriority::normal);
+    m_seAttack->Init(L"Assets/Sound/SE/パンチの素振り3.wav");
 }
 
 void Player::Update()
@@ -136,18 +143,22 @@ void Player::Controller()
     // L1ボタン
     if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonLB1)) {
         m_playerStatus.SetAttackData(enButtonLB1);
+        m_seAttack->Play(false);
     }
     // L2ボタン
     if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonLB2)) {
         m_playerStatus.SetAttackData(enButtonLB2);
+        m_seAttack->Play(false);
     }
     // R1ボタン
     if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
         m_playerStatus.SetAttackData(enButtonRB1);
+        m_seAttack->Play(false);
     }
     // R2ボタン
     if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonRB2)) {
         m_playerStatus.SetAttackData(enButtonRB2);
+        m_seAttack->Play(false);
     }
 
     // R1ボタン: ダッシュ

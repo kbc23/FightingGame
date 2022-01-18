@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "model_render.h"
 
 #include "shadow_map.h"
@@ -29,7 +29,7 @@ bool ModelRender::Start()
 }
 
 ////////////////////////////////////////////////////////////
-// ‰Šú‰»
+// åˆæœŸåŒ–
 ////////////////////////////////////////////////////////////
 
 void ModelRender::Init(const char* filePath,
@@ -39,39 +39,58 @@ void ModelRender::Init(const char* filePath,
 	int maxAnimationClipNum
 )
 {
-	// tkmƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Û
+	// tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’ä¿æŒ
 	m_tkmFilePath = filePath;
-	// ƒXƒPƒ‹ƒgƒ“‚Ìƒf[ƒ^‚Ì“Ç‚İ‚İ
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã®ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 	InitSkeleton(filePath);
-	// ƒ‚ƒfƒ‹‚Ì‰Šú‰»
+	// ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–
 	InitModel(filePath, flagShadowReceiver, flagShadow, modelUpAxis);
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ‰Šú‰»
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆæœŸåŒ–
 	InitAnimation(animationClip, maxAnimationClipNum);
 
-	// ‰Šú‰»Š®—¹
+	// åˆæœŸåŒ–å®Œäº†
+	m_finishInit = true;
+}
+
+void ModelRender::AudienceInit(const char* filePath, bool flagShadowReceiver, bool flagShadow,
+	modelUpAxis::EnModelUpAxis modelUpAxis,
+	AnimationClip* animationClip,
+	int maxAnimationClipNum
+)
+{
+	// tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’ä¿æŒ
+	m_tkmFilePath = filePath;
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã®ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+	InitSkeleton(filePath);
+	// ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–
+	InitAudienceModel(filePath, flagShadowReceiver, flagShadow, modelUpAxis);
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆæœŸåŒ–
+	InitAnimation(animationClip, maxAnimationClipNum);
+
+	// åˆæœŸåŒ–å®Œäº†
 	m_finishInit = true;
 }
 
 bool ModelRender::InitSkeleton(const char* filePath)
 {
-	// tkmƒtƒ@ƒCƒ‹‚ğtksƒtƒ@ƒCƒ‹‚É•ÏŠ·
+	// tkmãƒ•ã‚¡ã‚¤ãƒ«ã‚’tksãƒ•ã‚¡ã‚¤ãƒ«ã«å¤‰æ›
 	std::string skeletonFilePath = filePath;
 	int pos = (int)skeletonFilePath.find(".tkm");
 	skeletonFilePath.replace(pos, 4, ".tks");
 
-	// ƒXƒPƒ‹ƒgƒ“‚ÌƒŠƒ\[ƒX‚ğŠm•Û
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’ç¢ºä¿
 	m_skeletonPointer.reset(new Skeleton);
-	// ƒXƒPƒ‹ƒgƒ“‚Ìƒf[ƒ^‚Ì“Ç‚İ‚İ
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã®ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 	bool isInited = m_skeletonPointer->Init(skeletonFilePath.c_str());
 
-	// ‰Šú‰»‚É¬Œ÷‚µ‚½‚©
-	// ¬Œ÷
+	// åˆæœŸåŒ–ã«æˆåŠŸã—ãŸã‹
+	// æˆåŠŸ
 	if (isInited) {
 		return true;
 	}
-	// ¸”s
+	// å¤±æ•—
 	else {
-		// ƒXƒPƒ‹ƒgƒ“‚ÌƒŠƒ\[ƒX‚ğ‰ğ•ú
+		// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’è§£æ”¾
 		m_skeletonPointer.reset();
 		return false;
 	}
@@ -79,14 +98,14 @@ bool ModelRender::InitSkeleton(const char* filePath)
 
 void ModelRender::InitAnimation(AnimationClip* animationClip, int maxAnimationClipNum)
 {
-	// ƒAƒjƒ\ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğ“o˜^‚µ‚Ä‚¢‚é‚©
+	// ã‚¢ãƒ‹ãƒ¡â€•ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’ç™»éŒ²ã—ã¦ã„ã‚‹ã‹
 	if (animationClip == nullptr) {
 		return;
 	}
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒŠƒ\[ƒX‚ğŠm•Û
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’ç¢ºä¿
 	m_animationPointer.reset(new Animation);
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ‰Šú‰»
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆæœŸåŒ–
 	m_animationPointer->Init(
 		*m_skeletonPointer,
 		animationClip,
@@ -99,52 +118,52 @@ void ModelRender::InitModel(const char* filePath,
 	modelUpAxis::EnModelUpAxis modelUpAxis
 )
 {
-	// ƒ‰ƒCƒg‚Ìİ’è‚ğ‚·‚éB
-	// ƒfƒBƒŒƒNƒVƒ‡ƒ“ƒ‰ƒCƒg‚ğ‰Šú‰»‚·‚é
+	// ãƒ©ã‚¤ãƒˆã®è¨­å®šã‚’ã™ã‚‹ã€‚
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
 	InitDirectionLight();
 
-	// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚ğ‰Šú‰»‚·‚é
+	// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
 	//InitPointLight();
 
-	// ƒXƒ|ƒbƒgƒ‰ƒCƒg‚ğ‰Šú‰»‚·‚é
+	// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
 	//InitSpotLight();
 
-	// ŠÂ‹«Œõ‚ğ‰Šú‰»‚·‚é
+	// ç’°å¢ƒå…‰ã‚’åˆæœŸåŒ–ã™ã‚‹
 	InitAmbientLight();
 
-	// ”¼‹…ƒ‰ƒCƒg‚ğ‰Šú‰»‚·‚é
+	// åŠçƒãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
 	//InitHemiLight();
 
 	m_light.shadowCamera = ShadowLightCamera::GetInstance()->GetShadowLightCamera().GetViewProjectionMatrix();
 
-	// 3Dƒ‚ƒfƒ‹‚ğƒ[ƒh‚·‚é‚½‚ß‚Ìî•ñ‚ğİ’è‚·‚é
-	// ƒ‚ƒfƒ‹‚Ì‰Šú‰»‚·‚é‚½‚ß‚Ìî•ñ‚ğİ’è
+	// 3Dãƒ¢ãƒ‡ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãŸã‚ã®æƒ…å ±ã‚’è¨­å®šã™ã‚‹
+	// ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–ã™ã‚‹ãŸã‚ã®æƒ…å ±ã‚’è¨­å®š
 	ModelInitData modelInitData;
-	// tkmƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒX‚ğİ’è
+	// tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¨­å®š
 	modelInitData.m_tkmFilePath = filePath;
 
-	// g—p‚·‚éƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹ƒpƒX‚ğİ’è
+	// ä½¿ç”¨ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¨­å®š
 
-	// ‰e‚ğó‚¯‚é‚©
+	// å½±ã‚’å—ã‘ã‚‹ã‹
 	if (false == flagShadowReceiver) {
 		modelInitData.m_fxFilePath = "Assets/shader/model.fx";
 
-		// ƒ‰ƒCƒg‚Ìî•ñ‚ğ’è”ƒoƒbƒtƒ@‚Æ‚µ‚ÄƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚É
-		// “o˜^‚·‚é‚½‚ß‚Éƒ‚ƒfƒ‹‚Ì‰Šú‰»î•ñ‚Æ‚µ‚Ä“n‚·B
+		// ãƒ©ã‚¤ãƒˆã®æƒ…å ±ã‚’å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¨ã—ã¦ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã«
+		// ç™»éŒ²ã™ã‚‹ãŸã‚ã«ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–æƒ…å ±ã¨ã—ã¦æ¸¡ã™ã€‚
 		modelInitData.m_expandConstantBuffer = &m_light;
 		modelInitData.m_expandConstantBufferSize = sizeof(m_light);
 	}
 	else {
 		modelInitData.m_fxFilePath = "Assets/shader/sampleShadowReciever.fx";
-		// ƒVƒƒƒhƒEƒ}ƒbƒv‚ğŠg’£SRV‚Éİ’è‚·‚éB
+		// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æ‹¡å¼µSRVã«è¨­å®šã™ã‚‹ã€‚
 		modelInitData.m_expandShaderResoruceView = 
 			&ShadowMap::GetInstance()->GetShadowMap().GetRenderTargetTexture();
 
-		// ƒ‰ƒCƒgƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğŠg’£’è”ƒoƒbƒtƒ@‚Éİ’è‚·‚éB
+		// ãƒ©ã‚¤ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’æ‹¡å¼µå®šæ•°ãƒãƒƒãƒ•ã‚¡ã«è¨­å®šã™ã‚‹ã€‚
 		modelInitData.m_expandConstantBuffer = &m_light;
 		modelInitData.m_expandConstantBufferSize = sizeof(m_light);
 	}
-	// ‰e‚ğ¶¬‚·‚é‚©
+	// å½±ã‚’ç”Ÿæˆã™ã‚‹ã‹
 	if (true == flagShadow) {
 		m_shadowModel = NewGO<Shadow>(0);
 
@@ -153,81 +172,168 @@ void ModelRender::InitModel(const char* filePath,
 		m_flagShadow = true;
 	}
 
-	// ƒXƒPƒ‹ƒgƒ“‚ğw’è‚·‚éB
-	if (m_skeletonPointer) {	// ƒXƒPƒ‹ƒgƒ“‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚½‚ç
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã‚’æŒ‡å®šã™ã‚‹ã€‚
+	if (m_skeletonPointer) {	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ãŸã‚‰
 		modelInitData.m_skeleton = m_skeletonPointer.get();
 	}
-	// ƒ‚ƒfƒ‹‚Ìã•ûŒü‚ğw’è
+	// ãƒ¢ãƒ‡ãƒ«ã®ä¸Šæ–¹å‘ã‚’æŒ‡å®š
 	modelInitData.m_modelUpAxis = modelUpAxis;
 
-	// ‰Šú‰»î•ñ‚ğg‚Á‚Äƒ‚ƒfƒ‹•\¦ˆ—‚ğ‰Šú‰»‚·‚é
+	// åˆæœŸåŒ–æƒ…å ±ã‚’ä½¿ã£ã¦ãƒ¢ãƒ‡ãƒ«è¡¨ç¤ºå‡¦ç†ã‚’åˆæœŸåŒ–ã™ã‚‹
+	m_model.Init(modelInitData);
+}
+
+void ModelRender::InitAudienceModel(const char* filePath, bool flagShadowReceiver, bool flagShadow,
+	modelUpAxis::EnModelUpAxis modelUpAxis
+)
+{
+	// ãƒ©ã‚¤ãƒˆã®è¨­å®šã‚’ã™ã‚‹ã€‚
+// ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
+	InitDirectionLight();
+
+	// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
+	//InitPointLight();
+
+	// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
+	//InitSpotLight();
+
+	// ç’°å¢ƒå…‰ã‚’åˆæœŸåŒ–ã™ã‚‹
+	InitAmbientLight();
+
+	// åŠçƒãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
+	//InitHemiLight();
+
+	m_light.shadowCamera = ShadowLightCamera::GetInstance()->GetShadowLightCamera().GetViewProjectionMatrix();
+
+
+
+	m_worldMatrixArray = new Matrix[100];
+
+	m_worldMatrixSB.Init(
+		sizeof(Matrix), // ç¬¬â¼€å¼•æ•°ã¯ï¼‘è¦ç´ ã®ã‚µã‚¤ã‚ºã€‚
+		100, // ç¬¬â¼†å¼•æ•°ã¯è¦ç´ æ•°ã€‚
+		nullptr // ç¬¬ä¸‰å¼•æ•°ã¯åˆæœŸå€¤ãƒ‡ãƒ¼ã‚¿ã€‚åˆæœŸå€¤ã¯æŒ‡å®šã—ãªã„ã®ã§ã€ä»Šå›ã¯nullptrã€‚
+	);
+
+
+
+	// 3Dãƒ¢ãƒ‡ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãŸã‚ã®æƒ…å ±ã‚’è¨­å®šã™ã‚‹
+	// ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–ã™ã‚‹ãŸã‚ã®æƒ…å ±ã‚’è¨­å®š
+	ModelInitData modelInitData;
+	// tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¨­å®š
+	modelInitData.m_tkmFilePath = filePath;
+
+	// ä½¿â½¤ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‚’æŒ‡å®šã€‚
+	modelInitData.m_fxFilePath = "Assets/shader/sample3DInstancing.fx";
+	// ã€æ³¨â½¬ã€‘æ‹¡å¼µSRVã«ã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã‚’æ¸¡ã™ã€‚
+	modelInitData.m_expandShaderResoruceView[0] = m_worldMatrixSB;
+
+
+	//// ä½¿ç”¨ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¨­å®š
+
+	//// å½±ã‚’å—ã‘ã‚‹ã‹
+	//if (false == flagShadowReceiver) {
+	//	modelInitData.m_fxFilePath = "Assets/shader/model.fx";
+
+	//	// ãƒ©ã‚¤ãƒˆã®æƒ…å ±ã‚’å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¨ã—ã¦ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã«
+	//	// ç™»éŒ²ã™ã‚‹ãŸã‚ã«ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–æƒ…å ±ã¨ã—ã¦æ¸¡ã™ã€‚
+	//	modelInitData.m_expandConstantBuffer = &m_light;
+	//	modelInitData.m_expandConstantBufferSize = sizeof(m_light);
+	//}
+	//else {
+	//	modelInitData.m_fxFilePath = "Assets/shader/sampleShadowReciever.fx";
+	//	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æ‹¡å¼µSRVã«è¨­å®šã™ã‚‹ã€‚
+	//	modelInitData.m_expandShaderResoruceView =
+	//		&ShadowMap::GetInstance()->GetShadowMap().GetRenderTargetTexture();
+
+	//	// ãƒ©ã‚¤ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’æ‹¡å¼µå®šæ•°ãƒãƒƒãƒ•ã‚¡ã«è¨­å®šã™ã‚‹ã€‚
+	//	modelInitData.m_expandConstantBuffer = &m_light;
+	//	modelInitData.m_expandConstantBufferSize = sizeof(m_light);
+	//}
+	//// å½±ã‚’ç”Ÿæˆã™ã‚‹ã‹
+	//if (true == flagShadow) {
+	//	m_shadowModel = NewGO<Shadow>(0);
+
+	//	m_shadowModel->Init(filePath, *m_skeletonPointer);
+
+	//	m_flagShadow = true;
+	//}
+
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã‚’æŒ‡å®šã™ã‚‹ã€‚
+	if (m_skeletonPointer) {	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ãŸã‚‰
+		modelInitData.m_skeleton = m_skeletonPointer.get();
+	}
+	// ãƒ¢ãƒ‡ãƒ«ã®ä¸Šæ–¹å‘ã‚’æŒ‡å®š
+	modelInitData.m_modelUpAxis = modelUpAxis;
+
+	// åˆæœŸåŒ–æƒ…å ±ã‚’ä½¿ã£ã¦ãƒ¢ãƒ‡ãƒ«è¡¨ç¤ºå‡¦ç†ã‚’åˆæœŸåŒ–ã™ã‚‹
 	m_model.Init(modelInitData);
 }
 
 //////////////////////////////
-// ƒ‰ƒCƒg‚²‚Æ‚Ì‰Šú‰»
+// ãƒ©ã‚¤ãƒˆã”ã¨ã®åˆæœŸåŒ–
 //////////////////////////////
 
 void ModelRender::InitDirectionLight()
 {
-	// ƒ‰ƒCƒg‚ÍÎ‚ßã‚©‚ç“–‚½‚Á‚Ä‚¢‚éB
+	// ãƒ©ã‚¤ãƒˆã¯æ–œã‚ä¸Šã‹ã‚‰å½“ãŸã£ã¦ã„ã‚‹ã€‚
 	m_light.dirDirection.x = 1.0f;
 	m_light.dirDirection.y = -1.0f;
 	m_light.dirDirection.z = -1.0f;
-	// ³‹K‰»‚·‚éB
+	// æ­£è¦åŒ–ã™ã‚‹ã€‚
 	m_light.dirDirection.Normalize();
-	// ƒ‰ƒCƒg‚ÌƒJƒ‰[‚Ìİ’èiƒ‰ƒCƒg‚Ì‹­‚³j
+	// ãƒ©ã‚¤ãƒˆã®ã‚«ãƒ©ãƒ¼ã®è¨­å®šï¼ˆãƒ©ã‚¤ãƒˆã®å¼·ã•ï¼‰
 	m_light.dirColor.x = 1.5f;
 	m_light.dirColor.y = 1.5f;
 	m_light.dirColor.z = 1.5f;
 
-	// ‹“_‚ÌˆÊ’u‚ğİ’è
+	// è¦–ç‚¹ã®ä½ç½®ã‚’è¨­å®š
 	m_light.eyePos = g_camera3D->GetPosition();
 }
 
 
 void ModelRender::InitPointLight()
 {
-	// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚Ì‰ŠúÀ•W‚ğİ’è‚·‚é
+	// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã®åˆæœŸåº§æ¨™ã‚’è¨­å®šã™ã‚‹
 	m_light.ptPosition.x = 0.0f;
 	m_light.ptPosition.y = 50.0f;
 	m_light.ptPosition.z = 50.0f;
 
-	// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚Ì‰ŠúƒJƒ‰[‚ğİ’è‚·‚é
+	// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã®åˆæœŸã‚«ãƒ©ãƒ¼ã‚’è¨­å®šã™ã‚‹
 	m_light.ptColor.x = 15.0f;
 	m_light.ptColor.y = 0.0f;
 	m_light.ptColor.z = 240.0f;
 
-	// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚Ì‰e‹¿”ÍˆÍ‚ğİ’è‚·‚é
+	// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã®å½±éŸ¿ç¯„å›²ã‚’è¨­å®šã™ã‚‹
 	m_light.ptRange = 100.0f;
 }
 
 void ModelRender::InitSpotLight()
 {
-	// ‰ŠúÀ•W
+	// åˆæœŸåº§æ¨™
 	m_light.spPosition.x = 0.0f;
 	m_light.spPosition.y = 50.0f;
 	m_light.spPosition.z = -150.0f;
 
-	// ƒ‰ƒCƒg‚ÌƒJƒ‰[
+	// ãƒ©ã‚¤ãƒˆã®ã‚«ãƒ©ãƒ¼
 	m_light.spColor.x = 200.0f;
 	m_light.spColor.y = 10.0f;
 	m_light.spColor.z = 10.0f;
-	// ‰Šú•ûŒü‚ÍÎ‚ß‰º‚É‚·‚éB
+	// åˆæœŸæ–¹å‘ã¯æ–œã‚ä¸‹ã«ã™ã‚‹ã€‚
 	m_light.spDirection.x = 1.0f;
 	m_light.spDirection.y = -1.0f;
 	m_light.spDirection.z = 1.0f;
-	// ³‹K‰»
+	// æ­£è¦åŒ–
 	m_light.spDirection.Normalize();
-	// Ëo”ÍˆÍ‚Í300
+	// å°„å‡ºç¯„å›²ã¯300
 	m_light.spRange = 300.0f;
-	// ËoŠp“x‚Í25“x
+	// å°„å‡ºè§’åº¦ã¯25åº¦
 	m_light.spAngle = Math::DegToRad(25.0f);
 }
 
 void ModelRender::InitAmbientLight()
 {
-	// ŠÂ‹«Œõ
+	// ç’°å¢ƒå…‰
 	m_light.ambientLight.x = 0.05f;
 	m_light.ambientLight.y = 0.05f;
 	m_light.ambientLight.z = 0.05f;
@@ -235,65 +341,107 @@ void ModelRender::InitAmbientLight()
 
 void ModelRender::InitHemiLight()
 {
-	// ’n–ÊFA“V‹…FA’n–Ê‚Ì–@ü‚Ìƒf[ƒ^‚ğİ’è‚·‚é
+	// åœ°é¢è‰²ã€å¤©çƒè‰²ã€åœ°é¢ã®æ³•ç·šã®ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹
 	m_light.groundColor.x = 0.7f;
 	m_light.groundColor.y = 0.5f;
 	m_light.groundColor.z = 0.3f;
 
-	// “V‹…F‚ğİ’è
+	// å¤©çƒè‰²ã‚’è¨­å®š
 	m_light.skyColor.x = 0.15f;
 	m_light.skyColor.y = 0.7f;
 	m_light.skyColor.z = 0.95f;
 
-	// ’n–Ê‚Ì–@ü‚ğİ’è
+	// åœ°é¢ã®æ³•ç·šã‚’è¨­å®š
 	m_light.groundNormal.x = 0.0f;
 	m_light.groundNormal.y = 1.0f;
 	m_light.groundNormal.z = 0.0f;
 }
 
 ////////////////////////////////////////////////////////////
-// •`‰æˆ—
+// æç”»å‡¦ç†
 ////////////////////////////////////////////////////////////
 
 void ModelRender::Render(RenderContext& renderContext)
 {
-	// –¢‰Šú‰»
+	// æœªåˆæœŸåŒ–æ™‚
 	if (m_finishInit == false) {
 		return;
 	}
 
-	// ƒ‚ƒfƒ‹‚Ì•`‰æ
+	// ãƒ¢ãƒ‡ãƒ«ã®æç”»
 	m_model.Draw(renderContext);
 }
 
 void ModelRender::Update()
 {
-	// –¢‰Šú‰»
+	// æœªåˆæœŸåŒ–æ™‚
 	if (m_finishInit == false) {
+		return;
+	}
+
+	if (true == m_flagAudience) {
+		UpdateOtherData();
 		return;
 	}
 
 	SwayOrCrouching();
 
-	// ƒXƒPƒ‹ƒgƒ“‚ğXV
-	if (m_skeletonPointer) {	// ƒXƒPƒ‹ƒgƒ“‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚½‚ç
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã‚’æ›´æ–°
+	if (m_skeletonPointer) {	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ãŸã‚‰
 		//SwayCharacter();
 		m_skeletonPointer->Update(m_model.GetWorldMatrix());
 	}
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ği‚ß‚é
-	if (m_animationPointer) {	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚½‚ç
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’é€²ã‚ã‚‹
+	if (m_animationPointer) {	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ãŸã‚‰
 		m_animationPointer->Progress(g_gameTime->GetFrameDeltaTime());
 	}
-	// ƒ‚ƒfƒ‹‚ÌÀ•WXV
+	// ãƒ¢ãƒ‡ãƒ«ã®åº§æ¨™æ›´æ–°
 	m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 
-	// ‘¼ƒNƒ‰ƒX‚Ì•¨‚Ìî•ñ‚ÌXV
+	// ä»–ã‚¯ãƒ©ã‚¹ã®ç‰©ã®æƒ…å ±ã®æ›´æ–°
 	UpdateOtherData();
+}
+
+void ModelRender::AudienceUpdate()
+{
+	// step-4 ãƒ¯ãƒ¼ãƒ«ãƒ‰â¾åˆ—ã‚’è¨ˆç®—ã™ã‚‹ã€‚
+	for (int i = 0; i < 100; i++) {
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰â¾åˆ—ã‚’è¨ˆç®—ã™ã‚‹ã€‚
+		m_worldMatrixArray[i] = m_model.CalcWorldMatrix(m_audiencePos[i], m_rotation,
+			g_vec3One);
+	}
+
+	// step-5 ãƒ¯ãƒ¼ãƒ«ãƒ‰â¾åˆ—ã®å†…å®¹ã‚’ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ¡ãƒ¢ãƒªã«ã‚³ãƒ”ãƒ¼ã€‚
+	m_worldMatrixSB.Update(m_worldMatrixArray);
+
+	// step-6 â¼ˆç‰©ã®ãƒ¢ãƒ‡ãƒ«ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ã‚°æç”»ã€‚
+	//m_model.DrawInstancing(renderContext, numHumanModel);
+
+
+
+
+
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã‚’æ›´æ–°
+	if (m_skeletonPointer) {	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ãŸã‚‰
+		//SwayCharacter();
+		m_skeletonPointer->Update(m_model.GetWorldMatrix());
+	}
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’é€²ã‚ã‚‹
+	if (m_animationPointer) {	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ãŸã‚‰
+		m_animationPointer->Progress(g_gameTime->GetFrameDeltaTime());
+	}
+	// ãƒ¢ãƒ‡ãƒ«ã®åº§æ¨™æ›´æ–°
+	m_model.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+
 }
 
 void ModelRender::UpdateOtherData()
 {
-	// “–‚½‚è”»’è‚Ìî•ñ‚ÌXV
+	if (true == m_flagAudience) {
+		return;
+	}
+
+	// å½“ãŸã‚Šåˆ¤å®šã®æƒ…å ±ã®æ›´æ–°
 	if (m_skeletonPointer) {
 		if (false == m_flagInitHitbox) {
 			m_getHitbox->Create();
@@ -315,124 +463,124 @@ void ModelRender::SwayOrCrouching()
 
 void ModelRender::SwayCharacter()
 {
-	// ƒXƒPƒ‹ƒgƒ“‚ª‚È‚¢ê‡
+	// ã‚¹ã‚±ãƒ«ãƒˆãƒ³ãŒãªã„å ´åˆ
 	if (!m_skeletonPointer) {
 		return;
 	}
 
-	// œ‚Ì–¼‘O‚Åƒ{[ƒ“ID‚ğŒŸõ
+	// éª¨ã®åå‰ã§ãƒœãƒ¼ãƒ³IDã‚’æ¤œç´¢
 	int boneId = m_skeletonPointer->FindBoneID(L"J_Bip_C_UpperChest");
-	// ŒŸõ‚µ‚½ƒ{[ƒ“ID‚ğg—p‚µ‚ÄAƒ{[ƒ“‚ğæ“¾
+	// æ¤œç´¢ã—ãŸãƒœãƒ¼ãƒ³IDã‚’ä½¿ç”¨ã—ã¦ã€ãƒœãƒ¼ãƒ³ã‚’å–å¾—
 	Bone* bone = m_skeletonPointer->GetBone(boneId);
-	// ƒ{[ƒ“‚Ìƒ[ƒJƒ‹s—ñ‚ğæ“¾
+	// ãƒœãƒ¼ãƒ³ã®ãƒ­ãƒ¼ã‚«ãƒ«è¡Œåˆ—ã‚’å–å¾—
 	Matrix boneMatrix = bone->GetLocalMatrix();
 
-	// ƒ{[ƒ“‚Ì‰ñ“]‚Ì²‚É‚È‚é‘O•ûŒü‚ÌƒxƒNƒgƒ‹‚ğì¬
+	// ãƒœãƒ¼ãƒ³ã®å›è»¢ã®è»¸ã«ãªã‚‹å‰æ–¹å‘ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½œæˆ
 	Vector3 vecFront = Vector3::Front;
-	// ƒ{[ƒ“‚Ì‰ñ“]‚Ì²‚É‚È‚é‰E•ûŒü‚ÌƒxƒNƒgƒ‹‚ğì¬
+	// ãƒœãƒ¼ãƒ³ã®å›è»¢ã®è»¸ã«ãªã‚‹å³æ–¹å‘ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½œæˆ
 	Vector3 vecRight = Vector3::Right;
-	// ƒ{[ƒ“‚Ì‰ñ“]‚Ì²‚Ég—p‚·‚éƒxƒNƒgƒ‹‚ğY²‚É‰ñ‚·‚½‚ß‚ÌƒNƒH[ƒ^ƒjƒIƒ“‚ğì¬
+	// ãƒœãƒ¼ãƒ³ã®å›è»¢ã®è»¸ã«ä½¿ç”¨ã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«ã‚’Yè»¸ã«å›ã™ãŸã‚ã®ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ä½œæˆ
 	Quaternion m_RotY;
-	m_RotY.SetRotationY(0.6f); // ‰ñ“]—Ê‚ğİ’è
-	// ƒ{[ƒ“‚Ì‰ñ“]‚Ì²‚É‚È‚éƒxƒNƒgƒ‹‚ğY²‚Å‰ñ“]
+	m_RotY.SetRotationY(0.6f); // å›è»¢é‡ã‚’è¨­å®š
+	// ãƒœãƒ¼ãƒ³ã®å›è»¢ã®è»¸ã«ãªã‚‹ãƒ™ã‚¯ãƒˆãƒ«ã‚’Yè»¸ã§å›è»¢
 	m_RotY.Apply(vecFront);
 	m_RotY.Apply(vecRight);
 
-	// ƒXƒEƒF[‚ÌˆÚ“®—Ê‚ğŒvZ
+	// ã‚¹ã‚¦ã‚§ãƒ¼ã®ç§»å‹•é‡ã‚’è¨ˆç®—
 	CheckSwayMove();
 
-	// ƒ{[ƒ“‚Ì‰ñ“]î•ñ‚ğì¬‚·‚és—ñ‚ğì¬
+	// ãƒœãƒ¼ãƒ³ã®å›è»¢æƒ…å ±ã‚’ä½œæˆã™ã‚‹è¡Œåˆ—ã‚’ä½œæˆ
 	Matrix rotMatrixX, rotMatrixZ;
-	// ‰ñ“]î•ñ‚ğì¬
+	// å›è»¢æƒ…å ±ã‚’ä½œæˆ
 	rotMatrixX.MakeRotationAxis(vecFront, -m_swayMove.x);
 	rotMatrixZ.MakeRotationAxis(vecRight, m_swayMove.y);
 
-	// ‰ñ“]î•ñ‚Ìs—ñ‚ğæZ‚µAƒ{[ƒ“‚ğ‰ñ“]‚³‚¹‚é
+	// å›è»¢æƒ…å ±ã®è¡Œåˆ—ã‚’ä¹—ç®—ã—ã€ãƒœãƒ¼ãƒ³ã‚’å›è»¢ã•ã›ã‚‹
 	rotMatrixX *= rotMatrixZ;
 	boneMatrix *= rotMatrixX;
 
-	// •ÏX‚µ‚½ƒ{[ƒ“s—ñ‚ğİ’è
+	// å¤‰æ›´ã—ãŸãƒœãƒ¼ãƒ³è¡Œåˆ—ã‚’è¨­å®š
 	bone->SetLocalMatrix(boneMatrix);
 }
 
 void ModelRender::CheckSwayMove()
 {
-	// ¶‰E•ûŒü‚ÌˆÚ“®—Ê‚ÌŒvZ
-	// “ü—Í: ¶
+	// å·¦å³æ–¹å‘ã®ç§»å‹•é‡ã®è¨ˆç®—
+	// å…¥åŠ›: å·¦
 	if (EnSwayController::enLeft == m_swayController[EnXY::x]) {
 		m_swayMove.x -= SWAY_MOVE;
 
-		// ˆÚ“®—Ê‚ªãŒÀ‚ğ’´‚¦‚½‚©
+		// ç§»å‹•é‡ãŒä¸Šé™ã‚’è¶…ãˆãŸã‹
 		if (EnSwayController::enLeft >= m_swayMove.x) {
 			m_swayMove.x = EnSwayController::enLeft;
 		}
 	}
-	// “ü—Í: ‰E
+	// å…¥åŠ›: å³
 	else if (EnSwayController::enRight == m_swayController[EnXY::x]) {
 		m_swayMove.x += SWAY_MOVE;
 
-		// ˆÚ“®—Ê‚ªãŒÀ‚ğ’´‚¦‚½‚©
+		// ç§»å‹•é‡ãŒä¸Šé™ã‚’è¶…ãˆãŸã‹
 		if (EnSwayController::enRight <= m_swayMove.x) {
 			m_swayMove.x = EnSwayController::enRight;
 		}
 	}
-	// “ü—Í: ‚È‚µ
+	// å…¥åŠ›: ãªã—
 	else if (EnSwayController::enNotMove == m_swayController[EnXY::x]) {
-		// ‰E•ûŒü‚ÉˆÚ“®‚µ‚Ä‚¢‚é
+		// å³æ–¹å‘ã«ç§»å‹•ã—ã¦ã„ã‚‹
 		if (EnSwayController::enNotMove < m_swayMove.x) {
 			m_swayMove.x -= SWAY_MOVE;
 
-			// ‹t‘¤‚ÉˆÚ“®‚µ‚½‚©
+			// é€†å´ã«ç§»å‹•ã—ãŸã‹
 			if (EnSwayController::enNotMove > m_swayMove.x) {
 				m_swayMove.x = EnSwayController::enNotMove;
 			}
 		}
-		// ¶•ûŒü‚ÉˆÚ“®‚µ‚Ä‚¢‚é
+		// å·¦æ–¹å‘ã«ç§»å‹•ã—ã¦ã„ã‚‹
 		else if (EnSwayController::enNotMove > m_swayMove.x) {
 			m_swayMove.x += SWAY_MOVE;
 
-			// ‹t‘¤‚ÉˆÚ“®‚µ‚½‚©
+			// é€†å´ã«ç§»å‹•ã—ãŸã‹
 			if (EnSwayController::enNotMove < m_swayMove.x) {
 				m_swayMove.x = EnSwayController::enNotMove;
 			}
 		}
 	}
 
-	// ã‰º•ûŒü‚ÌˆÚ“®—Ê‚ÌŒvZ
-	// “ü—Í: ã
+	// ä¸Šä¸‹æ–¹å‘ã®ç§»å‹•é‡ã®è¨ˆç®—
+	// å…¥åŠ›: ä¸Š
 	if (EnSwayController::enUp == m_swayController[EnXY::y]) {
 		m_swayMove.y += SWAY_MOVE;
 
-		// ˆÚ“®—Ê‚ªãŒÀ‚ğ’´‚¦‚½‚©
+		// ç§»å‹•é‡ãŒä¸Šé™ã‚’è¶…ãˆãŸã‹
 		if (EnSwayController::enUp <= m_swayMove.y) {
 			m_swayMove.y = EnSwayController::enUp;
 		}
 	}
-	// “ü—Í: ‰º
+	// å…¥åŠ›: ä¸‹
 	else if (EnSwayController::enDown == m_swayController[EnXY::y]) {
 		m_swayMove.y -= SWAY_MOVE;
 
-		// ˆÚ“®—Ê‚ªãŒÀ‚ğ’´‚¦‚½‚©
+		// ç§»å‹•é‡ãŒä¸Šé™ã‚’è¶…ãˆãŸã‹
 		if (EnSwayController::enDown >= m_swayMove.y) {
 			m_swayMove.y = EnSwayController::enDown;
 		}
 	}
-	// “ü—Í: ‚È‚µ
+	// å…¥åŠ›: ãªã—
 	else if (EnSwayController::enNotMove == m_swayController[EnXY::y]) {
-		// ã•ûŒü‚ÉˆÚ“®‚µ‚Ä‚¢‚é
+		// ä¸Šæ–¹å‘ã«ç§»å‹•ã—ã¦ã„ã‚‹
 		if (EnSwayController::enNotMove < m_swayMove.y) {
 			m_swayMove.y -= SWAY_MOVE;
 
-			// ‹t‘¤‚ÉˆÚ“®‚µ‚½‚©
+			// é€†å´ã«ç§»å‹•ã—ãŸã‹
 			if (EnSwayController::enNotMove > m_swayMove.y) {
 				m_swayMove.y = EnSwayController::enNotMove;
 			}
 		}
-		// ‰º•ûŒü‚ÉˆÚ“®‚µ‚Ä‚¢‚é
+		// ä¸‹æ–¹å‘ã«ç§»å‹•ã—ã¦ã„ã‚‹
 		else if (EnSwayController::enNotMove > m_swayMove.y) {
 			m_swayMove.y += SWAY_MOVE;
 
-			// ‹t‘¤‚ÉˆÚ“®‚µ‚½‚©
+			// é€†å´ã«ç§»å‹•ã—ãŸã‹
 			if (EnSwayController::enNotMove < m_swayMove.y) {
 				m_swayMove.y = EnSwayController::enNotMove;
 			}

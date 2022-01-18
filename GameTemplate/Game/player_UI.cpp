@@ -8,6 +8,7 @@ PlayerUI::PlayerUI()
 
     m_downCountUI = NewGO<FontRender>(igo::EnPriority::font);
     m_downCountUI->Init(L"");
+    m_downCountUI->SetPosition({ 100.0f,250.0f });
 
     //m_mpUI = NewGO<FontRender>(igo::EnPriority::font);
     //m_mpUI->Init(L"4");

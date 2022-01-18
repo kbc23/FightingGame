@@ -5,6 +5,7 @@
 #include "player.h"
 #include "player_camera.h"
 #include "game_data.h"
+#include "audience.h"
 
 namespace // constant
 {
@@ -25,8 +26,8 @@ void MyDebug::Init()
 
     const Vector3 pos[] =
     {
-        {100.0f, 0.0f, 0.0f},   // 1Pの初期座標
-        {-100.0f, 0.0f, 0.0f},  // 2Pの初期座標
+        {100.0f, 100.0f, 0.0f},   // 1Pの初期座標
+        {-100.0f, 100.0f, 0.0f},  // 2Pの初期座標
     };
     float rotAngle[] = {
         -90.0f,
@@ -56,13 +57,15 @@ void MyDebug::Init()
     m_player[enOtherPlayer]->GetActor().SetOtherActor(m_player[enPlayer]->GetActor());
 
     m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelStage->Init("Assets/modelData/stage/stage.tkm", true);
+    m_modelStage->Init("Assets/modelData/stage/ring.tkm", true, false);
 
     m_modelStage->SetPosition({ 0.0f,0.0f,0.0f });
-
-    m_modelStage->SetScale({ 5.0f,1.0f,5.0f });
+    
+    //m_modelStage->SetScale({ 5.0f,1.0f,5.0f });
 
     m_fontWinOrLose = NewGO<FontRender>(igo::EnPriority::font);
+
+    m_audience = NewGO<Audience>(igo::EnPriority::model);
 }
 
 void MyDebug::Finish()

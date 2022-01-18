@@ -105,6 +105,35 @@ public:
 	{
 		return m_tkmFile;
 	}
+
+	/// <summary>
+	/// ワールド行列を計算する。
+	/// </summary>
+	/// <remark>
+	/// この関数はUpdateWorldMatrix関数の中から使われています。
+	/// Modelクラスの使用に沿ったワールド行列の計算を行いたい場合、
+	/// 本関数を利用すると計算することができます。
+	/// </remark>
+	/// <param name="pos">座標</param>
+	/// <param name="rot">回転</param>
+	/// <param name="scale">拡大率。</param>
+	/// <returns></returns>
+	Matrix CalcWorldMatrix(Vector3 pos, Quaternion rot, Vector3 scale)
+	{
+		Matrix mWorld;
+		Matrix mBias;
+		if (m_modelUpAxis == modelUpAxis::EnModelUpAxis::enModelUpAxisZ) {
+			//Z-up
+			mBias.MakeRotationX(Math::PI * -0.5f);
+		}
+		Matrix mTrans, mRot, mScale;
+		mTrans.MakeTranslation(pos);
+		mRot.MakeRotationFromQuaternion(rot);
+		mScale.MakeScaling(scale);
+
+		mWorld = mBias * mScale * mRot * mTrans;
+		return mWorld;
+	}
 private:
 
 	Matrix m_world;														//ワールド行列。

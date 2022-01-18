@@ -58,6 +58,9 @@ const bool Actor::AnimationInit()
     //ループ再生をtrueにする
     m_animationPlayer[AnimationEnum::enIdle].SetLoopFlag(true);
 
+    m_animationPlayer[AnimationEnum::enRooting].SetLoopFlag(true);
+
+
     return true;
 }
 
@@ -87,6 +90,10 @@ void Actor::CharacterInit(const Vector3& initPos, const float initRot)
 
 void Actor::Update()
 {
+    if (EnPlayerOrAudience::enAudience == m_playerOrAudience) {
+        AudienceUpdate();
+    }
+
     KnockDownAnimation();
     // 攻撃アニメーション関連
     AttackAnimation();
@@ -217,4 +224,12 @@ void Actor::CrouchingEnd()
         m_crouchingStatus = EnCrouchingStatus::enEnd;
         m_modelCharacter->PlayAnimation(AnimationEnum::enCrouchingEnd);
     }
+}
+
+
+
+
+void Actor::AudienceUpdate()
+{
+    m_modelCharacter->PlayAnimation(AnimationEnum::enRooting);
 }

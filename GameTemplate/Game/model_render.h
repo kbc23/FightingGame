@@ -67,6 +67,10 @@ public:
 	void Render(RenderContext& renderContext) override final;
 
 
+
+	void AudienceUpdate();
+
+
 public:
 	/**
 	 * @brief 初期化
@@ -83,6 +87,12 @@ public:
 		int maxAnimationClipNum = 0
 	);
 
+	void AudienceInit(const char* filePath, bool flagShadowReceiver = false, bool flagShadow = false,
+		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
+		AnimationClip* animationClip = nullptr,
+		int maxAnimationClipNum = 0
+	);
+
 
 private:
 	/**
@@ -93,6 +103,10 @@ private:
 	 * @param modelUpAxis モデルの上方向
 	*/
 	void InitModel(const char* filePath, bool flagShadowReceiver, bool flagShadow,
+		modelUpAxis::EnModelUpAxis modelUpAxis
+	);
+
+	void InitAudienceModel(const char* filePath, bool flagShadowReceiver, bool flagShadow,
 		modelUpAxis::EnModelUpAxis modelUpAxis
 	);
 
@@ -404,6 +418,9 @@ private: // data member
 	Quaternion m_rotation = g_quatIdentity;		// 回転
 	Vector3 m_scale = g_vec3One;				// 拡大
 
+	Matrix* m_worldMatrixArray = nullptr;
+
+
 	bool m_finishInit = false; // 初期化が終わったか
 	bool m_flagShadow = false; // 影が発生するか
 
@@ -412,4 +429,17 @@ private: // data member
 	bool m_flagInitHitbox = false; // 当たり判定を初期化したか
 
 	Vector2 m_swayMove = g_vec2Zero; // スウェーの移動量
+
+	public:
+	void SetFlagAudience()
+	{
+		m_flagAudience = true;
+	}
+
+	private:
+	bool m_flagAudience = false;
+
+	Vector3 m_audiencePos[100];
+
+	StructuredBuffer m_worldMatrixSB;
 };

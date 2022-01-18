@@ -8,6 +8,8 @@ class Player;
 class PlayerCamera;
 class GameData;
 
+class Audience;
+
 class MyDebug : public IGameObject
 {
 public:
@@ -61,6 +63,8 @@ private: // data member
 	ModelRender* m_modelStage = nullptr; // ステージのモデル
 	GameData* m_gameData = nullptr;
 	FontRender* m_fontWinOrLose = nullptr;
+
+	Audience* m_audience = nullptr;
 
 	SoundBGM* m_bgmTitle = nullptr;
 	SpriteRender* m_spriteTitle = nullptr;

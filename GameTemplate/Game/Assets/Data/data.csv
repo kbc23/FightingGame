@@ -1,3 +1,3 @@
-ファイルの場所,Assets/modelData/model/,,,,,,,,,,,,,,,
-モデル,model.tkm,,,,,,,,,,,,,,,
-アニメーション,idle.tka,Lead_Jab_Head.tka,Lead_Jab_Head_OtherSide.tka,Lead_Jab_Body.tka,Lead_Jab_Body_OtherSide.tka,Uppercut.tka,hook.tka,Body_blow.tka,straight.tka,Crouching_Start.tka,Crouching.tka,Crouching_End.tka,Defence.tka,Damage_Body.tka,Damage_Head.tka,Knocked_Down.tka
+ファイルの場所,Assets/modelData/model/,,,,,,,,,,,,,,,,
+モデル,model.tkm,,,,,,,,,,,,,,,,
+アニメーション,idle.tka,Lead_Jab_Head.tka,Lead_Jab_Head_OtherSide.tka,Lead_Jab_Body.tka,Lead_Jab_Body_OtherSide.tka,Uppercut.tka,hook.tka,Body_blow.tka,straight.tka,Crouching_Start.tka,Crouching.tka,Crouching_End.tka,Defence.tka,Damage_Body.tka,Damage_Head.tka,Knocked_Down.tka,rooting.tka

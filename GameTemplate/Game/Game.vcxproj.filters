@@ -72,17 +72,11 @@
     <Filter Include="MyCode\Engine\Debug">
       <UniqueIdentifier>{a98110f0-0e12-41d9-be01-c1e90309d101}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyCode\MainProcessing\Player">
-      <UniqueIdentifier>{27eb1e4a-fcac-4398-8d63-4ff6e55c32ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyCode\Engine\GhostObject">
       <UniqueIdentifier>{d547e965-2903-46bd-9bb6-dea7718c021b}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyCode\Engine\Font">
       <UniqueIdentifier>{243d6f5d-eac1-44e5-b5cd-567b51b236ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyCode\MainProcessing\Player\Status">
-      <UniqueIdentifier>{98e2f577-f3ec-46c0-8856-c2c80d77c70a}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyCode\Engine\Sound">
       <UniqueIdentifier>{96c50ceb-d3cc-4f82-b60d-04c578737a10}</UniqueIdentifier>
@@ -98,6 +92,18 @@
     </Filter>
     <Filter Include="MyCode\Engine\ReadCSVFile">
       <UniqueIdentifier>{8a9535ad-da00-41a7-b5cc-c9f0524ac0e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCode\MainProcessing\Character">
+      <UniqueIdentifier>{23717150-56e2-4b14-a333-8e39a75c88cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCode\MainProcessing\Character\Player">
+      <UniqueIdentifier>{27eb1e4a-fcac-4398-8d63-4ff6e55c32ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCode\MainProcessing\Character\Player\Status">
+      <UniqueIdentifier>{98e2f577-f3ec-46c0-8856-c2c80d77c70a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyCode\MainProcessing\Character\Audience">
+      <UniqueIdentifier>{d975d5d3-58b4-4af5-995a-97de21b8c228}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -287,14 +293,11 @@
     <ClCompile Include="my_debug.cpp">
       <Filter>MyCode\Engine\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="actor.cpp">
-      <Filter>MyCode\MainProcessing\Player</Filter>
-    </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="player_camera.cpp">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="debug_wire_frame.cpp">
       <Filter>MyCode\Engine\Debug</Filter>
@@ -309,22 +312,22 @@
       <Filter>MyCode\Engine\Font</Filter>
     </ClCompile>
     <ClCompile Include="player_UI.cpp">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="game_data.cpp">
       <Filter>MyCode\MainProcessing</Filter>
     </ClCompile>
     <ClCompile Include="st_attack_data.cpp">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClCompile>
     <ClCompile Include="st_dash_status.cpp">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClCompile>
     <ClCompile Include="st_squeeze_status.cpp">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClCompile>
     <ClCompile Include="st_down_status.cpp">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClCompile>
     <ClCompile Include="sound_source.cpp">
       <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
@@ -354,25 +357,31 @@
       <Filter>MyCode\Engine\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="st_defense_data.cpp">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClCompile>
     <ClCompile Include="hitbox.cpp">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="attack_move_bone.cpp">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="player_controller.cpp">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="st_player_status.cpp">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClCompile>
     <ClCompile Include="read_CSV_file.cpp">
       <Filter>MyCode\Engine\ReadCSVFile</Filter>
     </ClCompile>
     <ClCompile Include="read_CSV_file_character_data.cpp">
       <Filter>MyCode\Engine\ReadCSVFile</Filter>
+    </ClCompile>
+    <ClCompile Include="audience.cpp">
+      <Filter>MyCode\MainProcessing\Character\Audience</Filter>
+    </ClCompile>
+    <ClCompile Include="actor.cpp">
+      <Filter>MyCode\MainProcessing\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -583,17 +592,14 @@
     <ClInclude Include="my_debug.h">
       <Filter>MyCode\Engine\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="actor.h">
-      <Filter>MyCode\MainProcessing\Player</Filter>
-    </ClInclude>
     <ClInclude Include="FPSLimitter.h">
       <Filter>MyCode\Engine</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="player_camera.h">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="debug_wire_frame.h">
       <Filter>MyCode\Engine\Debug</Filter>
@@ -608,22 +614,22 @@
       <Filter>MyCode\Engine\Font</Filter>
     </ClInclude>
     <ClInclude Include="player_UI.h">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="game_data.h">
       <Filter>MyCode\MainProcessing</Filter>
     </ClInclude>
     <ClInclude Include="st_attack_data.h">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClInclude>
     <ClInclude Include="st_dash_status.h">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClInclude>
     <ClInclude Include="st_squeeze_status.h">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClInclude>
     <ClInclude Include="st_down_status.h">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClInclude>
     <ClInclude Include="sound_source.h">
       <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
@@ -659,28 +665,34 @@
       <Filter>MyCode\Engine\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="st_defense_data.h">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClInclude>
     <ClInclude Include="hitbox.h">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="constant.h">
       <Filter>MyCode\MainProcessing</Filter>
     </ClInclude>
     <ClInclude Include="attack_move_bone.h">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="player_controller.h">
-      <Filter>MyCode\MainProcessing\Player</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="st_player_status.h">
-      <Filter>MyCode\MainProcessing\Player\Status</Filter>
+      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClInclude>
     <ClInclude Include="read_CSV_file.h">
       <Filter>MyCode\Engine\ReadCSVFile</Filter>
     </ClInclude>
     <ClInclude Include="read_CSV_file_character_data.h">
       <Filter>MyCode\Engine\ReadCSVFile</Filter>
+    </ClInclude>
+    <ClInclude Include="audience.h">
+      <Filter>MyCode\MainProcessing\Character\Audience</Filter>
+    </ClInclude>
+    <ClInclude Include="actor.h">
+      <Filter>MyCode\MainProcessing\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -694,6 +706,9 @@
       <Filter>MyCode\Assets\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Assets\shader\debugWireFrame.fx">
+      <Filter>MyCode\Assets\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\shader\sample3DInstancing.fx">
       <Filter>MyCode\Assets\Shader</Filter>
     </FxCompile>
   </ItemGroup>

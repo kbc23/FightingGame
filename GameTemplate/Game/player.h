@@ -8,6 +8,7 @@ class PlayerCamera;
 class PlayerUI;
 class GameData;
 class PlayerController;
+class SoundSE;
 
 class Player : public IGameObject
 {
@@ -280,6 +281,8 @@ private: // data member
     PlayerUI* m_playerUI = nullptr; // プレイヤーに関するUI
     Hitbox* m_hitbox = nullptr; // プレイヤーの当たり判定、攻撃判定
     PlayerController* m_playerController = nullptr;
+
+    SoundSE* m_seAttack = nullptr;
 
     //////////////////////////////
     // FindGO

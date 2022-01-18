@@ -294,6 +294,7 @@
     <ClCompile Include="..\..\MiniEngine\VertexBuffer.cpp" />
     <ClCompile Include="actor.cpp" />
     <ClCompile Include="attack_move_bone.cpp" />
+    <ClCompile Include="audience.cpp" />
     <ClCompile Include="debug_wire_frame.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="font_render.cpp" />
@@ -403,6 +404,7 @@
     <ClInclude Include="..\..\MiniEngine\VertexBuffer.h" />
     <ClInclude Include="actor.h" />
     <ClInclude Include="attack_move_bone.h" />
+    <ClInclude Include="audience.h" />
     <ClInclude Include="constant.h" />
     <ClInclude Include="debug_wire_frame.h" />
     <ClInclude Include="fade.h" />
@@ -451,6 +453,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Assets\shader\model.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Assets\shader\sample3DInstancing.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">true</ExcludedFromBuild>
