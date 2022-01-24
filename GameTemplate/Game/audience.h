@@ -14,6 +14,11 @@ public:
 
 
 private:
+    void Test1();
+
+
+
+
     void SetPosition(const int i1);
 
     void Step2();
@@ -45,6 +50,26 @@ private: //data member
 
 
     Vector3 m_position[100];
+
+
+
+    // ‚ ‚ê
+    const int width = 50;
+    const int height = 10;
+
+    const int numHumanModel = width * height;
+
+    Matrix* worldMatrixArray = nullptr;
+
+    Model humanModel;
+
+    Vector3* humanPos = nullptr;
+    Quaternion qRot;
+
+    StructuredBuffer worldMatrixSB;
+
+    RenderContext& renderContext = g_graphicsEngine->GetRenderContext();
+
 
 
 

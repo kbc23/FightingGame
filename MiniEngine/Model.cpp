@@ -2,6 +2,23 @@
 #include "Model.h"
 #include "Material.h"
 
+ModelInitData::ModelInitData()
+{
+	// ユーザー拡張用の定数バッファの初期化
+	for (int i = 0; i < MeshParts::m_kMaxExCBNum; i++)
+	{
+		m_expandConstantBuffer[i] = nullptr;
+		m_expandConstantBufferSize[i] = 0;
+	}
+	// ユーザー拡張用のシェーダーリソースビューを初期化
+	for (int i = 0; i < MeshParts::m_kMaxExSRVNum; i++)
+	{
+		m_expandShaderResoruceView[i] = nullptr;
+	}
+
+	return;
+}
+
 void Model::Init(const ModelInitData& initData)
 {
 	MY_ASSERT(
@@ -93,5 +110,17 @@ void Model::Draw(RenderContext& rc, const Matrix& viewMatrix, const Matrix& proj
 		m_world,
 		viewMatrix,
 		projMatrix
+	);
+}
+
+
+void Model::DrawInstancing(RenderContext& rc, int numInstance)
+{
+	// インスタンスの数が0以上なら描画。
+	m_meshParts.DrawInstancing(
+		rc,
+		numInstance,
+		g_camera3D->GetViewMatrix(),
+		g_camera3D->GetProjectionMatrix()
 	);
 }

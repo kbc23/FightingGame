@@ -2,6 +2,7 @@
 #include "MeshParts.h"
 #include "Skeleton.h"
 #include "Material.h"
+#include "IndexBuffer.h"
 
 MeshParts::~MeshParts()
 {
@@ -19,14 +20,14 @@ MeshParts::~MeshParts()
 	}
 }
 void MeshParts::InitFromTkmFile(
-	const TkmFile& tkmFile, 
+	const TkmFile& tkmFile,
 	const wchar_t* fxFilePath,
 	const char* vsEntryPointFunc,
 	const char* vsSkinEntryPointFunc,
 	const char* psEntryPointFunc,
-	void* expandData,
-	int expandDataSize,
-	IShaderResource* expandShaderResourceView
+	void* const* expandData,
+	const int* expandDataSize,
+	IShaderResource* const* expandShaderResourceView
 )
 {
 	m_meshs.resize(tkmFile.GetNumMesh());
@@ -38,12 +39,30 @@ void MeshParts::InitFromTkmFile(
 	});
 	//共通定数バッファの作成。
 	m_commonConstantBuffer.Init(sizeof(SConstantBuffer), nullptr);
-	//ユーザー拡張用の定数バッファを作成。
-	if (expandData) {
-		m_expandConstantBuffer.Init(expandDataSize, nullptr);
-		m_expandData = expandData;
+
+
+	// 変更。追加。
+//ユーザー拡張用の定数バッファを作成。
+	for (int i = 0; i < m_kMaxExCBNum; i++)
+	{
+		if (expandData[i]) {
+			m_expandConstantBuffer[i].Init(expandDataSize[i], nullptr);
+			m_expandData[i] = expandData[i];
+		}
 	}
-	m_expandShaderResourceView = expandShaderResourceView;
+	// ユーザー拡張用のシェーダーリソースビューを作成
+	for (int i = 0; i < m_kMaxExSRVNum; i++)
+	{
+		m_expandShaderResourceView[i] = expandShaderResourceView[i];
+	}
+
+
+	////ユーザー拡張用の定数バッファを作成。
+	//if (expandData) {
+	//	m_expandConstantBuffer.Init(expandDataSize, nullptr);
+	//	m_expandData = expandData;
+	//}
+	//m_expandShaderResourceView = expandShaderResourceView;
 	//ディスクリプタヒープを作成。
 	CreateDescriptorHeaps();
 }
@@ -70,13 +89,34 @@ void MeshParts::CreateDescriptorHeaps()
 			descriptorHeap.RegistShaderResource(2, mesh->m_materials[matNo]->GetSpecularMap());		//スペキュラマップ。
 			descriptorHeap.RegistShaderResource(3, m_boneMatricesStructureBuffer);							//ボーンのストラクチャードバッファ。
 			descriptorHeap.RegistShaderResource(4, mesh->m_materials[matNo]->GetToonMap());			//トゥーンマップ
-			if (m_expandShaderResourceView){
-				descriptorHeap.RegistShaderResource(EXPAND_SRV_REG__START_NO, *m_expandShaderResourceView);
+
+
+						// 変更。追加。
+			for (int i = 0; i < m_kMaxExSRVNum; i++)
+			{
+				if (m_expandShaderResourceView[i]) {
+					descriptorHeap.RegistShaderResource(EXPAND_SRV_REG__START_NO + i, *m_expandShaderResourceView[i]);
+				}
 			}
 			descriptorHeap.RegistConstantBuffer(0, m_commonConstantBuffer);
-			if (m_expandConstantBuffer.IsValid()) {
-				descriptorHeap.RegistConstantBuffer(1, m_expandConstantBuffer);
+
+			// 変更。追加。
+			for (int i = 0; i < m_kMaxExCBNum; i++)
+			{
+				if (m_expandConstantBuffer[i].IsValid()) {
+					descriptorHeap.RegistConstantBuffer(i + 1, m_expandConstantBuffer[i]);
+				}
 			}
+
+
+
+			//if (m_expandShaderResourceView){
+			//	descriptorHeap.RegistShaderResource(EXPAND_SRV_REG__START_NO, *m_expandShaderResourceView);
+			//}
+			//descriptorHeap.RegistConstantBuffer(0, m_commonConstantBuffer);
+			//if (m_expandConstantBuffer.IsValid()) {
+			//	descriptorHeap.RegistConstantBuffer(1, m_expandConstantBuffer);
+			//}
 			//ディスクリプタヒープへの登録を確定させる。
 			descriptorHeap.Commit();
 			descriptorHeapNo++;
@@ -179,9 +219,16 @@ void MeshParts::Draw(
 
 	m_commonConstantBuffer.CopyToVRAM(&cb);
 
-	if (m_expandData) {
-		m_expandConstantBuffer.CopyToVRAM(m_expandData);
+	// 変更。追加。
+	for (int i = 0; i < m_kMaxExCBNum; i++)
+	{
+		if (m_expandData[i]) {
+			m_expandConstantBuffer[i].CopyToVRAM(m_expandData[i]);
+		}
 	}
+	//if (m_expandData) {
+	//	m_expandConstantBuffer.CopyToVRAM(m_expandData);
+	//}
 	if (m_boneMatricesStructureBuffer.IsInited()) {
 		//ボーン行列を更新する。
 		m_boneMatricesStructureBuffer.Update(m_skeleton->GetBoneMatricesTopAddress());
@@ -204,5 +251,64 @@ void MeshParts::Draw(
 			rc.DrawIndexed(ib->GetCount());
 			descriptorHeapNo++;
 		}
+	}
+}
+
+
+void MeshParts::DrawInstancing(RenderContext& rc, int numInstance, const Matrix& mView, const Matrix& mProj)
+{
+	//定数バッファの設定、更新など描画の共通処理を実行する。
+	DrawCommon(rc, g_matIdentity, mView, mProj);
+
+	int descriptorHeapNo = 0;
+	for (auto& mesh : m_meshs) {
+		//1. 頂点バッファを設定。
+		rc.SetVertexBuffer(mesh->m_vertexBuffer);
+		//マテリアルごとにドロー。
+		for (int matNo = 0; matNo < mesh->m_materials.size(); matNo++) {
+			//このマテリアルが貼られているメッシュの描画開始。
+			mesh->m_materials[matNo]->BeginRender(rc, mesh->skinFlags[matNo]);
+			//2. ディスクリプタヒープを設定。
+			rc.SetDescriptorHeap(m_descriptorHeap[matNo]);
+			//3. インデックスバッファを設定。
+			auto& ib = mesh->m_indexBufferArray[matNo];
+			rc.SetIndexBuffer(*ib);
+
+			//4. ドローコールを実行。
+			rc.DrawIndexedInstanced(ib->GetCount(), numInstance);
+			descriptorHeapNo++;
+		}
+	}
+
+}
+
+
+
+void MeshParts::DrawCommon(RenderContext& rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj)
+{
+	//メッシュごとにドロー
+	//プリミティブのトポロジーはトライアングルリストのみ。
+	rc.SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//定数バッファを更新する。
+	SConstantBuffer cb;
+	cb.mWorld = mWorld;
+	cb.mView = mView;
+	cb.mProj = mProj;
+	m_commonConstantBuffer.CopyToVRAM(cb);
+
+	// 変更。追加。
+	for (int i = 0; i < m_kMaxExCBNum; i++)
+	{
+		if (m_expandData[i]) {
+			m_expandConstantBuffer[i].CopyToVRAM(m_expandData[i]);
+		}
+	}
+	//if (m_expandData) {
+	//	m_expandConstantBuffer.CopyToVRAM(m_expandData);
+	//}
+	if (m_boneMatricesStructureBuffer.IsInited()) {
+		//ボーン行列を更新する。
+		m_boneMatricesStructureBuffer.Update(m_skeleton->GetBoneMatricesTopAddress());
 	}
 }

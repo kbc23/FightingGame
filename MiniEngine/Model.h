@@ -23,11 +23,14 @@ struct ModelInitData {
 	const char* m_vsSkinEntryPointFunc = "VSSkinMain";				//スキンありマテリアル用の頂点シェーダーのエントリーポイント。
 	const char* m_psEntryPointFunc = "PSMain";						//ピクセルシェーダーのエントリーポイント。
 	const char* m_fxFilePath = nullptr;								//.fxファイルのファイルパス。
-	void* m_expandConstantBuffer = nullptr;							//ユーザー拡張の定数バッファ。
-	int m_expandConstantBufferSize = 0;								//ユーザー拡張の定数バッファのサイズ。
-	IShaderResource* m_expandShaderResoruceView = nullptr;			//ユーザー拡張のシェーダーリソース。
+	void* m_expandConstantBuffer[MeshParts::m_kMaxExCBNum] = {};							//ユーザー拡張の定数バッファ。
+	int m_expandConstantBufferSize[MeshParts::m_kMaxExCBNum] = {};								//ユーザー拡張の定数バッファのサイズ。
+	IShaderResource* m_expandShaderResoruceView[MeshParts::m_kMaxExSRVNum] = {};			//ユーザー拡張のシェーダーリソース。
 	Skeleton* m_skeleton = nullptr;									//スケルトン。
 	modelUpAxis::EnModelUpAxis m_modelUpAxis = modelUpAxis::enModelUpAxisZ;		//モデルの上方向。
+
+public:
+	ModelInitData();
 };
 
 /// <summary>
@@ -134,6 +137,16 @@ public:
 		mWorld = mBias * mScale * mRot * mTrans;
 		return mWorld;
 	}
+
+
+
+	/// <summary>
+	/// インスタンシング描画
+	/// </summary>
+	/// <param name="renderContext">レンダリングコンテキスト</param>
+	/// <param name="numInstance">インスタンスの数</param>
+	void DrawInstancing(RenderContext& renderContext, int numInstance);
+
 private:
 
 	Matrix m_world;														//ワールド行列。

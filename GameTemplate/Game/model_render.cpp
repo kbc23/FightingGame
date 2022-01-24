@@ -150,18 +150,18 @@ void ModelRender::InitModel(const char* filePath,
 
 		// ライトの情報を定数バッファとしてディスクリプタヒープに
 		// 登録するためにモデルの初期化情報として渡す。
-		modelInitData.m_expandConstantBuffer = &m_light;
-		modelInitData.m_expandConstantBufferSize = sizeof(m_light);
+		modelInitData.m_expandConstantBuffer[0] = &m_light;
+		modelInitData.m_expandConstantBufferSize[0] = sizeof(m_light);
 	}
 	else {
 		modelInitData.m_fxFilePath = "Assets/shader/sampleShadowReciever.fx";
 		// シャドウマップを拡張SRVに設定する。
-		modelInitData.m_expandShaderResoruceView = 
+		modelInitData.m_expandShaderResoruceView[0] = 
 			&ShadowMap::GetInstance()->GetShadowMap().GetRenderTargetTexture();
 
 		// ライトビュープロジェクション行列を拡張定数バッファに設定する。
-		modelInitData.m_expandConstantBuffer = &m_light;
-		modelInitData.m_expandConstantBufferSize = sizeof(m_light);
+		modelInitData.m_expandConstantBuffer[0] = &m_light;
+		modelInitData.m_expandConstantBufferSize[0] = sizeof(m_light);
 	}
 	// 影を生成するか
 	if (true == flagShadow) {
@@ -226,7 +226,7 @@ void ModelRender::InitAudienceModel(const char* filePath, bool flagShadowReceive
 	// 使⽤するシェーダーファイルのパスを指定。
 	modelInitData.m_fxFilePath = "Assets/shader/sample3DInstancing.fx";
 	// 【注⽬】拡張SRVにストラクチャードバッファを渡す。
-	modelInitData.m_expandShaderResoruceView[0] = m_worldMatrixSB;
+	modelInitData.m_expandShaderResoruceView[0] = &m_worldMatrixSB;
 
 
 	//// 使用するシェーダーファイルパスを設定

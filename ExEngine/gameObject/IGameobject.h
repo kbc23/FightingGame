@@ -6,6 +6,9 @@
 
 #include <list>
 #include <string>
+
+#include "../../MiniEngine/RenderContext.h"
+
 class RenderContext;
 
 /*!

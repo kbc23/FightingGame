@@ -11,6 +11,7 @@ class RenderContext;
 class Skeleton;
 class Material;
 class IShaderResource;
+const int MAX_MODEL_EXPAND_SRV = 6;	//拡張SRVの最大数。
 
 
 /// <summary>
@@ -46,9 +47,9 @@ public:
 		const char* vsEntryPointFunc,
 		const char* vsSkinEntryPointFunc,
 		const char* psEntryPointFunc,
-		void* expandData,
-		int expandDataSize,
-		IShaderResource* expandShaderResourceView
+		void* const* expandData,
+		const int* expandDataSize,
+		IShaderResource* const* expandShaderResourceView
 	);
 	/// <summary>
 	/// 描画。
@@ -84,6 +85,29 @@ public:
 	/// ディスクリプタヒープを作成。
 	/// </summary>
 	void CreateDescriptorHeaps();
+
+
+
+	/// <summary>
+	/// インスタンシング描画
+	/// </summary>
+	/// <param name="rc">レンダリングコンテキスト</param>
+	/// <param name="numInstance">インスタンス数</param>
+	/// <param name="mView">ビュー行列</param>
+	/// <param name="mProj">プロジェクション行列</param>
+	void DrawInstancing(RenderContext& rc, int numInstance, const Matrix& mView, const Matrix& mProj);
+
+
+	/// <summary>
+	/// 描画処理の共通処理
+	/// </summary>
+	/// <param name="rc">レンダリングコンテキスト</param>
+	/// <param name="mWorld">ワールド行列</param>
+	/// <param name="mView">ビュー行列</param>
+	/// <param name="mProj">プロジェクション行列</param>
+	void DrawCommon(RenderContext& rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
+
+
 private:
 	/// <summary>
 	/// tkmメッシュからメッシュを作成。
@@ -102,6 +126,13 @@ private:
 		const char* vsSkinEntryPointFunc,
 		const char* psEntryPointFunc );
 
+
+
+	// 追加
+public:		// publicなデータメンバ
+	static const int m_kMaxExCBNum = 4;		//!< ユーザー拡張用の定数バッファの最大数
+	static const int m_kMaxExSRVNum = 32;	//!< ユーザー拡張用のシェーダーリソースビューの最大数
+
 	
 private:
 	//拡張SRVが設定されるレジスタの開始番号。
@@ -118,11 +149,16 @@ private:
 		Matrix mProj;		//プロジェクション行列。
 	};
 	ConstantBuffer m_commonConstantBuffer;					//メッシュ共通の定数バッファ。
-	ConstantBuffer m_expandConstantBuffer;					//ユーザー拡張用の定数バッファ
-	IShaderResource* m_expandShaderResourceView = nullptr;	//ユーザー拡張シェーダーリソースビュー。
+	ConstantBuffer m_expandConstantBuffer[m_kMaxExCBNum];					//ユーザー拡張用の定数バッファ
+	IShaderResource* m_expandShaderResourceView[m_kMaxExSRVNum] = {};	//ユーザー拡張シェーダーリソースビュー。
 	StructuredBuffer m_boneMatricesStructureBuffer;	//ボーン行列の構造化バッファ。
 	std::vector< SMesh* > m_meshs;							//メッシュ。
 	std::vector< DescriptorHeap > m_descriptorHeap;		//ディスクリプタヒープ。
 	Skeleton* m_skeleton = nullptr;								//スケルトン。
-	void* m_expandData = nullptr;						//ユーザー拡張データ。
+	void* m_expandData[m_kMaxExCBNum] = {};						//ユーザー拡張データ。
+	//DescriptorHeap m_descriptorHeap;					//ディスクリプタヒープ。
+
+
+
+
 };

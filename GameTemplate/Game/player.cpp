@@ -143,22 +143,22 @@ void Player::Controller()
     // L1ボタン
     if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonLB1)) {
         m_playerStatus.SetAttackData(enButtonLB1);
-        m_seAttack->Play(false);
+        //m_seAttack->Play(false);
     }
     // L2ボタン
     if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonLB2)) {
         m_playerStatus.SetAttackData(enButtonLB2);
-        m_seAttack->Play(false);
+        //m_seAttack->Play(false);
     }
     // R1ボタン
     if (false == m_playerStatus.CheckNowDefence() && true == m_gamePad->IsTrigger(enButtonRB1)) {
         m_playerStatus.SetAttackData(enButtonRB1);
-        m_seAttack->Play(false);
+        //m_seAttack->Play(false);
     }
     // R2ボタン
     if (false == m_playerStatus.NotAttack() && true == m_gamePad->IsTrigger(enButtonRB2)) {
         m_playerStatus.SetAttackData(enButtonRB2);
-        m_seAttack->Play(false);
+        //m_seAttack->Play(false);
     }
 
     // R1ボタン: ダッシュ
