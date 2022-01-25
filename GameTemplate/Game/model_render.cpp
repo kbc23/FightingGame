@@ -8,7 +8,7 @@
 
 namespace // constant
 {
-	const float SWAY_MOVE = 0.2f;
+	const float SWAY_MOVE = 0.2f; // １フレームのスウェーの移動量
 }
 
 
@@ -164,6 +164,7 @@ void ModelRender::Init(const char* filePath,
 
 void ModelRender::InstancingInit(
 	const char* filePath,
+	const int modelMaxNum,
 	modelUpAxis::EnModelUpAxis modelUpAxis,
 	AnimationClip* animationClip,
 	int maxAnimationClipNum
@@ -178,7 +179,7 @@ void ModelRender::InstancingInit(
 	// スケルトンのデータの読み込み
 	InitSkeleton(filePath);
 	// モデルの初期化
-	InitInstancingModel(filePath, modelUpAxis);
+	InitInstancingModel(filePath, modelMaxNum, modelUpAxis);
 	// アニメーションを初期化
 	InitAnimation(animationClip, maxAnimationClipNum);
 
@@ -209,51 +210,6 @@ bool ModelRender::InitSkeleton(const char* filePath)
 		m_skeletonPointer.reset();
 		return false;
 	}
-
-
-	// 通常描画
-	if (EnRenderType::enNormal == m_flagSetRenderType) {
-		// スケルトンのリソースを確保
-		m_skeletonPointer.reset(new Skeleton);
-		// スケルトンのデータの読み込み
-		bool isInited = m_skeletonPointer->Init(skeletonFilePath.c_str());
-
-		// 初期化に成功したか
-		// 成功
-		if (isInited) {
-			return true;
-		}
-		// 失敗
-		else {
-			// スケルトンのリソースを解放
-			m_skeletonPointer.reset();
-			return false;
-		}
-	}
-	// インスタンス描画
-	else if (EnRenderType::enInstancing == m_flagSetRenderType) {
-		// スケルトンのリソースを確保
-		m_instancing.m_skeletonPointer.resize(500);
-
-		for (int i = 0; i < 500; i++) {
-			m_instancing.m_skeletonPointer[i].reset(new Skeleton);
-
-			// スケルトンのデータの読み込み
-			bool isInited = m_instancing.m_skeletonPointer[i]->Init(skeletonFilePath.c_str());
-
-			// 初期化に成功したか
-			// 成功
-			if (isInited) {
-				return true;
-			}
-			// 失敗
-			else {
-				// スケルトンのリソースを解放
-				m_instancing.m_skeletonPointer[i].reset();
-				return false;
-			}
-		}
-	}
 }
 
 void ModelRender::InitAnimation(AnimationClip* animationClip, int maxAnimationClipNum)
@@ -271,34 +227,6 @@ void ModelRender::InitAnimation(AnimationClip* animationClip, int maxAnimationCl
 		animationClip,
 		maxAnimationClipNum
 	);
-
-	return;
-
-
-	// 通常描画
-	if (EnRenderType::enNormal == m_flagSetRenderType) {
-		// アニメーションのリソースを確保
-		m_animationPointer.reset(new Animation);
-		// アニメーションを初期化
-		m_animationPointer->Init(
-			*m_skeletonPointer,
-			animationClip,
-			maxAnimationClipNum
-		);
-	}
-	// インスタンス描画
-	else if (EnRenderType::enInstancing == m_flagSetRenderType) {
-		for (int i = 0; i < 500; i++) {
-			// アニメーションのリソースを確保
-			m_instancing.m_animationPointer[i].reset(new Animation);
-			// アニメーションを初期化
-			m_instancing.m_animationPointer[i]->Init(
-				*m_instancing.m_skeletonPointer[i],
-				animationClip,
-				maxAnimationClipNum
-			);
-		}
-	}
 }
 
 void ModelRender::InitModel(const char* filePath,
@@ -358,59 +286,70 @@ void ModelRender::InitModel(const char* filePath,
 	m_model.Init(modelInitData);
 }
 
-void ModelRender::InitInstancingModel(const char* filePath, modelUpAxis::EnModelUpAxis modelUpAxis)
+void ModelRender::InitInstancingModel(
+	const char* filePath,
+	const int modelMaxNum,
+	modelUpAxis::EnModelUpAxis modelUpAxis
+)
 {
-	// step-1 500体分のモデルの座標を計算する。
-	m_instancing.m_position = new Vector3[500];
-	m_instancing.m_rotation = new Quaternion[500];
-	m_instancing.m_scale = new Vector3[500];
-	int humanNo = 0;
-	for (int x = 0; x < 50; x++) {
-		for (int y = 0; y < 10; y++) {
-			// 1000体のモデルが綺麗に並ぶように、座標を計算する。
-			m_instancing.m_position[humanNo].x = -2400.0f + 100.0f * x;
-			m_instancing.m_position[humanNo].y = -1250.0f + 250.0f * y;
-			m_instancing.m_position[humanNo].z = 0.0f;
+	// インスタンスの数をセット
+	m_instancing.m_instanceNum = modelMaxNum;
 
-			//m_instancing.m_rotation[humanNo].SetRotationDegX(90.0f);
-			humanNo++;
-		}
+	// モデルの座標を初期化
+	m_instancing.m_position = new Vector3[m_instancing.m_instanceNum];
+	m_instancing.m_rotation = new Quaternion[m_instancing.m_instanceNum];
+	m_instancing.m_scale = new Vector3[m_instancing.m_instanceNum];
+
+	// モデルの座標、回転、拡大率を初期化
+	for (int instanceNum = 0; m_instancing.m_instanceNum; instanceNum++) {
+		// インスタンス全ての座標を原点、回転をデフォルト、拡大率を１倍に設定
+		m_instancing.m_position[instanceNum] = Vector3::Zero;
+		m_instancing.m_rotation[instanceNum] = Quaternion::Identity;
+		m_instancing.m_scale[instanceNum] = Vector3::One;
 	}
 
-	// step-2 500体分のワールド⾏列関係の各種バッファを確保。
-	// まずは計算⽤のバッファをメインメモリ上に確保する。
-	m_instancing.m_worldMatrixArray = new Matrix[500];
-	// 続いて、シェーダー側でワールド⾏列を使⽤するためのストラクチャードバッファをVRAM上に確保する。
-	//StructuredBuffer worldMatrixSB;
+	//int instanceNum = 0;
+	//for (int x = 0; x < 50; x++) {
+	//	for (int y = 0; y < 10; y++) {
+	//		m_instancing.m_position[instanceNum].x = -2400.0f + 100.0f * x;
+	//		m_instancing.m_position[instanceNum].y = -1250.0f + 250.0f * y;
+	//		m_instancing.m_position[instanceNum].z = 0.0f;
+
+	//		m_instancing.m_scale[instanceNum] = { 1.0f,1.0f,1.0f };
+
+	//		instanceNum++;
+	//	}
+	//}
+
+	// インスタンシング描画のワールド⾏列関係の各種バッファを確保
+	// まずは計算⽤のバッファをメインメモリ上に確保する
+	m_instancing.m_worldMatrixArray = new Matrix[m_instancing.m_instanceNum];
+	// 続いて、シェーダー側でワールド⾏列を使⽤するためのストラクチャードバッファをVRAM上に確保する
 	m_instancing.m_worldMatrixSB.Init(
-		sizeof(Matrix), // 第⼀引数は１要素のサイズ。
-		500, // 第⼆引数は要素数。
-		nullptr // 第三引数は初期値データ。初期値は指定しないので、今回はnullptr。
+		sizeof(Matrix), // 第⼀引数は１要素のサイズ
+		m_instancing.m_instanceNum, // 第⼆引数は要素数
+		nullptr // 第三引数は初期値データ。初期値は指定しないので、今回はnullptr
 	);
 
-	// step-3 ⼈物のモデルを初期化。
-	// モデルの初期化データを設定する。
+	// モデルの初期化データを設定する
 	ModelInitData modelInitData;
 
-	//modelInitData.m_vsSkinEntryPointFunc = "VSMain";
-
-	// tkmファイルのパスを指定。
+	// tkmファイルのパスを指定
 	modelInitData.m_tkmFilePath = "Assets/modelData/model/model.tkm";
-	// 使⽤するシェーダーファイルのパスを指定。
+	// 使⽤するシェーダーファイルのパスを指定
 	modelInitData.m_fxFilePath = "Assets/shader/sample3DInstancing.fx";
-	// 【注⽬】拡張SRVにストラクチャードバッファを渡す。
+	// 拡張SRVにストラクチャードバッファを渡す
 	modelInitData.m_expandShaderResoruceView[0] = &m_instancing.m_worldMatrixSB;
 
-	// スケルトンを指定する。
+	// スケルトンを指定する
 	if (m_skeletonPointer) {	// スケルトンが初期化されていたら
 		modelInitData.m_skeleton = m_skeletonPointer.get();
 	}
 	// モデルの上方向を指定
 	modelInitData.m_modelUpAxis = modelUpAxis;
 
-	// 設定したデータでモデルを初期化。
+	// 設定したデータでモデルを初期化
 	m_model.Init(modelInitData);
-
 }
 
 ////////////////////////////////////////////////////////////
@@ -436,8 +375,8 @@ void ModelRender::Render(RenderContext& renderContext)
 
 void ModelRender::InstancingRender(RenderContext& renderContext)
 {
-	// step-6 ⼈物のモデルをインスタンシング描画。
-	m_model.DrawInstancing(renderContext, 500);
+	// インスタンシング描画。
+	m_model.DrawInstancing(renderContext, m_instancing.m_instanceNum);
 }
 
 void ModelRender::Update()
@@ -484,19 +423,17 @@ void ModelRender::InstancingUpdate()
 		m_animationPointer->Progress(g_gameTime->GetFrameDeltaTime());
 	}
 
-
-	// step-4 ワールド⾏列を計算する。
-	for (int i = 0; i < 500; i++) {
-		// ワールド⾏列を計算する。
-		m_instancing.m_worldMatrixArray[i] =
+	// ワールド⾏列を計算する
+	for (int instanceNum = 0; instanceNum < m_instancing.m_instanceNum; instanceNum++) {
+		m_instancing.m_worldMatrixArray[instanceNum] =
 			m_model.CalcWorldMatrix(
-				m_instancing.m_position[i],
-				m_instancing.m_rotation[i],
-				m_instancing.m_scale[i]
+				m_instancing.m_position[instanceNum],
+				m_instancing.m_rotation[instanceNum],
+				m_instancing.m_scale[instanceNum]
 			);
 	}
 
-	// step-5 ワールド⾏列の内容をグラフィックメモリにコピー。
+	// ワールド⾏列の内容をグラフィックメモリにコピー
 	m_instancing.m_worldMatrixSB.Update(m_instancing.m_worldMatrixArray);
 }
 

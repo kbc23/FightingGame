@@ -1,106 +1,108 @@
-#pragma once
+ï»¿#pragma once
 #include <Model.h>
 
 #include "shadow.h"
 #include "hitbox.h"
 
 ////////////////////////////////////////////////////////////
-// ƒƒ‚
-// ƒgƒD[ƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒO‚Ég—p‚·‚é‰æ‘œ‚È‚Ç‚ÌƒpƒX‚ğ“Ç‚İ‚ñ‚Å‚¢‚é‚Æ‚±‚ë
+// ãƒ¡ãƒ¢
+// ãƒˆã‚¥ãƒ¼ãƒ³ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã«ä½¿ç”¨ã™ã‚‹ç”»åƒãªã©ã®ãƒ‘ã‚¹ã‚’èª­ã¿è¾¼ã‚“ã§ã„ã‚‹ã¨ã“ã‚
 // NullTextureMaps.cpp
 ////////////////////////////////////////////////////////////
 
-
-
-// ƒ‰ƒCƒg—p‚Ì\‘¢‘Ì‚ğ’è‹`‚·‚é
+/**
+ * @brief ãƒ©ã‚¤ãƒˆæƒ…å ±ã®æ§‹é€ ä½“
+*/
 struct Light
 {
-	// ƒfƒBƒŒƒNƒVƒ‡ƒ“ƒ‰ƒCƒg
-	Vector3 dirDirection; // ƒ‰ƒCƒg‚Ì•ûŒü
-	// HLSL‘¤‚Ì’è”ƒoƒbƒtƒ@‚Ìfloat3Œ^‚Ì•Ï”‚Í16‚Ì”{”‚ÌƒAƒhƒŒƒX‚É”z’u‚³‚ê‚é‚½‚ßA
-	// C++‘¤‚É‚ÍƒpƒfƒBƒ“ƒO‚ğ–„‚ß‚Ä‚¨‚­B
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒˆ
+	Vector3 dirDirection; // ãƒ©ã‚¤ãƒˆã®æ–¹å‘
+	// HLSLå´ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®float3å‹ã®å¤‰æ•°ã¯16ã®å€æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã«é…ç½®ã•ã‚Œã‚‹ãŸã‚ã€
+	// C++å´ã«ã¯ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã‚’åŸ‹ã‚ã¦ãŠãã€‚
 	float pad;
 	Vector3 dirColor;
 	float pad1;
 
-	// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg
-	Vector3 ptPosition; // ˆÊ’u
-	float pad2;			// ƒpƒfƒBƒ“ƒO
-	Vector3 ptColor;	// ƒJƒ‰[
-	float ptRange;		// ‰e‹¿”ÍˆÍ
+	// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆ
+	Vector3 ptPosition; // ä½ç½®
+	float pad2;			// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+	Vector3 ptColor;	// ã‚«ãƒ©ãƒ¼
+	float ptRange;		// å½±éŸ¿ç¯„å›²
 
-	// ƒXƒ|ƒbƒgƒ‰ƒCƒg
-	Vector3 spPosition;		// ˆÊ’u
-	float pad3;				// ƒpƒfƒBƒ“ƒO
-	Vector3 spColor;		// ƒJƒ‰[
-	float spRange;			// ‰e‹¿”ÍˆÍ
-	Vector3 spDirection;	// Ëo•ûŒü
-	float spAngle;			// ËoŠp“x
+	// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆ
+	Vector3 spPosition;		// ä½ç½®
+	float pad3;				// ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+	Vector3 spColor;		// ã‚«ãƒ©ãƒ¼
+	float spRange;			// å½±éŸ¿ç¯„å›²
+	Vector3 spDirection;	// å°„å‡ºæ–¹å‘
+	float spAngle;			// å°„å‡ºè§’åº¦
 
-	// \‘¢‘Ì‚É‹“_‚ÌˆÊ’u‚ğ’Ç‰Á‚·‚é
-	Vector3 eyePos; // ‹“_‚ÌˆÊ’u
+	// æ§‹é€ ä½“ã«è¦–ç‚¹ã®ä½ç½®ã‚’è¿½åŠ ã™ã‚‹
+	Vector3 eyePos; // è¦–ç‚¹ã®ä½ç½®
 	float pad4;
 
-	// ŠÂ‹«Œõ
-	Vector3 ambientLight;   // ƒAƒ“ƒrƒGƒ“ƒgƒ‰ƒCƒg
+	// ç’°å¢ƒå…‰
+	Vector3 ambientLight;   // ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆãƒ©ã‚¤ãƒˆ
 	float pad5;
 
-	// ”¼‹…ƒ‰ƒCƒg
-	Vector3 groundColor;	// ’n–ÊF
+	// åŠçƒãƒ©ã‚¤ãƒˆ
+	Vector3 groundColor;	// åœ°é¢è‰²
 	float pad6;
-	Vector3 skyColor;		// “V‹…F
+	Vector3 skyColor;		// å¤©çƒè‰²
 	float pad7;
-	Vector3 groundNormal;	// ’n–Ê‚Ì–@ü
+	Vector3 groundNormal;	// åœ°é¢ã®æ³•ç·š
 
 	float pad8;
-	Matrix shadowCamera;
+	Matrix shadowCamera; // å½±æç”»ã«ä½¿ç”¨ã™ã‚‹ã‚«ãƒ¡ãƒ©
 
 public:
 	void InitLight();
 
 private:
 	/**
-	 * @brief ƒfƒBƒŒƒNƒVƒ‡ƒ“ƒ‰ƒCƒg‚Ì‰Šú‰»
+	 * @brief ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒˆã®åˆæœŸåŒ–
 	*/
 	void InitDirectionLight();
 
 	/**
-	 * @brief ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚Ì‰Šú‰»
+	 * @brief ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã®åˆæœŸåŒ–
 	*/
 	void InitPointLight();
 
 	/**
-	 * @brief ƒXƒ|ƒbƒgƒ‰ƒCƒg‚Ì‰Šú‰»
+	 * @brief ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã®åˆæœŸåŒ–
 	*/
 	void InitSpotLight();
 
 	/**
-	 * @brief ŠÂ‹«Œõ‚Ì‰Šú‰»
+	 * @brief ç’°å¢ƒå…‰ã®åˆæœŸåŒ–
 	*/
 	void InitAmbientLight();
 
 	/**
-	 * @brief ”¼‹…ƒ‰ƒCƒg‚Ì‰Šú‰»
+	 * @brief åŠçƒãƒ©ã‚¤ãƒˆã®åˆæœŸåŒ–
 	*/
 	void InitHemiLight();
 };
 
-
+/**
+ * @brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã®æ§‹é€ ä½“
+*/
 struct Instancing
 {
-	Vector3* m_position;
-	Quaternion* m_rotation;
-	Vector3* m_scale;
+	Vector3* m_position; // ä½ç½®
+	Quaternion* m_rotation; // å›è»¢
+	Vector3* m_scale; // æ‹¡å¤§ç‡
 
-	Matrix* m_worldMatrixArray = nullptr;
-	StructuredBuffer m_worldMatrixSB;
+	Matrix* m_worldMatrixArray = nullptr; // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰â¾åˆ—é–¢ä¿‚ã®ãƒãƒƒãƒ•ã‚¡
+	StructuredBuffer m_worldMatrixSB; // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼å´ã§ãƒ¯ãƒ¼ãƒ«ãƒ‰â¾åˆ—ã‚’ä½¿â½¤ã™ã‚‹ãŸã‚ã®ã‚¹ãƒˆãƒ©ã‚¯ãƒãƒ£ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡
 
-	std::vector<std::unique_ptr<Skeleton>> m_skeletonPointer; // ƒXƒPƒ‹ƒgƒ“‚Ìƒ|ƒCƒ“ƒ^[
-	std::vector < std::unique_ptr<Animation>> m_animationPointer; // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìƒ|ƒCƒ“ƒ^[
+	int m_instanceNum = 0; // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°
 };
 
-
-
+/**
+ * @brief ãƒ¢ãƒ‡ãƒ«ã®æç”»ã®å‡¦ç†
+*/
 class ModelRender : public IGameObject
 {
 public:
@@ -110,31 +112,43 @@ public:
     void Update() override final;
 	void Render(RenderContext& renderContext) override final;
 
-
-
+	/**
+	 * @brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã®æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®å‡¦ç†
+	*/
 	void InstancingUpdate();
-
+	/**
+	 * @brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã®æç”»å‡¦ç†
+	 * @param renderContext ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
+	*/
 	void InstancingRender(RenderContext& renderContext);
 
 
 public:
 	/**
-	 * @brief ‰Šú‰»
-	 * @param filePath tkmƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-	 * @param flagShadowReceiver ‰e‚Ì‰e‹¿‚ğó‚¯‚é‚©
-	 * @param flagShadow ‰e‚ğ•`‰æ‚·‚é‚©
-	 * @param modelUpAxis ƒ‚ƒfƒ‹‚Ìã•ûŒü
-	 * @param animationClip ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv
-	 * @param maxAnimationClipNum ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ÌÅ‘å”
+	 * @brief åˆæœŸåŒ–
+	 * @param filePath tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	 * @param flagShadowReceiver å½±ã®å½±éŸ¿ã‚’å—ã‘ã‚‹ã‹
+	 * @param flagShadow å½±ã‚’æç”»ã™ã‚‹ã‹
+	 * @param modelUpAxis ãƒ¢ãƒ‡ãƒ«ã®ä¸Šæ–¹å‘
+	 * @param animationClip ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—
+	 * @param maxAnimationClipNum ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã®æœ€å¤§æ•°
 	 */
 	void Init(const char* filePath, bool flagShadowReceiver = false, bool flagShadow = false,
 		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
 		AnimationClip* animationClip = nullptr,
 		int maxAnimationClipNum = 0
 	);
-
+	/**
+	 * @brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã®åˆæœŸåŒ–
+	 * @param filePath tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	 * @param modelMaxNum ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã§æç”»ã™ã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°
+	 * @param modelUpAxis ãƒ¢ãƒ‡ãƒ«ã®ä¸Šæ–¹å‘
+	 * @param animationClip ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—
+	 * @param maxAnimationClipNum ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã®æœ€å¤§æ•°
+	*/
 	void InstancingInit(
 		const char* filePath,
+		const int modelMaxNum,
 		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
 		AnimationClip* animationClip = nullptr,
 		int maxAnimationClipNum = 0
@@ -143,80 +157,90 @@ public:
 
 private:
 	/**
-	 * @brief ƒ‚ƒfƒ‹‚Ì‰Šú‰»
-	 * @param filePath tkmƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-	 * @param flagShadowReceiver ‰e‚Ì‰e‹¿‚ğó‚¯‚é‚©
-	 * @param flagShadow ‰e‚ğ•`‰æ‚·‚é‚©
-	 * @param modelUpAxis ƒ‚ƒfƒ‹‚Ìã•ûŒü
+	 * @brief ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–
+	 * @param filePath tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	 * @param flagShadowReceiver å½±ã®å½±éŸ¿ã‚’å—ã‘ã‚‹ã‹
+	 * @param flagShadow å½±ã‚’æç”»ã™ã‚‹ã‹
+	 * @param modelUpAxis ãƒ¢ãƒ‡ãƒ«ã®ä¸Šæ–¹å‘
 	*/
 	void InitModel(const char* filePath, bool flagShadowReceiver, bool flagShadow,
 		modelUpAxis::EnModelUpAxis modelUpAxis
 	);
-
-	void InitInstancingModel(const char* filePath, modelUpAxis::EnModelUpAxis modelUpAxis);
-
 	/**
-	 * @brief ƒXƒPƒ‹ƒgƒ“‚Ì‰Šú‰»
-	 * @param filePath ƒtƒ@ƒCƒ‹ƒpƒX
-	 * @return 
+	 * @brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã‚’ã™ã‚‹ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–
+	 * @param filePath tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	 * @param modelMaxNum ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã§æç”»ã™ã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ•°
+	 * @param modelUpAxis ãƒ¢ãƒ‡ãƒ«ã®ä¸Šæ–¹å‘
+	*/
+	void InitInstancingModel(
+		const char* filePath,
+		const int modelMaxNum,
+		modelUpAxis::EnModelUpAxis modelUpAxis
+	);
+	/**
+	 * @brief ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã®åˆæœŸåŒ–
+	 * @param filePath ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	 * @return ã‚¹ã‚±ãƒ«ãƒˆãƒ³ãŒã‚ã‚‹ã‹
 	*/
 	bool InitSkeleton(const char* filePath);
-
 	/**
-	 * @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‰Šú‰»
-	 * @param animationClip ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv
-	 * @param maxAnimationClipNum ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚Ì‘”
+	 * @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åˆæœŸåŒ–
+	 * @param animationClip ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—
+	 * @param maxAnimationClipNum ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã®ç·æ•°
 	*/
 	void InitAnimation(AnimationClip* animationClip, int maxAnimationClipNum);
-
 	/**
-	 * @brief ‘¼‚ÌƒNƒ‰ƒX‚Ì•¨‚¾‚ªAƒ‚ƒfƒ‹‚ÆˆÊ’u‚ª‚¸‚ê‚é‚Ì‚ğ–h‚®‚½‚ß‚É‚±‚±‚Åˆ—‚ğ‚¨‚±‚È‚¤
+	 * @brief ä»–ã®ã‚¯ãƒ©ã‚¹ã®ç‰©ã ãŒã€ãƒ¢ãƒ‡ãƒ«ã¨ä½ç½®ãŒãšã‚Œã‚‹ã®ã‚’é˜²ããŸã‚ã«ã“ã“ã§å‡¦ç†ã‚’ãŠã“ãªã†
 	*/
 	void UpdateOtherData();
 
 
 private:
 	////////////////////////////////////////////////////////////
-	// ƒXƒEƒF[ƒNƒ‰ƒX‚ğì‚Á‚ÄModelRenderƒNƒ‰ƒX‚É‚½‚¹‚Äˆ—‚µ‚½•û‚ª‚¢‚¢‚©‚à
+	// ã‚¹ã‚¦ã‚§ãƒ¼ã‚¯ãƒ©ã‚¹ã‚’ä½œã£ã¦ModelRenderã‚¯ãƒ©ã‚¹ã«æŒãŸã›ã¦å‡¦ç†ã—ãŸæ–¹ãŒã„ã„ã‹ã‚‚
 	////////////////////////////////////////////////////////////
-	
+
+	/**
+	 * @brief ã‚¹ã‚¦ã‚§ãƒ¼ã¨ã—ã‚ƒãŒã¿ã®å‡¦ç†
+	*/
 	void SwayOrCrouching();
 
 	/**
-	 * @brief ƒXƒEƒF[‚Ìˆ—
+	 * @brief ã‚¹ã‚¦ã‚§ãƒ¼ã®å‡¦ç†
 	*/
 	void SwayCharacter();
-
+	/**
+	 * @brief ç§»å‹•é‡ã®ä¸Šé™ã¨ç§»å‹•ãŒæ»‘ã‚‰ã‹ã«ã™ã‚‹å‡¦ç†
+	*/
 	void CheckSwayMove();
-
-
+	/**
+	 * @brief ã—ã‚ƒãŒã¿ã®å‡¦ç†
+	*/
 	void Crouching();
 
 
 
 public:
 	/**
-	 * @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶‚·‚é
-	 * @param animationNumber “o˜^‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚Ì”Ô†
-	 * @param interpolateTime •âŠ®ŠÔi’PˆÊF•bj
+	 * @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
+	 * @param animationNumber ç™»éŒ²ã—ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã®ç•ªå·
+	 * @param interpolateTime è£œå®Œæ™‚é–“ï¼ˆå˜ä½ï¼šç§’ï¼‰
 	*/
 	void PlayAnimation(int animationNumber, float interpolateTime = 0.2f)
 	{
 		m_animationPointer->Play(animationNumber, interpolateTime);
 	}
-
 	/**
-	 * @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶’†‚©
-	 * @return Ä¶’†‚©
+	 * @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿä¸­ã‹
+	 * @return å†ç”Ÿä¸­ã‹
 	*/
 	const bool IsPlayingAnimation() const
 	{
 		return m_animationPointer->IsPlaying();
 	}
-
 	/**
-	 * @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‰Šú‰»‚ªŠ®—¹‚µ‚Ä‚¢‚é‚©
-	 * @return Š®—¹‚µ‚Ä‚¢‚é‚©
+	 * @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åˆæœŸåŒ–ãŒå®Œäº†ã—ã¦ã„ã‚‹ã‹
+	 * @return å®Œäº†ã—ã¦ã„ã‚‹ã‹
 	*/
 	const bool IsInited() const
 	{
@@ -224,208 +248,210 @@ public:
 	}
 
 
-public: // GetŠÖ”
+public: // Geté–¢æ•°
 	/**
-	 * @brief ˆÊ’u‚ğæ“¾
-	 * @return ˆÊ’u
+	 * @brief ä½ç½®ã‚’å–å¾—
+	 * @return ä½ç½®
 	*/
 	const Vector3& GetPosition() const
 	{
 		return m_position;
 	}
-
 	/**
-	 * @brief ‰ñ“]—Ê‚ğæ“¾
-	 * @return ‰ñ“]—Ê
+	 * @brief å›è»¢é‡ã‚’å–å¾—
+	 * @return å›è»¢é‡
 	*/
 	const Quaternion& GetRotation() const
 	{
 		return m_rotation;
 	}
-
 	/**
-	 * @brief Šg‘å—¦‚ğæ“¾
-	 * @return Šg‘å—¦
+	 * @brief æ‹¡å¤§ç‡ã‚’å–å¾—
+	 * @return æ‹¡å¤§ç‡
 	*/
 	const Vector3& GetScale() const
 	{
 		return m_scale;
 	}
-
 	/**
-	 * @brief w’è‚µ‚½ƒ{[ƒ“‚ğæ“¾
-	 * @param boneName ƒ{[ƒ“‚Ì–¼‘O
-	 * @return ƒ{[ƒ“
+	 * @brief æŒ‡å®šã—ãŸãƒœãƒ¼ãƒ³ã‚’å–å¾—
+	 * @param boneName ãƒœãƒ¼ãƒ³ã®åå‰
+	 * @return ãƒœãƒ¼ãƒ³
 	*/
 	Bone& GetBone(const wchar_t boneName) const
 	{
-		// ƒ{[ƒ“‚Ì–¼‘O‚ğw’è‚µ‚Äƒ{[ƒ“ID‚ğŒŸõ
+		// ãƒœãƒ¼ãƒ³ã®åå‰ã‚’æŒ‡å®šã—ã¦ãƒœãƒ¼ãƒ³IDã‚’æ¤œç´¢
 		int boneId = m_skeletonPointer->FindBoneID(&boneName);
-		// ŒŸõ‚µ‚½ƒ{[ƒ“ID‚ğg—p‚µ‚ÄAƒ{[ƒ“‚ğæ“¾
+		// æ¤œç´¢ã—ãŸãƒœãƒ¼ãƒ³IDã‚’ä½¿ç”¨ã—ã¦ã€ãƒœãƒ¼ãƒ³ã‚’å–å¾—
 		return *m_skeletonPointer->GetBone(boneId);
 	}
-
 	/**
-	 * @brief ƒXƒPƒ‹ƒgƒ“‚ğæ“¾
-	 * @return ƒXƒPƒ‹ƒgƒ“
+	 * @brief ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã‚’å–å¾—
+	 * @return ã‚¹ã‚±ãƒ«ãƒˆãƒ³
 	*/
 	Skeleton& GetSkeleton() const
 	{
 		return *m_skeletonPointer;
 	}
-
+	/**
+	 * @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’å–å¾—
+	 * @return ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
+	*/
 	Matrix& GetModelWorldMatrix() const
 	{
 		m_model.GetWorldMatrix();
 	}
 
 
-public: // SetŠÖ”
+public: // Seté–¢æ•°
 	/**
-	 * @brief ˆÊ’u‚ğİ’è
-	 * @param vec ˆÊ’u
+	 * @brief ä½ç½®ã‚’è¨­å®š
+	 * @param vec ä½ç½®
 	*/
 	void SetPosition(const Vector3& position)
 	{
 		m_position = position;
 
+		// å½±ã®æç”»ã‚‚ã—ã¦ã„ã‚‹å ´åˆ
 		if (true == m_flagShadow) {
+			// å½±ã®ãƒ¢ãƒ‡ãƒ«ã®ä½ç½®ã‚‚å¤‰æ›´
 			m_shadowModel->SetPosition(m_position);
 		}
 	}
-
 	/**
-	 * @brief YÀ•W‚ğw’è‚µ‚½—Ê‚¾‚¯ã¸
-	 * @param position ã¸‚·‚é—Ê
+	 * @brief Yåº§æ¨™ã‚’æŒ‡å®šã—ãŸé‡ã ã‘ä¸Šæ˜‡
+	 * @param position ä¸Šæ˜‡ã™ã‚‹é‡
 	*/
 	void UpPositionY(const float position)
 	{
 		m_position.y += position;
 	}
-
 	/**
-	 * @brief YÀ•W‚ğw’è‚µ‚½—Ê‚¾‚¯‰º~
-	 * @param position ‰º~‚·‚é—Ê
+	 * @brief Yåº§æ¨™ã‚’æŒ‡å®šã—ãŸé‡ã ã‘ä¸‹é™
+	 * @param position ä¸‹é™ã™ã‚‹é‡
 	*/
 	void DownPositionY(const float position)
 	{
 		m_position.y -= position;
 	}
-
 	/**
-	 * @brief YÀ•W‚ğ0.0f‚Éİ’è‚·‚é
+	 * @brief Yåº§æ¨™ã‚’0.0fã«è¨­å®šã™ã‚‹
 	*/
 	void ResetPositionY()
 	{
 		m_position.y = 0.0f;
 	}
-
 	/**
-	 * @brief ‰ñ“]—Ê‚ğİ’è
-	 * @param rotation ‰ñ“]—Ê
+	 * @brief å›è»¢é‡ã‚’è¨­å®š
+	 * @param rotation å›è»¢é‡
 	*/
 	void SetRotation(const Quaternion& rotation)
 	{
 		m_rotation = rotation;
 
+		// å½±ã®æç”»ã‚‚ã—ã¦ã„ã‚‹å ´åˆ
 		if (true == m_flagShadow) {
+			// å½±ã®ãƒ¢ãƒ‡ãƒ«ã®å›è»¢ã‚‚å¤‰æ›´
 			m_shadowModel->SetRotation(m_rotation);
 		}
 	}
-
 	/**
-	 * @brief X²‚Ì‰ñ“]—Ê‚ğİ’è
-	 * @param rotation X²‚Ì‰ñ“]—Ê
+	 * @brief Xè»¸ã®å›è»¢é‡ã‚’è¨­å®š
+	 * @param rotation Xè»¸ã®å›è»¢é‡
 	*/
 	void SetRotationX(const float rotation) {
 		m_rotation.SetRotationX(rotation);
 	}
-
 	/**
-	 * @brief Šg‘å—¦‚ğİ’è
-	 * @param scale Šg‘å—¦
+	 * @brief æ‹¡å¤§ç‡ã‚’è¨­å®š
+	 * @param scale æ‹¡å¤§ç‡
 	*/
 	void SetScale(const Vector3& scale)
 	{
 		m_scale = scale;
 
+		// å½±ã®æç”»ã‚‚ã—ã¦ã„ã‚‹å ´åˆ
 		if (true == m_flagShadow) {
+			// å½±ã®ãƒ¢ãƒ‡ãƒ«ã®æ‹¡å¤§ç‡ã‚‚å¤‰æ›´
 			m_shadowModel->SetScale(m_scale);
 		}
 	}
-
 	/**
-	 * @brief HitboxƒNƒ‰ƒX‚ÌˆÊ’u‚ğXV‚·‚éÛA‚±‚ÌƒNƒ‰ƒX‚Å‚µ‚½‚¢‚Ì‚Å‚Á‚Ä‚­‚é
-	 * iŠÖ”–¼•Ï‚¦‚é‚±‚Æj
-	 * @param hitbox HitboxƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	 * @brief Hitboxã‚¯ãƒ©ã‚¹ã®ä½ç½®ã‚’æ›´æ–°ã™ã‚‹éš›ã€ã“ã®ã‚¯ãƒ©ã‚¹ã§ã—ãŸã„ã®ã§æŒã£ã¦ãã‚‹
+	 * ï¼ˆé–¢æ•°åå¤‰ãˆã‚‹ã“ã¨ï¼‰
+	 * @param hitbox Hitboxã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	*/
 	void SetTest(Hitbox& hitbox)
 	{
 		m_getHitbox = &hitbox;
 	}
-
 	/**
-	 * @brief ƒXƒEƒF[‚ÌˆÚ“®•ûŒü
-	 * @param swayMove “ü—Íî•ñ
+	 * @brief ã‚¹ã‚¦ã‚§ãƒ¼ã®ç§»å‹•æ–¹å‘
+	 * @param swayMove å…¥åŠ›æƒ…å ±
 	*/
 	void SetSwayMove(const Vector2& swayMoveController)
 	{
-		// ¶‰E•ûŒü‚ÌŠm”F
-		// “ü—Í: ‰E
+		// å·¦å³æ–¹å‘ã®ç¢ºèª
+		// å…¥åŠ›: å³
 		if (EnSwayController::enNotMove < swayMoveController.x) {
 			m_swayController[EnXY::x] = EnSwayController::enRight;
 		}
-		// “ü—Í: ¶
+		// å…¥åŠ›: å·¦
 		else if (EnSwayController::enNotMove > swayMoveController.x) {
 			m_swayController[EnXY::x] = EnSwayController::enLeft;
 		}
-		// “ü—Í: ‚È‚µ
+		// å…¥åŠ›: ãªã—
 		else {
 			m_swayController[EnXY::x] = EnSwayController::enNotMove;
 		}
-		// ã‰º•ûŒü‚ÌŠm”F
-		// “ü—Í: ã
+		// ä¸Šä¸‹æ–¹å‘ã®ç¢ºèª
+		// å…¥åŠ›: ä¸Š
 		if (EnSwayController::enNotMove < swayMoveController.y) {
 			m_swayController[EnXY::y] = EnSwayController::enUp;
 		}
-		// “ü—Í: ‰º
+		// å…¥åŠ›: ä¸‹
 		else if (EnSwayController::enNotMove > swayMoveController.y) {
 			m_swayController[EnXY::y] = EnSwayController::enDown;
 		}
-		// “ü—Í: ‚È‚µ
+		// å…¥åŠ›: ãªã—
 		else {
 			m_swayController[EnXY::y] = EnSwayController::enNotMove;
 		}
 	}
-
-	
-	void SetInstancingScale(const Vector3& scale)
+	/**
+	 * @brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã™ã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å…¨ã¦ã®æ‹¡å¤§ç‡ã‚’å¤‰æ›´
+	 * @param scale æ‹¡å¤§ç‡
+	*/
+	void SetAllInstancScale(const Vector3& scale)
 	{
-		for (int i = 0; i < 500; i++) {
-			m_instancing.m_scale[i] = scale;
+		for (int instanceNum = 0; instanceNum < m_instancing.m_instanceNum; instanceNum++) {
+			m_instancing.m_scale[instanceNum] = scale;
 		}
 	}
 
 
-
-	
-
-
 private:
+	/**
+	 * @brief æç”»æ–¹æ³•ã‚’è¨­å®š
+	 * @param renderType æç”»æ–¹æ³•
+	*/
 	void SetRenderType(const int renderType)
 	{
-		if (true == m_flagSetRenderType) {
+		// ã™ã§ã«æç”»æ–¹æ³•ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ã‹
+		if (true == m_flagSetRenderType) { // ã•ã‚Œã¦ã„ã‚‹
 			return;
 		}
 
+		// æç”»æ–¹æ³•ã‚’è¨­å®š
 		m_renderType = renderType;
 
+		// æç”»æ–¹æ³•ã‚’è¨­å®šã—ãŸçŠ¶æ…‹ã«ã™ã‚‹
 		m_flagSetRenderType = true;
 	}
 
 private: // enum
 	/**
-	 * @brief ƒXƒEƒF[‚ÌˆÚ“®•ûŒü
+	 * @brief ã‚¹ã‚¦ã‚§ãƒ¼ã®ç§»å‹•æ–¹å‘
 	*/
 	enum EnSwayController
 	{
@@ -437,7 +463,7 @@ private: // enum
 	};
 
 	/**
-	 * @brief ‰¼İ’u
+	 * @brief ä»®è¨­ç½®
 	*/
 	enum EnXY
 	{
@@ -446,9 +472,11 @@ private: // enum
 		MaxXY
 	};
 
-	int m_swayController[EnXY::MaxXY] = { EnSwayController::enNotMove }; // ƒXƒEƒF[‚ÌˆÚ“®•ûŒü
+	int m_swayController[EnXY::MaxXY] = { EnSwayController::enNotMove }; // ã‚¹ã‚¦ã‚§ãƒ¼ã®ç§»å‹•æ–¹å‘
 
-
+	/**
+	 * @brief æç”»æ–¹æ³•ã®ç¨®é¡
+	*/
 	enum EnRenderType
 	{
 		enNormal,
@@ -456,50 +484,48 @@ private: // enum
 		enMaxRenderType
 	};
 
-	int m_renderType = EnRenderType::enMaxRenderType;
+	int m_renderType = EnRenderType::enMaxRenderType; // æç”»æ–¹æ³•
 
-	bool m_flagSetRenderType = false;
-
-
+	bool m_flagSetRenderType = false; // æç”»æ–¹æ³•ã‚’è¨­å®šã—ãŸã‹
 
 
 private: // data member
-    Model m_model;
-	Shadow* m_shadowModel = nullptr; // ‰e‚Ì•`‰æˆ—
-	std::unique_ptr<Skeleton> m_skeletonPointer; // ƒXƒPƒ‹ƒgƒ“‚Ìƒ|ƒCƒ“ƒ^[
-	std::unique_ptr<Animation> m_animationPointer; // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìƒ|ƒCƒ“ƒ^[
+	////////////////////////////////////////////////////////////
+	// ãƒ¢ãƒ‡ãƒ«ã®æƒ…å ±
+	////////////////////////////////////////////////////////////
 
-    const char* m_tkmFilePath = nullptr; // tkmƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-	Light m_light;
+	Model m_model; // ãƒ¢ãƒ‡ãƒ«
+	Light m_light; // ãƒ©ã‚¤ãƒˆã®æƒ…å ±
+	Shadow* m_shadowModel = nullptr; // å½±ã®æç”»å‡¦ç†
 
-	Instancing m_instancing;
+	std::unique_ptr<Skeleton> m_skeletonPointer; // ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã®ãƒã‚¤ãƒ³ã‚¿ãƒ¼
+	std::unique_ptr<Animation> m_animationPointer; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒã‚¤ãƒ³ã‚¿ãƒ¼
 
-	Vector3 m_position = g_vec3Zero;			// ˆÊ’u
-	Quaternion m_rotation = g_quatIdentity;		// ‰ñ“]
-	Vector3 m_scale = g_vec3One;				// Šg‘å
+    const char* m_tkmFilePath = nullptr; // tkmãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 
-	Matrix* m_worldMatrixArray = nullptr;
+	Vector3 m_position = g_vec3Zero;			// ä½ç½®
+	Quaternion m_rotation = g_quatIdentity;		// å›è»¢
+	Vector3 m_scale = g_vec3One;				// æ‹¡å¤§
 
+	Instancing m_instancing; // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°æç”»ã®æƒ…å ±
 
-	bool m_finishInit = false; // ‰Šú‰»‚ªI‚í‚Á‚½‚©
-	bool m_flagShadow = false; // ‰e‚ª”­¶‚·‚é‚©
+	////////////////////////////////////////////////////////////
+	// ãƒ•ãƒ©ã‚°
+	////////////////////////////////////////////////////////////
 
-	Hitbox* m_getHitbox = nullptr; // æ“¾‚µ‚½HitboxƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	bool m_finishInit = false; // åˆæœŸåŒ–ãŒçµ‚ã‚ã£ãŸã‹
+	bool m_flagShadow = false; // å½±ãŒç™ºç”Ÿã™ã‚‹ã‹
+	bool m_flagInitHitbox = false; // å½“ãŸã‚Šåˆ¤å®šã‚’åˆæœŸåŒ–ã—ãŸã‹
 
-	bool m_flagInitHitbox = false; // “–‚½‚è”»’è‚ğ‰Šú‰»‚µ‚½‚©
+	////////////////////////////////////////////////////////////
+	// ã‚¹ã‚¦ã‚§ãƒ¼
+	////////////////////////////////////////////////////////////
 
-	Vector2 m_swayMove = g_vec2Zero; // ƒXƒEƒF[‚ÌˆÚ“®—Ê
+	Vector2 m_swayMove = g_vec2Zero; // ã‚¹ã‚¦ã‚§ãƒ¼ã®ç§»å‹•é‡
 
-//public:
-//	void SetFlagAudience()
-//	{
-//		m_flagAudience = true;
-//	}
-//
-//	private:
-//	bool m_flagAudience = false;
-//
-//	Vector3 m_audiencePos[100];
-//
-//	StructuredBuffer m_worldMatrixSB;
+	////////////////////////////////////////////////////////////
+	// ãƒ’ãƒƒãƒˆãƒœãƒƒã‚¯ã‚¹
+	////////////////////////////////////////////////////////////
+
+	Hitbox* m_getHitbox = nullptr; // å–å¾—ã—ãŸHitboxã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 };

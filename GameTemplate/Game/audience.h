@@ -2,7 +2,6 @@
 #include "model_render.h"
 
 class ModelRender;
-class Actor;
 
 class Audience : public IGameObject
 {
@@ -13,55 +12,20 @@ public:
     void Update() override final;
 
 
-private:
-    bool Start2();
-    void Update2();
-
-
-private:
-
+private: // enum
     /**
- * @brief アニメーションクリップ
-*/
+     * @brief アニメーションクリップ
+    */
     enum AnimationEnum
     {
-        enRooting,
+        enRooting, // 応援
         AnimationMax
     };
 
 private: //data member
-    Actor* m_actor = nullptr; // キャラクター
     ModelRender* m_modelCharacter = nullptr; // プレイヤーキャラクターのモデル
 
-    ModelRender* m_modelTest = nullptr;
-
-
-    AnimationClip m_animationPlayer[AnimationMax];
-
-
+    AnimationClip m_animationPlayer[AnimationMax]; // アニメーションクリップ
 
     Vector3 m_position[100];
-
-
-
-    // あれ
-    const int width = 50;
-    const int height = 10;
-
-    const int numHumanModel = width * height;
-
-    Matrix* worldMatrixArray = nullptr;
-
-    Model humanModel;
-
-    Vector3* humanPos = nullptr;
-    Quaternion qRot;
-
-    StructuredBuffer worldMatrixSB;
-
-    RenderContext& renderContext = g_graphicsEngine->GetRenderContext();
-
-
-
-
 };
