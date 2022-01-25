@@ -13,7 +13,8 @@
 
 
 // ライト用の構造体を定義する
-struct Light {
+struct Light
+{
 	// ディレクションライト
 	Vector3 dirDirection; // ライトの方向
 	// HLSL側の定数バッファのfloat3型の変数は16の倍数のアドレスに配置されるため、
@@ -53,63 +54,11 @@ struct Light {
 
 	float pad8;
 	Matrix shadowCamera;
-};
-
-
-
-class ModelRender : public IGameObject
-{
-public:
-    ModelRender();
-    ~ModelRender();
-	bool Start() override final;
-    void Update() override final;
-	void Render(RenderContext& renderContext) override final;
-
-
-
-	void AudienceUpdate();
-
 
 public:
-	/**
-	 * @brief 初期化
-	 * @param filePath tkmファイルのファイルパス
-	 * @param flagShadowReceiver 影の影響を受けるか
-	 * @param flagShadow 影を描画するか
-	 * @param modelUpAxis モデルの上方向
-	 * @param animationClip アニメーションクリップ
-	 * @param maxAnimationClipNum アニメーションクリップの最大数
-	 */
-	void Init(const char* filePath, bool flagShadowReceiver = false, bool flagShadow = false,
-		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
-		AnimationClip* animationClip = nullptr,
-		int maxAnimationClipNum = 0
-	);
-
-	void AudienceInit(const char* filePath, bool flagShadowReceiver = false, bool flagShadow = false,
-		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
-		AnimationClip* animationClip = nullptr,
-		int maxAnimationClipNum = 0
-	);
-
+	void InitLight();
 
 private:
-	/**
-	 * @brief モデルの初期化
-	 * @param filePath tkmファイルのファイルパス
-	 * @param flagShadowReceiver 影の影響を受けるか
-	 * @param flagShadow 影を描画するか
-	 * @param modelUpAxis モデルの上方向
-	*/
-	void InitModel(const char* filePath, bool flagShadowReceiver, bool flagShadow,
-		modelUpAxis::EnModelUpAxis modelUpAxis
-	);
-
-	void InitAudienceModel(const char* filePath, bool flagShadowReceiver, bool flagShadow,
-		modelUpAxis::EnModelUpAxis modelUpAxis
-	);
-
 	/**
 	 * @brief ディレクションライトの初期化
 	*/
@@ -134,6 +83,77 @@ private:
 	 * @brief 半球ライトの初期化
 	*/
 	void InitHemiLight();
+};
+
+
+struct Instancing
+{
+	Vector3* m_position;
+	Quaternion* m_rotation;
+	Vector3* m_scale;
+
+	Matrix* m_worldMatrixArray = nullptr;
+	StructuredBuffer m_worldMatrixSB;
+
+	std::vector<std::unique_ptr<Skeleton>> m_skeletonPointer; // スケルトンのポインター
+	std::vector < std::unique_ptr<Animation>> m_animationPointer; // アニメーションのポインター
+};
+
+
+
+class ModelRender : public IGameObject
+{
+public:
+    ModelRender();
+    ~ModelRender();
+	bool Start() override final;
+    void Update() override final;
+	void Render(RenderContext& renderContext) override final;
+
+
+
+	void InstancingUpdate();
+
+	void InstancingRender(RenderContext& renderContext);
+
+
+public:
+	/**
+	 * @brief 初期化
+	 * @param filePath tkmファイルのファイルパス
+	 * @param flagShadowReceiver 影の影響を受けるか
+	 * @param flagShadow 影を描画するか
+	 * @param modelUpAxis モデルの上方向
+	 * @param animationClip アニメーションクリップ
+	 * @param maxAnimationClipNum アニメーションクリップの最大数
+	 */
+	void Init(const char* filePath, bool flagShadowReceiver = false, bool flagShadow = false,
+		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
+		AnimationClip* animationClip = nullptr,
+		int maxAnimationClipNum = 0
+	);
+
+	void InstancingInit(
+		const char* filePath,
+		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
+		AnimationClip* animationClip = nullptr,
+		int maxAnimationClipNum = 0
+	);
+
+
+private:
+	/**
+	 * @brief モデルの初期化
+	 * @param filePath tkmファイルのファイルパス
+	 * @param flagShadowReceiver 影の影響を受けるか
+	 * @param flagShadow 影を描画するか
+	 * @param modelUpAxis モデルの上方向
+	*/
+	void InitModel(const char* filePath, bool flagShadowReceiver, bool flagShadow,
+		modelUpAxis::EnModelUpAxis modelUpAxis
+	);
+
+	void InitInstancingModel(const char* filePath, modelUpAxis::EnModelUpAxis modelUpAxis);
 
 	/**
 	 * @brief スケルトンの初期化
@@ -378,6 +398,30 @@ public: // Set関数
 		}
 	}
 
+	
+	void SetInstancingScale(const Vector3& scale)
+	{
+		for (int i = 0; i < 500; i++) {
+			m_instancing.m_scale[i] = scale;
+		}
+	}
+
+
+
+	
+
+
+private:
+	void SetRenderType(const int renderType)
+	{
+		if (true == m_flagSetRenderType) {
+			return;
+		}
+
+		m_renderType = renderType;
+
+		m_flagSetRenderType = true;
+	}
 
 private: // enum
 	/**
@@ -405,6 +449,20 @@ private: // enum
 	int m_swayController[EnXY::MaxXY] = { EnSwayController::enNotMove }; // スウェーの移動方向
 
 
+	enum EnRenderType
+	{
+		enNormal,
+		enInstancing,
+		enMaxRenderType
+	};
+
+	int m_renderType = EnRenderType::enMaxRenderType;
+
+	bool m_flagSetRenderType = false;
+
+
+
+
 private: // data member
     Model m_model;
 	Shadow* m_shadowModel = nullptr; // 影の描画処理
@@ -413,6 +471,8 @@ private: // data member
 
     const char* m_tkmFilePath = nullptr; // tkmファイルのファイルパス
 	Light m_light;
+
+	Instancing m_instancing;
 
 	Vector3 m_position = g_vec3Zero;			// 位置
 	Quaternion m_rotation = g_quatIdentity;		// 回転
@@ -430,16 +490,16 @@ private: // data member
 
 	Vector2 m_swayMove = g_vec2Zero; // スウェーの移動量
 
-	public:
-	void SetFlagAudience()
-	{
-		m_flagAudience = true;
-	}
-
-	private:
-	bool m_flagAudience = false;
-
-	Vector3 m_audiencePos[100];
-
-	StructuredBuffer m_worldMatrixSB;
+//public:
+//	void SetFlagAudience()
+//	{
+//		m_flagAudience = true;
+//	}
+//
+//	private:
+//	bool m_flagAudience = false;
+//
+//	Vector3 m_audiencePos[100];
+//
+//	StructuredBuffer m_worldMatrixSB;
 };

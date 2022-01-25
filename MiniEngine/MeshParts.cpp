@@ -42,7 +42,7 @@ void MeshParts::InitFromTkmFile(
 
 
 	// 変更。追加。
-//ユーザー拡張用の定数バッファを作成。
+	//ユーザー拡張用の定数バッファを作成。
 	for (int i = 0; i < m_kMaxExCBNum; i++)
 	{
 		if (expandData[i]) {

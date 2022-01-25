@@ -125,7 +125,7 @@ public:
 	{
 		Matrix mWorld;
 		Matrix mBias;
-		if (m_modelUpAxis == modelUpAxis::EnModelUpAxis::enModelUpAxisZ) {
+		if (m_modelUpAxis == modelUpAxis::EnModelUpAxis::enModelUpAxisY) {
 			//Z-up
 			mBias.MakeRotationX(Math::PI * -0.5f);
 		}

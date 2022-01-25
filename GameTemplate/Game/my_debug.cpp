@@ -56,10 +56,10 @@ void MyDebug::Init()
     m_player[enPlayer]->GetActor().SetOtherActor(m_player[enOtherPlayer]->GetActor());
     m_player[enOtherPlayer]->GetActor().SetOtherActor(m_player[enPlayer]->GetActor());
 
-    m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
-    m_modelStage->Init("Assets/modelData/stage/ring.tkm", true, false);
+    //m_modelStage = NewGO<ModelRender>(igo::EnPriority::model);
+    //m_modelStage->Init("Assets/modelData/stage/ring.tkm", true, false);
 
-    m_modelStage->SetPosition({ 0.0f,0.0f,0.0f });
+    //m_modelStage->SetPosition({ 0.0f,0.0f,0.0f });
     
     //m_modelStage->SetScale({ 5.0f,1.0f,5.0f });
 

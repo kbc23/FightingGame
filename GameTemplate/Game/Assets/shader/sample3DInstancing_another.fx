@@ -23,16 +23,32 @@ struct SSkinVSIn
 // 頂点シェーダーへの入力
 struct SVSIn
 {
-    float4 pos : POSITION;      // モデルの頂点座標
-    float2 uv : TEXCOORD0;      // UV座標
+    float4 pos 		: POSITION;		//モデルの頂点座標。
+    float3 normal   : NORMAL;
+    float3 tangent  : TANGENT;		//接ベクトル
+    float3 biNormal : BINORMAL;		//従法線
+    float2 uv 		: TEXCOORD0;	//UV座標。
     SSkinVSIn skinVert;				//スキン用のデータ。
+
+    //float4 pos : POSITION;      // モデルの頂点座標
+    //float2 uv : TEXCOORD0;      // UV座標
+    //SSkinVSIn skinVert;				//スキン用のデータ。
 };
 
 // ピクセルシェーダーへの入力
 struct SPSIn
 {
-    float4 pos : SV_POSITION;       // スクリーン空間でのピクセルの座標    
-    float2 uv : TEXCOORD0;          // uv座標
+    float4 pos 			: SV_POSITION;	//スクリーン空間でのピクセルの座標。
+    float3 normal	    : NORMAL;
+    float3 tangent  : TANGENT;		//接ベクトル
+    float3 biNormal : BINORMAL;		//従法線
+    float2 uv 			: TEXCOORD0;	//uv座標。
+    float4 worldPos		: TEXCOORD1;
+    //ピクセルシェーダーへの入力にカメラ空間の法線を追加する
+    float3 normalInView : TEXCOORD2;	//カメラ空間の法線。
+
+    //float4 pos : SV_POSITION;       // スクリーン空間でのピクセルの座標    
+    //float2 uv : TEXCOORD0;          // uv座標
 };
 
 ///////////////////////////////////////////////////
@@ -42,6 +58,9 @@ struct SPSIn
 sampler g_sampler : register(s0);
 Texture2D<float4> g_albedo : register(t0);      // アルベドマップ
 StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
+
+//Texture2D<float4> g_normalMap : register(t1);			//法線マップ
+//Texture2D<float4> g_toonMap : register(t4);  //トゥーンシェーダー用のテクスチャー
 
 // step-7 ワールド行列の配列にアクセスするための変数を追加。
 StructuredBuffer<float4x4> g_worldMatrixArray : register( t10 );
@@ -69,7 +88,6 @@ float4x4 CalcSkinMatrix(SSkinVSIn skinVert)
 /// <summary>
 /// 頂点シェーダー
 /// <summary>
-
 SPSIn VSMainCore(
     SVSIn vsIn, 
     uniform bool hasSkin,

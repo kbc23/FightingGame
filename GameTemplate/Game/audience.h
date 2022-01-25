@@ -14,17 +14,8 @@ public:
 
 
 private:
-    void Test1();
-
-
-
-
-    void SetPosition(const int i1);
-
-    void Step2();
-
-    void a1(const int iii);
-
+    bool Start2();
+    void Update2();
 
 
 private:
@@ -40,7 +31,7 @@ private:
 
 private: //data member
     Actor* m_actor = nullptr; // キャラクター
-    ModelRender* m_modelCharacter[4][25] = { nullptr }; // プレイヤーキャラクターのモデル
+    ModelRender* m_modelCharacter = nullptr; // プレイヤーキャラクターのモデル
 
     ModelRender* m_modelTest = nullptr;
 

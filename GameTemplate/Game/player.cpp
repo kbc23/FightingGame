@@ -227,7 +227,9 @@ const Vector3 Player::Move(const Vector3& moveAmountBeforeEditing)
     Vector3 cameraRight = Cross(g_vec3AxisY, cameraFront);
 
     // キャラクターの移動速度
-    const float CHARACTER_SPEED = 9.0f;
+    //const float CHARACTER_SPEED = 9.0f;
+    const float CHARACTER_SPEED = 20.0f;
+
 
     Vector3 pospos = moveAmountBeforeEditing * CHARACTER_SPEED;
 
