@@ -230,6 +230,7 @@ public:
 	{
 		m_animationPointer->Play(animationNumber, interpolateTime);
 	}
+
 	/**
 	 * @brief アニメーションを再生中か
 	 * @return 再生中か
@@ -428,9 +429,23 @@ public: // Set関数
 			m_instancing.m_scale[instanceNum] = scale;
 		}
 	}
+	/**
+	 * @brief インスタンシング描画するインスタンスの中の１つの位置を変更
+	 * @param instanceNum 位置を変更するインスタンス番号
+	 * @param position 位置
+	*/
+	void SetInstancePosition(const int instanceNum, const Vector3& position)
+	{
+		m_instancing.m_position[instanceNum] = position;
+	}
+
+	void SetInstanceRotation(const int instanceNum, const float angle)
+	{
+		m_instancing.m_rotation[instanceNum].SetRotationDegY(angle);
+	}
 
 
-private:
+private: // Set function [private]
 	/**
 	 * @brief 描画方法を設定
 	 * @param renderType 描画方法

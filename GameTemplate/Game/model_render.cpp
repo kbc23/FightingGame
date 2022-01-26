@@ -127,6 +127,7 @@ ModelRender::~ModelRender()
 
 	delete[] m_instancing.m_position;
 	delete[] m_instancing.m_rotation;
+	delete[] m_instancing.m_scale;
 }
 
 bool ModelRender::Start()
@@ -301,7 +302,7 @@ void ModelRender::InitInstancingModel(
 	m_instancing.m_scale = new Vector3[m_instancing.m_instanceNum];
 
 	// モデルの座標、回転、拡大率を初期化
-	for (int instanceNum = 0; m_instancing.m_instanceNum; instanceNum++) {
+	for (int instanceNum = 0; instanceNum < m_instancing.m_instanceNum; instanceNum++) {
 		// インスタンス全ての座標を原点、回転をデフォルト、拡大率を１倍に設定
 		m_instancing.m_position[instanceNum] = Vector3::Zero;
 		m_instancing.m_rotation[instanceNum] = Quaternion::Identity;
