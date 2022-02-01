@@ -56,6 +56,9 @@ struct Light
 	Matrix shadowCamera; // 影描画に使用するカメラ
 
 public:
+	/**
+	 * @brief ライトデータの初期化
+	*/
 	void InitLight();
 
 private:
@@ -63,22 +66,18 @@ private:
 	 * @brief ディレクションライトの初期化
 	*/
 	void InitDirectionLight();
-
 	/**
 	 * @brief ポイントライトの初期化
 	*/
 	void InitPointLight();
-
 	/**
 	 * @brief スポットライトの初期化
 	*/
 	void InitSpotLight();
-
 	/**
 	 * @brief 環境光の初期化
 	*/
 	void InitAmbientLight();
-
 	/**
 	 * @brief 半球ライトの初期化
 	*/
@@ -98,6 +97,23 @@ struct Instancing
 	StructuredBuffer m_worldMatrixSB; // シェーダー側でワールド⾏列を使⽤するためのストラクチャードバッファ
 
 	int m_instanceNum = 0; // インスタンスの数
+};
+
+struct OffScreen
+{
+	Model m_boardPolyModel; // 板ポリモデル
+
+	Vector3* m_position; // 位置
+	Quaternion* m_rotation; // 回転
+	Vector3* m_scale; // 拡大率
+
+	RenderTarget m_drawModelRenderTarget;
+	Camera m_drawModelCamera;
+
+	Matrix* m_worldMatrixArray = nullptr; // インスタンシング描画のワールド⾏列関係のバッファ
+	StructuredBuffer m_worldMatrixSB; // シェーダー側でワールド⾏列を使⽤するためのストラクチャードバッファ
+
+	int m_instanceNum = 0; // インスタンス描画する板のインスタンスの数
 };
 
 /**
@@ -121,6 +137,16 @@ public:
 	 * @param renderContext レンダリングコンテキスト
 	*/
 	void InstancingRender(RenderContext& renderContext);
+
+	/**
+	 * @brief オフスクリーンレンダリングの毎フレームの処理
+	*/
+	void OffScreenUpdate();
+	/**
+	 * @brief オフスクリーンレンダリングの描画処理
+	 * @param renderContext レンダリングコンテキスト
+	*/
+	void OffScreenRender(RenderContext& renderContext);
 
 
 public:
@@ -154,6 +180,22 @@ public:
 		int maxAnimationClipNum = 0
 	);
 
+	/**
+	 * @brief オフスクリーンレンダリングの初期化
+	 * @param filePath tkmファイルのファイルパス
+	 * @param modelMaxNum インスタンシング描画で描画するインスタンスの数
+	 * @param modelUpAxis モデルの上方向
+	 * @param animationClip アニメーションクリップ
+	 * @param maxAnimationClipNum アニメーションクリップの最大数
+	*/
+	void OffScreenInit(
+		const char* filePath,
+		const int modelMaxNum,
+		modelUpAxis::EnModelUpAxis modelUpAxis = modelUpAxis::enModelUpAxisZ,
+		AnimationClip* animationClip = nullptr,
+		int maxAnimationClipNum = 0
+	);
+
 
 private:
 	/**
@@ -173,6 +215,17 @@ private:
 	 * @param modelUpAxis モデルの上方向
 	*/
 	void InitInstancingModel(
+		const char* filePath,
+		const int modelMaxNum,
+		modelUpAxis::EnModelUpAxis modelUpAxis
+	);
+	/**
+	 * @brief オフスクリーンレンダリングをするモデルの初期化
+	 * @param filePath tkmファイルのファイルパス
+	 * @param modelMaxNum インスタンシング描画で描画するインスタンスの数
+	 * @param modelUpAxis モデルの上方向
+	*/
+	void InitOffScreenModel(
 		const char* filePath,
 		const int modelMaxNum,
 		modelUpAxis::EnModelUpAxis modelUpAxis
@@ -445,6 +498,18 @@ public: // Set関数
 	}
 
 
+	void SetOffScreenPosition(const int instanceNum, const Vector3& position)
+	{
+		m_offScreen.m_position[instanceNum] = position;
+
+		m_offScreen.m_position[instanceNum].y += 100.0f;
+	}
+
+	void SetOffScreenRotation(const int instanceNum, const float angle)
+	{
+		m_offScreen.m_rotation[instanceNum].SetRotationDegY(angle);
+	}
+
 private: // Set function [private]
 	/**
 	 * @brief 描画方法を設定
@@ -463,6 +528,41 @@ private: // Set function [private]
 		// 描画方法を設定した状態にする
 		m_flagSetRenderType = true;
 	}
+
+	/**
+	 * @brief 指定した描画方法か
+	 * @param renderType 描画方法
+	 * @return [true]: 指定した描画方法だった [false]: 指定した描画方法ではなかった
+	*/
+	const bool CheckRenderType(const int renderType)
+	{
+		// まだ描画方法が設定されていないか
+		if (false == m_flagSetRenderType) { // されていない
+			return false;
+		}
+
+		if (renderType == m_renderType) {
+			return true;
+		}
+
+		return false;
+	}
+
+public:
+	//static void CreateOffScreenRenderTarget()
+	//{
+	//	// step-1 ⼈物のモデルを描画するレンダリングターゲットを初期化。
+	//	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	//	m_offScreen.m_drawModelRenderTarget.Create(
+	//		512, // 横幅
+	//		512, // 縦幅
+	//		1,
+	//		1,
+	//		DXGI_FORMAT_R8G8B8A8_UNORM,
+	//		DXGI_FORMAT_D32_FLOAT,
+	//		clearColor
+	//	);
+	//}
 
 private: // enum
 	/**
@@ -496,6 +596,7 @@ private: // enum
 	{
 		enNormal,
 		enInstancing,
+		enOffScreen,
 		enMaxRenderType
 	};
 
@@ -523,6 +624,7 @@ private: // data member
 	Vector3 m_scale = g_vec3One;				// 拡大
 
 	Instancing m_instancing; // インスタンシング描画の情報
+	OffScreen m_offScreen; // オフスクリーンレンダリングの情報
 
 	////////////////////////////////////////////////////////////
 	// フラグ

@@ -66,6 +66,9 @@ void MyDebug::Init()
     m_fontWinOrLose = NewGO<FontRender>(igo::EnPriority::font);
 
     m_audience = NewGO<Audience>(igo::EnPriority::model);
+
+    //m_spriteTitle = NewGO<SpriteRender>(igo::EnPriority::background);
+    //m_spriteTitle->Init("Assets/Image/test.dds");
 }
 
 void MyDebug::Finish()

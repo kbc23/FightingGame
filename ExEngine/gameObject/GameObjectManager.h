@@ -63,6 +63,8 @@ public:
 
 	void ExecuteShadowRender(RenderContext& rc);
 
+	void ExecuteOffScreenRender(RenderContext& rc);
+
 	
 	/*!
 	*@brief	ゲームオブジェクトのnew
