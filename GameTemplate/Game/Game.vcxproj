@@ -293,7 +293,6 @@
     <ClCompile Include="..\..\MiniEngine\tkFile\TksFile.cpp" />
     <ClCompile Include="..\..\MiniEngine\VertexBuffer.cpp" />
     <ClCompile Include="actor.cpp" />
-    <ClCompile Include="attack_move_bone.cpp" />
     <ClCompile Include="audience.cpp" />
     <ClCompile Include="debug_wire_frame.cpp" />
     <ClCompile Include="fade.cpp" />
@@ -333,8 +332,6 @@
     <ClCompile Include="st_attack_data.cpp" />
     <ClCompile Include="st_dash_status.cpp" />
     <ClCompile Include="st_defense_data.cpp" />
-    <ClCompile Include="st_down_status.cpp" />
-    <ClCompile Include="st_squeeze_status.cpp" />
     <ClCompile Include="st_player_status.cpp" />
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="timer.cpp" />
@@ -403,7 +400,6 @@
     <ClInclude Include="..\..\MiniEngine\tkFile\TksFile.h" />
     <ClInclude Include="..\..\MiniEngine\VertexBuffer.h" />
     <ClInclude Include="actor.h" />
-    <ClInclude Include="attack_move_bone.h" />
     <ClInclude Include="audience.h" />
     <ClInclude Include="constant.h" />
     <ClInclude Include="debug_wire_frame.h" />
@@ -437,8 +433,6 @@
     <ClInclude Include="st_attack_data.h" />
     <ClInclude Include="st_dash_status.h" />
     <ClInclude Include="st_defense_data.h" />
-    <ClInclude Include="st_down_status.h" />
-    <ClInclude Include="st_squeeze_status.h" />
     <ClInclude Include="st_player_status.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="timer.h" />

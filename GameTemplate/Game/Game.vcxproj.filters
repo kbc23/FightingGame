@@ -323,12 +323,6 @@
     <ClCompile Include="st_dash_status.cpp">
       <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClCompile>
-    <ClCompile Include="st_squeeze_status.cpp">
-      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
-    </ClCompile>
-    <ClCompile Include="st_down_status.cpp">
-      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
-    </ClCompile>
     <ClCompile Include="sound_source.cpp">
       <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
     </ClCompile>
@@ -360,9 +354,6 @@
       <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClCompile>
     <ClCompile Include="hitbox.cpp">
-      <Filter>MyCode\MainProcessing\Character\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="attack_move_bone.cpp">
       <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="player_controller.cpp">
@@ -625,12 +616,6 @@
     <ClInclude Include="st_dash_status.h">
       <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
     </ClInclude>
-    <ClInclude Include="st_squeeze_status.h">
-      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
-    </ClInclude>
-    <ClInclude Include="st_down_status.h">
-      <Filter>MyCode\MainProcessing\Character\Player\Status</Filter>
-    </ClInclude>
     <ClInclude Include="sound_source.h">
       <Filter>MyCode\Engine\Sound\Don%27t touch</Filter>
     </ClInclude>
@@ -672,9 +657,6 @@
     </ClInclude>
     <ClInclude Include="constant.h">
       <Filter>MyCode\MainProcessing</Filter>
-    </ClInclude>
-    <ClInclude Include="attack_move_bone.h">
-      <Filter>MyCode\MainProcessing\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="player_controller.h">
       <Filter>MyCode\MainProcessing\Character\Player</Filter>

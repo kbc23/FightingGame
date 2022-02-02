@@ -24,7 +24,7 @@ std::string ReadCSVFile::m_NOT_FOUND = "not found"; // ƒf[ƒ^‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚
 
 ReadCSVFile::ReadCSVFile()
 {
-	// TODO: ‰½‚µ‚æ‚¤H
+
 }
 
 ReadCSVFile::ReadCSVFile(const std::string& openFile)
@@ -36,8 +36,7 @@ ReadCSVFile::ReadCSVFile(const std::string& openFile)
 
 	// ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚©‚Á‚½‚Æ‚«‚Ìˆ—
 	if (!m_file) {
-		// TODO: ‚±‚±‚Éƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚©‚Á‚½‚Æ‚«‚Ìˆ—‚ğ‘‚«‚½‚¢‚¯‚ÇA
-		// ‰½‚ğ‘‚¢‚½‚ç‚¢‚¢‚©‘S‘Rv‚¢‚Â‚©‚È‚¢B
+
 	}
 }
 

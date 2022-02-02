@@ -1,8 +1,6 @@
 #pragma once
 #include "st_attack_data.h"
 #include "st_dash_status.h"
-#include "st_squeeze_status.h"
-#include "st_down_status.h"
 #include "st_defense_data.h"  
 
 /**
@@ -104,7 +102,5 @@ public: // Set function
 private: // data member
     StAttackData m_attackData; // 攻撃関連のデータ
     StDashStatus m_dashStatus; // ダッシュ関連のデータ
-    StSqueezeStatus m_squeezeStatus; // のけぞり関連のデータ
-    StDownStatus m_downStatus; // ダウン関連のデータ
     StDefenseData m_defenceData; // 防御関連のデータ
 };
